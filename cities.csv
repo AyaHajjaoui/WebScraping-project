@@ -1,0 +1,25 @@
+City,Country,TimeAndDate URL,WeatherUnderground URL,Meteostat URL
+Beirut,Lebanon,https://www.timeanddate.com/weather/lebanon/beirut,https://www.wunderground.com/weather/lb/beirut,https://meteostat.net/en/place/lb/beirut?s=40100
+New York,United States,https://www.timeanddate.com/weather/usa/new-york,https://www.wunderground.com/weather/us/ny/new-york,https://meteostat.net/en/place/us/new-york
+Los Angeles,United States,https://www.timeanddate.com/weather/usa/los-angeles,https://www.wunderground.com/weather/us/ca/los-angeles,https://meteostat.net/en/place/us/los-angeles
+Chicago,United States,https://www.timeanddate.com/weather/usa/chicago,https://www.wunderground.com/weather/us/il/chicago,https://meteostat.net/en/place/us/chicago
+Toronto,Canada,https://www.timeanddate.com/weather/canada/toronto,https://www.wunderground.com/weather/ca/on/toronto,https://meteostat.net/en/place/ca/toronto
+Mexico City,Mexico,https://www.timeanddate.com/weather/mexico/mexico-city,https://www.wunderground.com/weather/mx/df/mexico-city,https://meteostat.net/en/place/mx/mexico-city
+Sao Paulo,Brazil,https://www.timeanddate.com/weather/brazil/sao-paulo,https://www.wunderground.com/weather/br/sao-paulo,https://meteostat.net/en/place/br/sao-paulo
+Buenos Aires,Argentina,https://www.timeanddate.com/weather/argentina/buenos-aires,https://www.wunderground.com/weather/ar/buenos-aires,https://meteostat.net/en/place/ar/buenos-aires
+London,United Kingdom,https://www.timeanddate.com/weather/uk/london,https://www.wunderground.com/weather/gb/london,https://meteostat.net/en/place/gb/london
+Paris,France,https://www.timeanddate.com/weather/france/paris,https://www.wunderground.com/weather/fr/paris,https://meteostat.net/en/place/fr/paris
+Berlin,Germany,https://www.timeanddate.com/weather/germany/berlin,https://www.wunderground.com/weather/de/berlin,https://meteostat.net/en/place/de/berlin
+Madrid,Spain,https://www.timeanddate.com/weather/spain/madrid,https://www.wunderground.com/weather/es/madrid,https://meteostat.net/en/place/es/madrid
+Rome,Italy,https://www.timeanddate.com/weather/italy/rome,https://www.wunderground.com/weather/it/rome,https://meteostat.net/en/place/it/rome
+Cairo,Egypt,https://www.timeanddate.com/weather/egypt/cairo,https://www.wunderground.com/weather/eg/cairo,https://meteostat.net/en/place/eg/cairo
+Nairobi,Kenya,https://www.timeanddate.com/weather/kenya/nairobi,https://www.wunderground.com/weather/ke/nairobi,https://meteostat.net/en/place/ke/nairobi
+Johannesburg,South Africa,https://www.timeanddate.com/weather/south-africa/johannesburg,https://www.wunderground.com/weather/za/johannesburg,https://meteostat.net/en/place/za/johannesburg
+Dubai,United Arab Emirates,https://www.timeanddate.com/weather/united-arab-emirates/dubai,https://www.wunderground.com/weather/ae/dubai,https://meteostat.net/en/place/ae/dubai
+Mumbai,India,https://www.timeanddate.com/weather/india/mumbai,https://www.wunderground.com/weather/in/mumbai,https://meteostat.net/en/place/in/mumbai
+Tokyo,Japan,https://www.timeanddate.com/weather/japan/tokyo,https://www.wunderground.com/weather/jp/tokyo,https://meteostat.net/en/place/jp/tokyo
+Seoul,South Korea,https://www.timeanddate.com/weather/south-korea/seoul,https://www.wunderground.com/weather/kr/seoul,https://meteostat.net/en/place/kr/seoul
+Singapore,Singapore,https://www.timeanddate.com/weather/singapore/singapore,https://www.wunderground.com/weather/sg/singapore,https://meteostat.net/en/place/sg/singapore
+Sydney,Australia,https://www.timeanddate.com/weather/australia/sydney,https://www.wunderground.com/weather/au/sydney,https://meteostat.net/en/place/au/sydney
+Melbourne,Australia,https://www.timeanddate.com/weather/australia/melbourne,https://www.wunderground.com/weather/au/melbourne,https://meteostat.net/en/place/au/melbourne
+Auckland,New Zealand,https://www.timeanddate.com/weather/new-zealand/auckland,https://www.wunderground.com/weather/nz/auckland,https://meteostat.net/en/place/nz/auckland

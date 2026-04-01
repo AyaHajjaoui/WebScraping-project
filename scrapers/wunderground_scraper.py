@@ -1,4 +1,4 @@
-import json
+﻿import json
 import logging
 import re
 import time
@@ -67,6 +67,137 @@ def _to_celsius(value) -> Optional[float]:
     if temp > 60 and temp <= 140:
         return round((temp - 32) * 5.0 / 9.0, 2)
     return temp
+
+
+def _extract_numeric_from_any(value, prefer_metric: bool = False) -> Optional[float]:
+    if value is None:
+        return None
+    if _is_scalar(value):
+        return _parse_numeric(value)
+    if isinstance(value, list):
+        for item in value:
+            num = _extract_numeric_from_any(item, prefer_metric=prefer_metric)
+            if num is not None:
+                return num
+        return None
+    if isinstance(value, dict):
+        metric_keys = ("metric", "si", "celsius", "mm", "kmh", "kph")
+        direct_keys = ("value", "amount", "numericValue", "scalar", "avg", "mean")
+        imperial_keys = ("imperial", "english", "fahrenheit", "inch", "in", "mph")
+
+        if prefer_metric:
+            for key in metric_keys:
+                if key in value:
+                    num = _extract_numeric_from_any(value.get(key), prefer_metric=prefer_metric)
+                    if num is not None:
+                        return num
+
+        for key in direct_keys:
+            if key in value:
+                num = _extract_numeric_from_any(value.get(key), prefer_metric=prefer_metric)
+                if num is not None:
+                    return num
+
+        for key in metric_keys:
+            if key in value:
+                num = _extract_numeric_from_any(value.get(key), prefer_metric=prefer_metric)
+                if num is not None:
+                    return num
+
+        for key in imperial_keys:
+            if key in value:
+                num = _extract_numeric_from_any(value.get(key), prefer_metric=prefer_metric)
+                if num is not None:
+                    return num
+
+        for item in value.values():
+            num = _extract_numeric_from_any(item, prefer_metric=prefer_metric)
+            if num is not None:
+                return num
+    return None
+
+
+def _to_celsius_from_any(value) -> Optional[float]:
+    if value is None:
+        return None
+    if _is_scalar(value):
+        return _to_celsius(value)
+    if isinstance(value, dict):
+        for key in ("metric", "si", "celsius"):
+            if key in value:
+                c = _to_celsius_from_any(value.get(key))
+                if c is not None:
+                    return c
+        for key in ("value", "amount", "numericValue", "scalar"):
+            if key in value:
+                c = _to_celsius_from_any(value.get(key))
+                if c is not None:
+                    return c
+        for key in ("imperial", "english", "fahrenheit"):
+            if key in value:
+                c = _to_celsius_from_any(value.get(key))
+                if c is not None:
+                    return c
+        for item in value.values():
+            c = _to_celsius_from_any(item)
+            if c is not None:
+                return c
+        return None
+    if isinstance(value, list):
+        for item in value:
+            c = _to_celsius_from_any(item)
+            if c is not None:
+                return c
+    return None
+
+
+def _to_mm_from_any(value) -> Optional[float]:
+    if value is None:
+        return None
+    if _is_scalar(value):
+        text = str(value).strip().lower()
+        num = _parse_numeric(text)
+        if num is None:
+            return None
+        if any(token in text for token in (" in", "inch", "inches")):
+            return round(num * 25.4, 2)
+        return num
+    if isinstance(value, list):
+        for item in value:
+            mm = _to_mm_from_any(item)
+            if mm is not None:
+                return mm
+        return None
+    if isinstance(value, dict):
+        unit = _safe_text(value.get("unit") or value.get("units") or value.get("uom"))
+        unit_l = unit.lower() if unit else ""
+
+        for key in ("metric", "si", "mm"):
+            if key in value:
+                mm = _to_mm_from_any(value.get(key))
+                if mm is not None:
+                    return mm
+
+        for key in ("value", "amount", "numericValue", "scalar"):
+            if key in value:
+                raw = _extract_numeric_from_any(value.get(key))
+                if raw is None:
+                    continue
+                if any(token in unit_l for token in ("in", "inch")):
+                    return round(raw * 25.4, 2)
+                return raw
+
+        for key in ("imperial", "english", "inch", "in"):
+            if key in value:
+                mm = _to_mm_from_any(value.get(key))
+                if mm is not None:
+                    return mm
+
+        for item in value.values():
+            mm = _to_mm_from_any(item)
+            if mm is not None:
+                return mm
+    return None
 
 
 def _fetch_url(session: requests.Session, url: str, timeout: int = REQUEST_TIMEOUT) -> str:
@@ -138,6 +269,47 @@ def _walk_dict(obj: Any) -> Iterable[Dict]:
             yield from _walk_dict(item)
 
 
+def _extract_current_metrics_from_text(html: str) -> Dict[str, Optional[float]]:
+    soup = BeautifulSoup(html, "lxml")
+    text = soup.get_text(" ", strip=True)
+
+    feels = None
+    precip = None
+
+    feels_patterns = [
+        r"Feels\s*Like[:\s]+(-?\d+(?:\.\d+)?)\s*[CF]?",
+        r"RealFeel[:\s]+(-?\d+(?:\.\d+)?)\s*[CF]?",
+    ]
+    for pattern in feels_patterns:
+        match = re.search(pattern, text, re.I)
+        if match:
+            feels = _to_celsius(match.group(1))
+            if feels is not None:
+                break
+
+    precip_patterns = [
+        r"(?:Precip(?:itation)?|Rain\s*Amount|Rainfall|QPF)[:\s]+(-?\d+(?:\.\d+)?)\s*(mm|cm|in|inch|inches)?",
+        r"(-?\d+(?:\.\d+)?)\s*(mm|cm|in|inch|inches)\s*(?:of\s*)?(?:rain|precip(?:itation)?)",
+    ]
+    for pattern in precip_patterns:
+        match = re.search(pattern, text, re.I)
+        if not match:
+            continue
+        val = _parse_numeric(match.group(1))
+        unit = (match.group(2) or "").lower()
+        if val is None:
+            continue
+        if unit in {"in", "inch", "inches"}:
+            precip = round(val * 25.4, 2)
+        elif unit == "cm":
+            precip = round(val * 10.0, 2)
+        else:
+            precip = val
+        break
+
+    return {"FeelsLike_C": feels, "Precipitation": precip}
+
+
 def _extract_from_next_data(html: str, city: str, country: str) -> List[Dict]:
     soup = BeautifulSoup(html, "lxml")
     scripts = soup.find_all("script")
@@ -160,44 +332,42 @@ def _extract_from_next_data(html: str, city: str, country: str) -> List[Dict]:
         rows = []
         for node in _walk_dict(data):
             obs_time = node.get("obsTimeUtc") or node.get("validTimeUtc")
-            temperature = node.get("temperature")
-            if not _is_scalar(obs_time) or not _is_scalar(temperature):
+            temperature = node.get("temperature") or node.get("temperatureDegree") or node.get("temp")
+            if not _is_scalar(obs_time):
                 continue
             if obs_time is None or temperature is None:
                 continue
 
-            # ✅ UPDATED PART
-            humidity = (
-                node.get("humidity")
-                or node.get("relativeHumidity")
-                or node.get("rh")
-            )
+            humidity = node.get("humidity") or node.get("relativeHumidity") or node.get("rh") or node.get("humidityPct")
 
-            wind = (
-                node.get("windSpeed")
-                or node.get("wspd")
-                or node.get("windKph")
-            )
+            wind_kph = node.get("windKph") or node.get("windSpeedKph") or node.get("windSpeedKmh")
+            wind_mph = node.get("windSpeed") or node.get("wspd") or node.get("windMph")
 
             feels_like = (
-                     node.get("feelsLike")
-                    or node.get("feelslike")
-                    or node.get("feelsLikeTemperature")
-                    or node.get("heatIndex")
-                    or node.get("apparentTemperature")
-                    or node.get("realFeel")
+                node.get("feelsLike")
+                or node.get("feelslike")
+                or node.get("feelsLikeTemperature")
+                or node.get("temperatureFeelsLike")
+                or node.get("feelsLikeTemp")
+                or node.get("apparentTemperature")
+                or node.get("apparentTemp")
+                or node.get("realFeel")
+                or node.get("heatIndex")
             )
 
             precip = (
-                    node.get("precipRate")
-                    or node.get("precipTotal")
-                    or node.get("precip")
-                    or node.get("precipAccumulation")
-                    or node.get("precip1h")
-                    or node.get("precip24h")
-                    or node.get("qpf")
+                node.get("precipRate")
+                or node.get("precipTotal")
+                or node.get("precip")
+                or node.get("precipAccumulation")
+                or node.get("precipitation")
+                or node.get("precipitationAmount")
+                or node.get("precip1h")
+                or node.get("precip24h")
+                or node.get("rainfall")
+                or node.get("rainAmount")
+                or node.get("qpf")
             )
-            
 
             condition = node.get("wxPhraseLong")
             if condition is None:
@@ -208,14 +378,15 @@ def _extract_from_next_data(html: str, city: str, country: str) -> List[Dict]:
                 alt = node.get("phrase")
                 condition = _safe_text(alt) if _is_scalar(alt) else None
 
-            if (
-                _to_celsius(temperature) is None
-                and _parse_numeric(humidity) is None
-                and _parse_numeric(wind) is None
-            ):
-                continue
+            temperature_c = _to_celsius_from_any(temperature)
+            feels_like_c = _to_celsius_from_any(feels_like)
+            humidity_pct = _extract_numeric_from_any(humidity)
+            wind_speed_kmh = _extract_numeric_from_any(wind_kph, prefer_metric=True)
+            if wind_speed_kmh is None:
+                wind_speed_kmh = _to_kmh_from_mph(_extract_numeric_from_any(wind_mph))
+            precip_mm = _to_mm_from_any(precip)
 
-            if not _is_scalar(humidity) or not _is_scalar(wind):
+            if temperature_c is None and humidity_pct is None and wind_speed_kmh is None:
                 continue
 
             rows.append(
@@ -223,22 +394,30 @@ def _extract_from_next_data(html: str, city: str, country: str) -> List[Dict]:
                     "SourceWebsite": "WeatherUnderground",
                     "City": city,
                     "Country": country,
-                    "ScrapeDateTime": _safe_text(obs_time)
-                    or datetime.now(timezone.utc).isoformat(),
-                    "Temperature_C": _to_celsius(temperature),
-                    "FeelsLike_C": _to_celsius(feels_like),
-                    "Humidity_%": _parse_numeric(humidity),
-                    "WindSpeed_kmh": _to_kmh_from_mph(wind),
+                    "ScrapeDateTime": _safe_text(obs_time) or datetime.now(timezone.utc).isoformat(),
+                    "Temperature_C": temperature_c,
+                    "FeelsLike_C": feels_like_c,
+                    "Humidity_%": humidity_pct,
+                    "WindSpeed_kmh": wind_speed_kmh,
                     "Condition": condition,
-                    "Precipitation": _parse_numeric(precip),
+                    "Precipitation": precip_mm,
                 }
             )
+
         if rows:
+            fallback = _extract_current_metrics_from_text(html)
+            for row in rows:
+                if row.get("FeelsLike_C") is None:
+                    row["FeelsLike_C"] = fallback.get("FeelsLike_C")
+                if row.get("Precipitation") is None:
+                    row["Precipitation"] = fallback.get("Precipitation")
+
             dedup = pd.DataFrame(rows).drop_duplicates(
                 subset=["SourceWebsite", "City", "Country", "ScrapeDateTime"],
                 keep="last",
             )
             return dedup.to_dict(orient="records")
+
     return []
 
 
@@ -267,14 +446,12 @@ def _extract_from_tables(html: str, city: str, country: str, date_text: Optional
 
         for _, row in table.iterrows():
             time_value = _safe_text(row.get(time_col)) if time_col else None
-            scrape_dt = (
-                f"{date_text}T{time_value}" if date_text and time_value else datetime.now(timezone.utc).isoformat()
-            )
+            scrape_dt = f"{date_text}T{time_value}" if date_text and time_value else datetime.now(timezone.utc).isoformat()
             temp_value = _to_celsius(row.get(temp_col))
             feels_value = _to_celsius(row.get(feels_col)) if feels_col else None
             humidity_value = _parse_numeric(row.get(humidity_col)) if humidity_col else None
             wind_value = _to_kmh_from_mph(row.get(wind_col)) if wind_col else None
-            precip_value = _parse_numeric(row.get(precip_col)) if precip_col else None
+            precip_value = _to_mm_from_any(row.get(precip_col)) if precip_col else None
             condition_value = _safe_text(row.get(cond_col)) if cond_col else None
             if (
                 temp_value is None
@@ -310,11 +487,19 @@ def _history_url(base_url: str, date_obj: datetime) -> str:
 
 
 def scrape_wunderground(
-    session,
-    city_info: Dict,
+    session=None,
+    city_info: Optional[Dict] = None,
     history_days: int = DEFAULT_HISTORY_DAYS,
     pass_index: int = 0,
 ) -> List[Dict]:
+    if city_info is None and isinstance(session, dict):
+        city_info = session
+        session = None
+
+    if not isinstance(city_info, dict):
+        logger.warning("Weather Underground scrape skipped: missing city_info")
+        return []
+
     local_session = _ensure_session(session)
     city = city_info["City"]
     country = city_info["Country"]
@@ -326,6 +511,13 @@ def scrape_wunderground(
         rows = _extract_from_next_data(html, city, country)
         if not rows:
             rows = _extract_from_tables(html, city, country, date_text=None)
+            if rows:
+                fallback = _extract_current_metrics_from_text(html)
+                for row in rows:
+                    if row.get("FeelsLike_C") is None:
+                        row["FeelsLike_C"] = fallback.get("FeelsLike_C")
+                    if row.get("Precipitation") is None:
+                        row["Precipitation"] = fallback.get("Precipitation")
         all_records.extend(rows[:20])
     except Exception as exc:
         logger.warning("Weather Underground current scrape failed for %s: %s", city, exc)
@@ -348,6 +540,7 @@ def scrape_wunderground(
             )
 
     return _normalize_rows(all_records)
+
 
 def load_cities():
     df = pd.read_csv("cities.csv")
@@ -373,13 +566,12 @@ def run_batch(cities, session, pass_index=0):
             )
 
             all_data.extend(rows)
-
-            print(f"✅ {city['City']} -> {len(rows)} rows")
+            print(f"{city['City']} -> {len(rows)} rows")
 
         except Exception as e:
-            print(f"❌ Failed {city['City']}: {e}")
+            print(f"Failed {city['City']}: {e}")
 
-        time.sleep(0.5)  # small delay
+        time.sleep(0.5)
 
     return all_data
 
@@ -389,12 +581,12 @@ def run_backfill(cities):
     collected = []
 
     for pass_index in range(MAX_INITIAL_PASSES):
-        print(f"\n🚀 Pass {pass_index + 1}/{MAX_INITIAL_PASSES}")
+        print(f"\nPass {pass_index + 1}/{MAX_INITIAL_PASSES}")
 
         batch = run_batch(cities, session, pass_index=pass_index)
         collected.extend(batch)
 
-        print(f"📊 Total rows so far: {len(collected)}")
+        print(f"Total rows so far: {len(collected)}")
 
         if len(collected) >= INITIAL_TARGET_ROWS:
             break
@@ -403,24 +595,22 @@ def run_backfill(cities):
 
 
 def main():
-    print(" Starting full scrape using cities.csv...")
+    print("Starting full scrape using cities.csv...")
 
     cities = load_cities()
-
     data = run_backfill(cities)
 
     if not data:
-        print(" No data scraped")
+        print("No data scraped")
         return
 
     df = pd.DataFrame(data)
-
     df.drop_duplicates(inplace=True)
 
     output_file = "weather_data.csv"
     df.to_csv(output_file, index=False)
 
-    print(f"\n Saved {len(df)} rows to {output_file}")
+    print(f"\nSaved {len(df)} rows to {output_file}")
     print(df.head())
 
 

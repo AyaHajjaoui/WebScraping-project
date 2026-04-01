@@ -2336,3 +2336,786 @@ Current data counts:
 
 2026-04-02 00:49:26,741 | INFO | apscheduler.scheduler | Added job "scheduled_job" to job store "default"
 2026-04-02 00:49:26,741 | INFO | apscheduler.scheduler | Scheduler started
+2026-04-02 00:56:10,716 | INFO | __main__ | Loaded 24 cities from c:\Users\Lenovo\Desktop\WebScraping\cities.csv
+2026-04-02 00:56:10,716 | INFO | __main__ | Loaded 24 cities
+2026-04-02 00:56:10,847 | INFO | utils | Loaded 7413 rows from openmeteo_raw.csv
+2026-04-02 00:56:10,883 | INFO | utils | Loaded 2179 rows from timeanddate_raw.csv
+2026-04-02 00:56:10,915 | INFO | utils | Loaded 1579 rows from wunderground_raw.csv
+2026-04-02 00:56:10,916 | INFO | __main__ | Loaded 11171 raw rows
+2026-04-02 00:56:10,983 | INFO | __main__ | Loaded 4732 existing rows
+2026-04-02 00:56:11,338 | INFO | __main__ | Normalized: 4732 rows
+2026-04-02 00:56:11,338 | INFO | __main__ | Deduplicated: 4732 -> 4732 rows
+2026-04-02 00:56:11,380 | INFO | __main__ | Saved 4732 rows to c:\Users\Lenovo\Desktop\WebScraping\data\processed\weather_data.csv
+2026-04-02 00:56:11,508 | INFO | utils | Updated summary report with 39 entries
+2026-04-02 00:56:11,528 | INFO | __main__ | 
+Current data counts:
+2026-04-02 00:56:11,528 | INFO | __main__ |   Open-Meteo: 2325 rows
+2026-04-02 00:56:11,528 | INFO | __main__ |   TimeAndDate: 1213 rows
+2026-04-02 00:56:11,528 | INFO | __main__ |   WeatherUnderground: 1194 rows
+2026-04-02 00:56:11,542 | INFO | apscheduler.scheduler | Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-04-02 00:56:11,542 | INFO | __main__ | 
+================================================================================
+2026-04-02 00:56:11,542 | INFO | __main__ | SCHEDULER STARTED - Every 6 hours
+2026-04-02 00:56:11,542 | INFO | __main__ | Auto-merge ENABLED | Press Ctrl+C to stop
+2026-04-02 00:56:11,542 | INFO | __main__ | ================================================================================
+
+2026-04-02 00:56:11,542 | INFO | apscheduler.scheduler | Added job "scheduled_job" to job store "default"
+2026-04-02 00:56:11,542 | INFO | apscheduler.scheduler | Scheduler started
+2026-04-02 01:08:54,415 | INFO | __main__ | Loaded 24 cities from c:\Users\Lenovo\Desktop\WebScraping\cities.csv
+2026-04-02 01:08:54,415 | INFO | __main__ | Loaded 24 cities
+2026-04-02 01:08:54,580 | INFO | utils | Loaded 7413 rows from openmeteo_raw.csv
+2026-04-02 01:08:54,628 | INFO | utils | Loaded 2179 rows from timeanddate_raw.csv
+2026-04-02 01:08:54,667 | INFO | utils | Loaded 1579 rows from wunderground_raw.csv
+2026-04-02 01:08:54,667 | INFO | __main__ | Loaded 11171 raw rows
+2026-04-02 01:08:54,966 | INFO | __main__ | Deduplicated: 11171 -> 3733 rows
+2026-04-02 01:08:55,002 | INFO | __main__ | Saved 3733 rows to c:\Users\Lenovo\Desktop\WebScraping\data\processed\weather_data.csv
+2026-04-02 01:08:56,252 | INFO | __main__ | Saved 3733 rows to c:\Users\Lenovo\Desktop\WebScraping\data\processed\weather_data.xlsx
+2026-04-02 01:08:56,337 | INFO | __main__ | Database updated. Inserted 24 new rows.
+2026-04-02 01:08:56,358 | INFO | utils | Updated summary report with 7 entries
+2026-04-02 01:08:56,378 | INFO | __main__ | 
+Current data counts:
+2026-04-02 01:08:56,379 | INFO | __main__ |   Open-Meteo: 2277 rows
+2026-04-02 01:08:56,379 | INFO | __main__ |   TimeAndDate: 1213 rows
+2026-04-02 01:08:56,380 | INFO | __main__ |   WeatherUnderground: 243 rows
+2026-04-02 01:08:56,395 | INFO | __main__ | 
+================================================================================
+SCHEDULED SCRAPE STARTED - 2026-04-02 01:08:56.395920
+Before: {'Open-Meteo': 2277, 'TimeAndDate': 1213, 'WeatherUnderground': 243}
+================================================================================
+2026-04-02 01:08:56,395 | INFO | __main__ | 
+============================================================
+Open-Meteo: Collecting 1 days of data
+============================================================
+2026-04-02 01:08:56,395 | INFO | __main__ | [1/24] Beirut...
+2026-04-02 01:08:56,395 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Beirut
+2026-04-02 01:08:57,753 | INFO | scrapers.openmeteo_scraper | Got current weather for Beirut: 19.0°C
+2026-04-02 01:08:57,753 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Beirut
+2026-04-02 01:08:58,478 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Beirut
+2026-04-02 01:08:58,481 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Beirut
+2026-04-02 01:08:58,483 | INFO | utils | Appended 49 rows to openmeteo_raw.csv
+2026-04-02 01:08:58,488 | INFO | __main__ |   OK 49 rows (Current: 19.0 C)
+2026-04-02 01:09:00,490 | INFO | __main__ | [2/24] New York...
+2026-04-02 01:09:00,490 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for New York
+2026-04-02 01:09:01,712 | INFO | scrapers.openmeteo_scraper | Got current weather for New York: 20.0°C
+2026-04-02 01:09:01,712 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for New York
+2026-04-02 01:09:11,786 | ERROR | scrapers.openmeteo_scraper | Error getting historical weather for New York: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:09:11,786 | INFO | scrapers.openmeteo_scraper | Got 0 historical records for New York
+2026-04-02 01:09:11,786 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:09:11,786 | INFO | __main__ |   OK 1 rows (Current: 20.0 C)
+2026-04-02 01:09:13,792 | INFO | __main__ | [3/24] Los Angeles...
+2026-04-02 01:09:13,793 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Los Angeles
+2026-04-02 01:09:24,492 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Los Angeles: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:09:24,492 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Los Angeles
+2026-04-02 01:09:24,492 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Los Angeles
+2026-04-02 01:09:25,107 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Los Angeles
+2026-04-02 01:09:25,107 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Los Angeles
+2026-04-02 01:09:25,124 | INFO | utils | Appended 48 rows to openmeteo_raw.csv
+2026-04-02 01:09:25,125 | INFO | __main__ |   OK 48 rows (Current: 16.6 C)
+2026-04-02 01:09:27,127 | INFO | __main__ | [4/24] Chicago...
+2026-04-02 01:09:27,127 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Chicago
+2026-04-02 01:09:28,335 | INFO | scrapers.openmeteo_scraper | Got current weather for Chicago: 4.0°C
+2026-04-02 01:09:28,335 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Chicago
+2026-04-02 01:09:28,975 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Chicago
+2026-04-02 01:09:28,975 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Chicago
+2026-04-02 01:09:28,988 | INFO | utils | Appended 49 rows to openmeteo_raw.csv
+2026-04-02 01:09:28,988 | INFO | __main__ |   OK 49 rows (Current: 4.0 C)
+2026-04-02 01:09:30,990 | INFO | __main__ | [5/24] Toronto...
+2026-04-02 01:09:30,990 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Toronto
+2026-04-02 01:09:32,223 | INFO | scrapers.openmeteo_scraper | Got current weather for Toronto: 3.0°C
+2026-04-02 01:09:32,223 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Toronto
+2026-04-02 01:09:33,680 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Toronto
+2026-04-02 01:09:33,680 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Toronto
+2026-04-02 01:09:33,680 | INFO | utils | Appended 49 rows to openmeteo_raw.csv
+2026-04-02 01:09:33,680 | INFO | __main__ |   OK 49 rows (Current: 3.0 C)
+2026-04-02 01:09:35,689 | INFO | __main__ | [6/24] Mexico City...
+2026-04-02 01:09:35,689 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mexico City
+2026-04-02 01:09:36,953 | INFO | scrapers.openmeteo_scraper | Got current weather for Mexico City: 21.6°C
+2026-04-02 01:09:36,953 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Mexico City
+2026-04-02 01:09:37,574 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Mexico City
+2026-04-02 01:09:37,581 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Mexico City
+2026-04-02 01:09:37,581 | INFO | utils | Appended 49 rows to openmeteo_raw.csv
+2026-04-02 01:09:37,581 | INFO | __main__ |   OK 49 rows (Current: 21.6 C)
+2026-04-02 01:09:39,589 | INFO | __main__ | [7/24] Sao Paulo...
+2026-04-02 01:09:39,589 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sao Paulo
+2026-04-02 01:09:40,956 | INFO | scrapers.openmeteo_scraper | Got current weather for São Paulo: 23.4°C
+2026-04-02 01:09:40,956 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for São Paulo
+2026-04-02 01:09:41,586 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for São Paulo
+2026-04-02 01:09:41,586 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for São Paulo
+2026-04-02 01:09:41,590 | INFO | utils | Appended 49 rows to openmeteo_raw.csv
+2026-04-02 01:09:41,590 | INFO | __main__ |   OK 49 rows (Current: 23.4 C)
+2026-04-02 01:09:43,595 | INFO | __main__ | [8/24] Buenos Aires...
+2026-04-02 01:09:43,595 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Buenos Aires
+2026-04-02 01:09:44,839 | INFO | scrapers.openmeteo_scraper | Got current weather for Buenos Aires: 24.9°C
+2026-04-02 01:09:44,839 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Buenos Aires
+2026-04-02 01:09:46,090 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Buenos Aires
+2026-04-02 01:09:46,090 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Buenos Aires
+2026-04-02 01:09:46,099 | INFO | utils | Appended 49 rows to openmeteo_raw.csv
+2026-04-02 01:09:46,099 | INFO | __main__ |   OK 49 rows (Current: 24.9 C)
+2026-04-02 01:09:48,106 | INFO | __main__ | [9/24] London...
+2026-04-02 01:09:48,106 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for London
+2026-04-02 01:09:58,181 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for London: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:09:58,181 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:10:00,183 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for London
+2026-04-02 01:10:10,846 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for London: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:10:10,846 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for London
+2026-04-02 01:10:10,846 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for London
+2026-04-02 01:10:11,469 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for London
+2026-04-02 01:10:11,471 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for London
+2026-04-02 01:10:11,471 | INFO | utils | Appended 48 rows to openmeteo_raw.csv
+2026-04-02 01:10:11,471 | INFO | __main__ |   OK 48 rows (Current: 7.1 C)
+2026-04-02 01:10:13,478 | INFO | __main__ | [10/24] Paris...
+2026-04-02 01:10:13,478 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Paris
+2026-04-02 01:10:24,167 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Paris: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:10:24,167 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Paris
+2026-04-02 01:10:24,168 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Paris
+2026-04-02 01:10:34,257 | ERROR | scrapers.openmeteo_scraper | Error getting historical weather for Paris: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:10:34,257 | INFO | scrapers.openmeteo_scraper | Got 0 historical records for Paris
+2026-04-02 01:10:34,257 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:10:36,259 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Paris
+2026-04-02 01:10:46,959 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Paris: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:10:46,959 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Paris
+2026-04-02 01:10:46,959 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Paris
+2026-04-02 01:10:48,397 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Paris
+2026-04-02 01:10:48,397 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Paris
+2026-04-02 01:10:48,397 | INFO | utils | Appended 48 rows to openmeteo_raw.csv
+2026-04-02 01:10:48,397 | INFO | __main__ |   OK 48 rows (Current: 6.9 C)
+2026-04-02 01:10:50,408 | INFO | __main__ | [11/24] Berlin...
+2026-04-02 01:10:50,408 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Berlin
+2026-04-02 01:10:51,585 | INFO | scrapers.openmeteo_scraper | Got current weather for Berlin: 5.9°C
+2026-04-02 01:10:51,585 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Berlin
+2026-04-02 01:10:52,169 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Berlin
+2026-04-02 01:10:52,169 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Berlin
+2026-04-02 01:10:52,169 | INFO | utils | Appended 49 rows to openmeteo_raw.csv
+2026-04-02 01:10:52,169 | INFO | __main__ |   OK 49 rows (Current: 5.9 C)
+2026-04-02 01:10:54,178 | INFO | __main__ | [12/24] Madrid...
+2026-04-02 01:10:54,178 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Madrid
+2026-04-02 01:10:55,360 | INFO | scrapers.openmeteo_scraper | Got current weather for Madrid: 11.4°C
+2026-04-02 01:10:55,360 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Madrid
+2026-04-02 01:10:55,985 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Madrid
+2026-04-02 01:10:55,994 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Madrid
+2026-04-02 01:10:56,001 | INFO | utils | Appended 49 rows to openmeteo_raw.csv
+2026-04-02 01:10:56,001 | INFO | __main__ |   OK 49 rows (Current: 11.4 C)
+2026-04-02 01:10:58,005 | INFO | __main__ | [13/24] Rome...
+2026-04-02 01:10:58,005 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Rome
+2026-04-02 01:10:59,228 | INFO | scrapers.openmeteo_scraper | Got current weather for Rome: 10.2°C
+2026-04-02 01:10:59,228 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Rome
+2026-04-02 01:11:01,526 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Rome
+2026-04-02 01:11:01,530 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Rome
+2026-04-02 01:11:01,530 | INFO | utils | Appended 49 rows to openmeteo_raw.csv
+2026-04-02 01:11:01,530 | INFO | __main__ |   OK 49 rows (Current: 10.2 C)
+2026-04-02 01:11:03,537 | INFO | __main__ | [14/24] Cairo...
+2026-04-02 01:11:03,537 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Cairo
+2026-04-02 01:11:04,746 | INFO | scrapers.openmeteo_scraper | Got current weather for Cairo: 19.1°C
+2026-04-02 01:11:04,746 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Cairo
+2026-04-02 01:11:05,460 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Cairo
+2026-04-02 01:11:05,464 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Cairo
+2026-04-02 01:11:05,473 | INFO | utils | Appended 49 rows to openmeteo_raw.csv
+2026-04-02 01:11:05,473 | INFO | __main__ |   OK 49 rows (Current: 19.1 C)
+2026-04-02 01:11:07,474 | INFO | __main__ | [15/24] Nairobi...
+2026-04-02 01:11:07,474 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Nairobi
+2026-04-02 01:11:08,678 | INFO | scrapers.openmeteo_scraper | Got current weather for Nairobi: 16.6°C
+2026-04-02 01:11:08,678 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Nairobi
+2026-04-02 01:11:09,323 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Nairobi
+2026-04-02 01:11:09,328 | INFO | scrapers.openmeteo_scraper | Got 48 historical records for Nairobi
+2026-04-02 01:11:09,328 | INFO | utils | Appended 49 rows to openmeteo_raw.csv
+2026-04-02 01:11:09,336 | INFO | __main__ |   OK 49 rows (Current: 16.6 C)
+2026-04-02 01:11:11,338 | INFO | __main__ | [16/24] Johannesburg...
+2026-04-02 01:11:11,338 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Johannesburg
+2026-04-02 01:11:12,523 | INFO | scrapers.openmeteo_scraper | Got current weather for Johannesburg: 18.6°C
+2026-04-02 01:11:12,523 | INFO | scrapers.openmeteo_scraper | Fetching 1 days of historical data for Johannesburg
+2026-04-02 01:12:25,784 | INFO | __main__ | Loaded 24 cities from c:\Users\Lenovo\Desktop\WebScraping\cities.csv
+2026-04-02 01:12:25,785 | INFO | __main__ | Loaded 24 cities
+2026-04-02 01:12:25,988 | INFO | utils | Loaded 8097 rows from openmeteo_raw.csv
+2026-04-02 01:12:26,060 | INFO | utils | Loaded 2179 rows from timeanddate_raw.csv
+2026-04-02 01:12:26,097 | INFO | utils | Loaded 1579 rows from wunderground_raw.csv
+2026-04-02 01:12:26,097 | INFO | __main__ | Loaded 11855 raw rows
+2026-04-02 01:12:26,404 | INFO | __main__ | Deduplicated: 11855 -> 3865 rows
+2026-04-02 01:12:26,452 | INFO | __main__ | Saved 3865 rows to c:\Users\Lenovo\Desktop\WebScraping\data\processed\weather_data.csv
+2026-04-02 01:12:27,915 | INFO | __main__ | Saved 3865 rows to c:\Users\Lenovo\Desktop\WebScraping\data\processed\weather_data.xlsx
+2026-04-02 01:12:28,018 | INFO | __main__ | Database updated. Inserted 204 new rows.
+2026-04-02 01:12:28,052 | INFO | utils | Updated summary report with 7 entries
+2026-04-02 01:12:28,079 | INFO | __main__ | 
+Current data counts:
+2026-04-02 01:12:28,079 | INFO | __main__ |   Open-Meteo: 2409 rows
+2026-04-02 01:12:28,079 | INFO | __main__ |   TimeAndDate: 1213 rows
+2026-04-02 01:12:28,079 | INFO | __main__ |   WeatherUnderground: 243 rows
+2026-04-02 01:12:28,090 | INFO | __main__ | 
+================================================================================
+SCHEDULED SCRAPE STARTED - 2026-04-02 01:12:28.090870
+Before: {'Open-Meteo': 2409, 'TimeAndDate': 1213, 'WeatherUnderground': 243}
+================================================================================
+2026-04-02 01:12:28,097 | INFO | __main__ | 
+============================================================
+Open-Meteo: Collecting 0 days of data
+============================================================
+2026-04-02 01:12:28,097 | INFO | __main__ | [1/24] Beirut...
+2026-04-02 01:12:28,097 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Beirut
+2026-04-02 01:12:29,319 | INFO | scrapers.openmeteo_scraper | Got current weather for Beirut: 19.0°C
+2026-04-02 01:12:29,324 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:12:29,324 | INFO | __main__ |   OK 1 rows (Current: 19.0 C)
+2026-04-02 01:12:31,326 | INFO | __main__ | [2/24] New York...
+2026-04-02 01:12:31,326 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for New York
+2026-04-02 01:12:32,786 | INFO | scrapers.openmeteo_scraper | Got current weather for New York: 20.0°C
+2026-04-02 01:12:32,786 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:12:32,786 | INFO | __main__ |   OK 1 rows (Current: 20.0 C)
+2026-04-02 01:12:34,795 | INFO | __main__ | [3/24] Los Angeles...
+2026-04-02 01:12:34,795 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Los Angeles
+2026-04-02 01:12:36,022 | INFO | scrapers.openmeteo_scraper | Got current weather for Los Angeles: 21.9°C
+2026-04-02 01:12:36,025 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:12:36,025 | INFO | __main__ |   OK 1 rows (Current: 21.9 C)
+2026-04-02 01:12:38,031 | INFO | __main__ | [4/24] Chicago...
+2026-04-02 01:12:38,032 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Chicago
+2026-04-02 01:12:48,095 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Chicago: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:12:48,095 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:12:50,096 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Chicago
+2026-04-02 01:13:00,148 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Chicago: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:13:00,148 | WARNING | __main__ |   No data (attempt 2/3)
+2026-04-02 01:13:04,149 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Chicago
+2026-04-02 01:13:05,335 | INFO | scrapers.openmeteo_scraper | Got current weather for Chicago: 4.0°C
+2026-04-02 01:13:05,335 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:13:05,335 | INFO | __main__ |   OK 1 rows (Current: 4.0 C)
+2026-04-02 01:13:07,345 | INFO | __main__ | [5/24] Toronto...
+2026-04-02 01:13:07,345 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Toronto
+2026-04-02 01:13:08,577 | INFO | scrapers.openmeteo_scraper | Got current weather for Toronto: 3.0°C
+2026-04-02 01:13:08,590 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:13:08,590 | INFO | __main__ |   OK 1 rows (Current: 3.0 C)
+2026-04-02 01:13:10,591 | INFO | __main__ | [6/24] Mexico City...
+2026-04-02 01:13:10,591 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mexico City
+2026-04-02 01:13:11,769 | INFO | scrapers.openmeteo_scraper | Got current weather for Mexico City: 21.6°C
+2026-04-02 01:13:11,769 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:13:11,769 | INFO | __main__ |   OK 1 rows (Current: 21.6 C)
+2026-04-02 01:13:13,777 | INFO | __main__ | [7/24] Sao Paulo...
+2026-04-02 01:13:13,777 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sao Paulo
+2026-04-02 01:13:14,977 | INFO | scrapers.openmeteo_scraper | Got current weather for São Paulo: 23.4°C
+2026-04-02 01:13:14,977 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:13:14,977 | INFO | __main__ |   OK 1 rows (Current: 23.4 C)
+2026-04-02 01:13:16,983 | INFO | __main__ | [8/24] Buenos Aires...
+2026-04-02 01:13:16,983 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Buenos Aires
+2026-04-02 01:13:18,213 | INFO | scrapers.openmeteo_scraper | Got current weather for Buenos Aires: 24.9°C
+2026-04-02 01:13:18,219 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:13:18,219 | INFO | __main__ |   OK 1 rows (Current: 24.9 C)
+2026-04-02 01:13:20,223 | INFO | __main__ | [9/24] London...
+2026-04-02 01:13:20,223 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for London
+2026-04-02 01:13:30,949 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for London: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:13:30,949 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for London
+2026-04-02 01:13:30,949 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:13:32,951 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for London
+2026-04-02 01:13:43,043 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for London: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:13:43,043 | WARNING | __main__ |   No data (attempt 2/3)
+2026-04-02 01:13:47,045 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for London
+2026-04-02 01:13:48,266 | INFO | scrapers.openmeteo_scraper | Got current weather for London: 12.2°C
+2026-04-02 01:13:48,271 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:13:48,271 | INFO | __main__ |   OK 1 rows (Current: 12.2 C)
+2026-04-02 01:13:50,273 | INFO | __main__ | [10/24] Paris...
+2026-04-02 01:13:50,273 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Paris
+2026-04-02 01:13:51,471 | INFO | scrapers.openmeteo_scraper | Got current weather for Paris: 10.1°C
+2026-04-02 01:13:51,473 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:13:51,473 | INFO | __main__ |   OK 1 rows (Current: 10.1 C)
+2026-04-02 01:13:53,476 | INFO | __main__ | [11/24] Berlin...
+2026-04-02 01:13:53,477 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Berlin
+2026-04-02 01:13:54,670 | INFO | scrapers.openmeteo_scraper | Got current weather for Berlin: 5.9°C
+2026-04-02 01:13:54,672 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:13:54,672 | INFO | __main__ |   OK 1 rows (Current: 5.9 C)
+2026-04-02 01:13:56,676 | INFO | __main__ | [12/24] Madrid...
+2026-04-02 01:13:56,676 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Madrid
+2026-04-02 01:14:06,804 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Madrid: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:14:06,804 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:14:08,806 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Madrid
+2026-04-02 01:14:09,985 | INFO | scrapers.openmeteo_scraper | Got current weather for Madrid: 11.3°C
+2026-04-02 01:14:09,993 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:14:09,993 | INFO | __main__ |   OK 1 rows (Current: 11.3 C)
+2026-04-02 01:14:11,994 | INFO | __main__ | [13/24] Rome...
+2026-04-02 01:14:11,994 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Rome
+2026-04-02 01:14:13,218 | INFO | scrapers.openmeteo_scraper | Got current weather for Rome: 10.2°C
+2026-04-02 01:14:13,222 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:14:13,222 | INFO | __main__ |   OK 1 rows (Current: 10.2 C)
+2026-04-02 01:14:15,226 | INFO | __main__ | [14/24] Cairo...
+2026-04-02 01:14:15,226 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Cairo
+2026-04-02 01:14:25,306 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Cairo: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:14:25,306 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:14:27,307 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Cairo
+2026-04-02 01:14:37,372 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Cairo: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:14:37,372 | WARNING | __main__ |   No data (attempt 2/3)
+2026-04-02 01:14:41,373 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Cairo
+2026-04-02 01:14:42,567 | INFO | scrapers.openmeteo_scraper | Got current weather for Cairo: 19.3°C
+2026-04-02 01:14:42,573 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:14:42,574 | INFO | __main__ |   OK 1 rows (Current: 19.3 C)
+2026-04-02 01:14:44,575 | INFO | __main__ | [15/24] Nairobi...
+2026-04-02 01:14:44,575 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Nairobi
+2026-04-02 01:14:45,824 | INFO | scrapers.openmeteo_scraper | Got current weather for Nairobi: 16.6°C
+2026-04-02 01:14:45,833 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:14:45,833 | INFO | __main__ |   OK 1 rows (Current: 16.6 C)
+2026-04-02 01:14:47,837 | INFO | __main__ | [16/24] Johannesburg...
+2026-04-02 01:14:47,837 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Johannesburg
+2026-04-02 01:14:49,074 | INFO | scrapers.openmeteo_scraper | Got current weather for Johannesburg: 18.6°C
+2026-04-02 01:14:49,074 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:14:49,074 | INFO | __main__ |   OK 1 rows (Current: 18.6 C)
+2026-04-02 01:14:51,083 | INFO | __main__ | [17/24] Dubai...
+2026-04-02 01:14:51,083 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Dubai
+2026-04-02 01:14:52,375 | INFO | scrapers.openmeteo_scraper | Got current weather for Dubai: 21.9°C
+2026-04-02 01:14:52,383 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:14:52,383 | INFO | __main__ |   OK 1 rows (Current: 21.9 C)
+2026-04-02 01:14:54,387 | INFO | __main__ | [18/24] Mumbai...
+2026-04-02 01:14:54,387 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mumbai
+2026-04-02 01:15:05,061 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Mumbai: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:15:05,061 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Mumbai
+2026-04-02 01:15:05,061 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:15:07,063 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mumbai
+2026-04-02 01:15:08,370 | INFO | scrapers.openmeteo_scraper | Got current weather for Mumbai: 27.0°C
+2026-04-02 01:15:08,376 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:15:08,379 | INFO | __main__ |   OK 1 rows (Current: 27.0 C)
+2026-04-02 01:15:10,380 | INFO | __main__ | [19/24] Tokyo...
+2026-04-02 01:15:10,380 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Tokyo
+2026-04-02 01:15:11,636 | INFO | scrapers.openmeteo_scraper | Got current weather for Tokyo: 8.5°C
+2026-04-02 01:15:11,642 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:15:11,642 | INFO | __main__ |   OK 1 rows (Current: 8.5 C)
+2026-04-02 01:15:13,645 | INFO | __main__ | [20/24] Seoul...
+2026-04-02 01:15:13,645 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Seoul
+2026-04-02 01:15:14,852 | INFO | scrapers.openmeteo_scraper | Got current weather for Seoul: 2.7°C
+2026-04-02 01:15:14,852 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:15:14,852 | INFO | __main__ |   OK 1 rows (Current: 2.7 C)
+2026-04-02 01:15:16,859 | INFO | __main__ | [21/24] Singapore...
+2026-04-02 01:15:16,859 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Singapore
+2026-04-02 01:15:26,967 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Singapore: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:15:26,967 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:15:28,968 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Singapore
+2026-04-02 01:15:39,663 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Temasek: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:15:39,663 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Temasek
+2026-04-02 01:15:39,663 | WARNING | __main__ |   No data (attempt 2/3)
+2026-04-02 01:15:43,665 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Singapore
+2026-04-02 01:15:44,852 | INFO | scrapers.openmeteo_scraper | Got current weather for Temasek: 25.1°C
+2026-04-02 01:15:44,852 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:15:44,852 | INFO | __main__ |   OK 1 rows (Current: 25.1 C)
+2026-04-02 01:15:46,865 | INFO | __main__ | [22/24] Sydney...
+2026-04-02 01:15:46,865 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sydney
+2026-04-02 01:15:48,057 | INFO | scrapers.openmeteo_scraper | Got current weather for Sydney: 16.7°C
+2026-04-02 01:15:48,061 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:15:48,061 | INFO | __main__ |   OK 1 rows (Current: 16.7 C)
+2026-04-02 01:15:50,063 | INFO | __main__ | [23/24] Melbourne...
+2026-04-02 01:15:50,063 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Melbourne
+2026-04-02 01:15:51,305 | INFO | scrapers.openmeteo_scraper | Got current weather for Melbourne: 15.6°C
+2026-04-02 01:15:51,305 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:15:51,305 | INFO | __main__ |   OK 1 rows (Current: 15.6 C)
+2026-04-02 01:15:53,311 | INFO | __main__ | [24/24] Auckland...
+2026-04-02 01:15:53,311 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Auckland
+2026-04-02 01:16:04,141 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Auckland: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:16:04,141 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Auckland
+2026-04-02 01:16:04,141 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:16:06,143 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Auckland
+2026-04-02 01:16:07,346 | INFO | scrapers.openmeteo_scraper | Got current weather for Auckland: 18.8°C
+2026-04-02 01:16:07,354 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:16:07,354 | INFO | __main__ |   OK 1 rows (Current: 18.8 C)
+2026-04-02 01:16:09,361 | INFO | __main__ | 
+Open-Meteo Summary: 24 rows from 24/24 cities
+2026-04-02 01:16:39,362 | INFO | __main__ | 
+============================================================
+TimeAndDate: Collecting 0 days of data
+============================================================
+2026-04-02 01:16:39,362 | INFO | __main__ | [1/24] Beirut...
+2026-04-02 01:16:40,089 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:16:40,089 | INFO | __main__ |   OK 1 rows (Current: 14.0 C)
+2026-04-02 01:16:42,095 | INFO | __main__ | [2/24] New York...
+2026-04-02 01:16:42,242 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:16:42,242 | INFO | __main__ |   OK 1 rows (Current: 23.0 C)
+2026-04-02 01:16:44,245 | INFO | __main__ | [3/24] Los Angeles...
+2026-04-02 01:16:44,456 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:16:44,456 | INFO | __main__ |   OK 1 rows (Current: 20.0 C)
+2026-04-02 01:16:46,467 | INFO | __main__ | [4/24] Chicago...
+2026-04-02 01:16:46,663 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:16:46,663 | INFO | __main__ |   OK 1 rows (Current: 4.0 C)
+2026-04-02 01:16:48,668 | INFO | __main__ | [5/24] Toronto...
+2026-04-02 01:16:48,855 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:16:48,855 | INFO | __main__ |   OK 1 rows (Current: 4.0 C)
+2026-04-02 01:16:50,856 | INFO | __main__ | [6/24] Mexico City...
+2026-04-02 01:16:51,037 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:16:51,039 | INFO | __main__ |   OK 1 rows (Current: 23.0 C)
+2026-04-02 01:16:53,040 | INFO | __main__ | [7/24] Sao Paulo...
+2026-04-02 01:16:53,199 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:16:53,204 | INFO | __main__ |   OK 1 rows (Current: 22.0 C)
+2026-04-02 01:16:55,205 | INFO | __main__ | [8/24] Buenos Aires...
+2026-04-02 01:16:55,364 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:16:55,364 | INFO | __main__ |   OK 1 rows (Current: 25.0 C)
+2026-04-02 01:16:57,369 | INFO | __main__ | [9/24] London...
+2026-04-02 01:16:57,507 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:16:57,522 | INFO | __main__ |   OK 1 rows (Current: 11.0 C)
+2026-04-02 01:16:59,523 | INFO | __main__ | [10/24] Paris...
+2026-04-02 01:16:59,916 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:16:59,916 | INFO | __main__ |   OK 1 rows (Current: 8.0 C)
+2026-04-02 01:17:01,921 | INFO | __main__ | [11/24] Berlin...
+2026-04-02 01:17:02,073 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:02,073 | INFO | __main__ |   OK 1 rows (Current: 4.0 C)
+2026-04-02 01:17:04,078 | INFO | __main__ | [12/24] Madrid...
+2026-04-02 01:17:04,248 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:04,248 | INFO | __main__ |   OK 1 rows (Current: 12.0 C)
+2026-04-02 01:17:06,251 | INFO | __main__ | [13/24] Rome...
+2026-04-02 01:17:06,383 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:06,383 | INFO | __main__ |   OK 1 rows (Current: 10.0 C)
+2026-04-02 01:17:08,394 | INFO | __main__ | [14/24] Cairo...
+2026-04-02 01:17:08,557 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:08,557 | INFO | __main__ |   OK 1 rows (Current: 19.0 C)
+2026-04-02 01:17:10,558 | INFO | __main__ | [15/24] Nairobi...
+2026-04-02 01:17:10,700 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:10,701 | INFO | __main__ |   OK 1 rows (Current: 19.0 C)
+2026-04-02 01:17:12,702 | INFO | __main__ | [16/24] Johannesburg...
+2026-04-02 01:17:12,907 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:12,907 | INFO | __main__ |   OK 1 rows (Current: 23.0 C)
+2026-04-02 01:17:14,917 | INFO | __main__ | [17/24] Dubai...
+2026-04-02 01:17:15,158 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:15,158 | INFO | __main__ |   OK 1 rows (Current: 24.0 C)
+2026-04-02 01:17:17,166 | INFO | __main__ | [18/24] Mumbai...
+2026-04-02 01:17:17,383 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:17,383 | INFO | __main__ |   OK 1 rows (Current: 28.0 C)
+2026-04-02 01:17:19,389 | INFO | __main__ | [19/24] Tokyo...
+2026-04-02 01:17:19,633 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:19,634 | INFO | __main__ |   OK 1 rows (Current: 9.0 C)
+2026-04-02 01:17:21,635 | INFO | __main__ | [20/24] Seoul...
+2026-04-02 01:17:21,822 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:21,822 | INFO | __main__ |   OK 1 rows (Current: 3.0 C)
+2026-04-02 01:17:23,825 | INFO | __main__ | [21/24] Singapore...
+2026-04-02 01:17:24,031 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:24,031 | INFO | __main__ |   OK 1 rows (Current: 27.0 C)
+2026-04-02 01:17:26,041 | INFO | __main__ | [22/24] Sydney...
+2026-04-02 01:17:26,244 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:26,244 | INFO | __main__ |   OK 1 rows (Current: 20.0 C)
+2026-04-02 01:17:28,247 | INFO | __main__ | [23/24] Melbourne...
+2026-04-02 01:17:28,551 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:28,551 | INFO | __main__ |   OK 1 rows (Current: 13.0 C)
+2026-04-02 01:17:30,552 | INFO | __main__ | [24/24] Auckland...
+2026-04-02 01:17:30,758 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-02 01:17:30,758 | INFO | __main__ |   OK 1 rows (Current: 20.0 C)
+2026-04-02 01:17:32,770 | INFO | __main__ | 
+TimeAndDate Summary: 24 rows from 24/24 cities
+2026-04-02 01:18:02,772 | INFO | __main__ | 
+============================================================
+WeatherUnderground: Collecting 0 days of data
+============================================================
+2026-04-02 01:18:02,772 | INFO | __main__ | [1/24] Beirut...
+2026-04-02 01:18:06,844 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:06,844 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:08,849 | INFO | __main__ | [2/24] New York...
+2026-04-02 01:18:12,243 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:12,243 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:14,249 | INFO | __main__ | [3/24] Los Angeles...
+2026-04-02 01:18:17,254 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:17,257 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:19,259 | INFO | __main__ | [4/24] Chicago...
+2026-04-02 01:18:20,478 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:20,478 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:22,484 | INFO | __main__ | [5/24] Toronto...
+2026-04-02 01:18:23,175 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:23,175 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:25,182 | INFO | __main__ | [6/24] Mexico City...
+2026-04-02 01:18:25,920 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:25,920 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:27,925 | INFO | __main__ | [7/24] Sao Paulo...
+2026-04-02 01:18:29,810 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:29,810 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:31,828 | INFO | __main__ | [8/24] Buenos Aires...
+2026-04-02 01:18:33,193 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:33,193 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:35,200 | INFO | __main__ | [9/24] London...
+2026-04-02 01:18:36,346 | INFO | utils | Appended 6 rows to wunderground_raw.csv
+2026-04-02 01:18:36,346 | INFO | __main__ |   OK 6 rows (Current: 16.67 C)
+2026-04-02 01:18:38,352 | INFO | __main__ | [10/24] Paris...
+2026-04-02 01:18:39,321 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:39,336 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:41,342 | INFO | __main__ | [11/24] Berlin...
+2026-04-02 01:18:44,256 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:44,256 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:46,272 | INFO | __main__ | [12/24] Madrid...
+2026-04-02 01:18:47,546 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:47,546 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:49,556 | INFO | __main__ | [13/24] Rome...
+2026-04-02 01:18:55,480 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:18:55,480 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:18:57,485 | INFO | __main__ | [14/24] Cairo...
+2026-04-02 01:19:00,928 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:19:00,928 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:19:02,940 | INFO | __main__ | [15/24] Nairobi...
+2026-04-02 01:19:12,632 | INFO | utils | Appended 8 rows to wunderground_raw.csv
+2026-04-02 01:19:12,632 | INFO | __main__ |   OK 8 rows (Current: 16.67 C)
+2026-04-02 01:19:14,645 | INFO | __main__ | [16/24] Johannesburg...
+2026-04-02 01:19:19,465 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:19:19,465 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:19:21,466 | INFO | __main__ | [17/24] Dubai...
+2026-04-02 01:19:22,766 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:19:22,775 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:19:24,776 | INFO | __main__ | [18/24] Mumbai...
+2026-04-02 01:19:30,973 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:19:30,973 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:19:32,978 | INFO | __main__ | [19/24] Tokyo...
+2026-04-02 01:19:35,561 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:19:35,561 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:19:37,575 | INFO | __main__ | [20/24] Seoul...
+2026-04-02 01:19:39,308 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:19:39,312 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:19:41,312 | INFO | __main__ | [21/24] Singapore...
+2026-04-02 01:19:43,558 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:19:43,558 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:19:45,572 | INFO | __main__ | [22/24] Sydney...
+2026-04-02 01:19:46,700 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:19:46,700 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:19:48,705 | INFO | __main__ | [23/24] Melbourne...
+2026-04-02 01:19:49,984 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:19:49,984 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:19:51,987 | INFO | __main__ | [24/24] Auckland...
+2026-04-02 01:19:54,271 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-02 01:19:54,271 | INFO | __main__ |   OK 7 rows (Current: 16.67 C)
+2026-04-02 01:19:56,285 | INFO | __main__ | 
+WeatherUnderground Summary: 168 rows from 24/24 cities
+2026-04-02 01:19:56,286 | INFO | __main__ | 
+Auto-merging raw data...
+2026-04-02 01:19:56,451 | INFO | utils | Loaded 8121 rows from openmeteo_raw.csv
+2026-04-02 01:19:56,509 | INFO | utils | Loaded 2203 rows from timeanddate_raw.csv
+2026-04-02 01:19:56,551 | INFO | utils | Loaded 1747 rows from wunderground_raw.csv
+2026-04-02 01:19:56,564 | INFO | __main__ | Loaded 12071 raw rows
+2026-04-02 01:19:56,900 | INFO | __main__ | Deduplicated: 12071 -> 3913 rows
+2026-04-02 01:19:56,936 | INFO | __main__ | Saved 3913 rows to c:\Users\Lenovo\Desktop\WebScraping\data\processed\weather_data.csv
+2026-04-02 01:19:57,902 | INFO | __main__ | Saved 3913 rows to c:\Users\Lenovo\Desktop\WebScraping\data\processed\weather_data.xlsx
+2026-04-02 01:19:58,038 | INFO | __main__ | Database updated. Inserted 72 new rows.
+2026-04-02 01:19:58,071 | INFO | utils | Updated summary report with 7 entries
+2026-04-02 01:19:58,079 | INFO | __main__ | Merge complete: 3913 rows
+2026-04-02 01:19:58,104 | INFO | __main__ | 
+================================================================================
+SCHEDULED SCRAPE COMPLETED
+After: {'Open-Meteo': 2433, 'TimeAndDate': 1237, 'WeatherUnderground': 243}
+================================================================================
+
+2026-04-02 01:19:58,104 | INFO | __main__ | 
+================================================================================
+2026-04-02 01:19:58,105 | INFO | __main__ | SCHEDULER STARTING - Every 6 hours
+2026-04-02 01:19:58,105 | INFO | __main__ | Auto-merge ENABLED | Press Ctrl+C to stop
+2026-04-02 01:19:58,106 | INFO | __main__ | ================================================================================
+
+2026-04-02 01:19:58,115 | INFO | apscheduler.scheduler | Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-04-02 01:19:58,116 | INFO | apscheduler.scheduler | Added job "scheduled_job" to job store "default"
+2026-04-02 01:19:58,117 | INFO | apscheduler.scheduler | Scheduler started
+2026-04-02 01:27:40,858 | INFO | __main__ | Loaded 24 cities from c:\Users\Lenovo\Desktop\WebScraping\cities.csv
+2026-04-02 01:27:40,858 | INFO | __main__ | Loaded 24 cities
+2026-04-02 01:27:41,069 | INFO | utils | Loaded 8121 rows from openmeteo_raw.csv
+2026-04-02 01:27:41,118 | INFO | utils | Loaded 2203 rows from timeanddate_raw.csv
+2026-04-02 01:27:41,173 | INFO | utils | Loaded 1747 rows from wunderground_raw.csv
+2026-04-02 01:27:41,173 | INFO | __main__ | Loaded 12071 raw rows
+2026-04-02 01:27:41,560 | INFO | __main__ | Deduplicated: 12071 -> 3913 rows
+2026-04-02 01:27:41,598 | INFO | __main__ | Saved 3913 rows to c:\Users\Lenovo\Desktop\WebScraping\data\processed\weather_data.csv
+2026-04-02 01:27:42,929 | INFO | __main__ | Saved 3913 rows to c:\Users\Lenovo\Desktop\WebScraping\data\processed\weather_data.xlsx
+2026-04-02 01:27:43,017 | INFO | __main__ | Database updated. Inserted 24 new rows.
+2026-04-02 01:27:43,046 | INFO | utils | Updated summary report with 7 entries
+2026-04-02 01:27:43,083 | INFO | __main__ | 
+Current data counts:
+2026-04-02 01:27:43,086 | INFO | __main__ |   Open-Meteo: 2433 rows
+2026-04-02 01:27:43,086 | INFO | __main__ |   TimeAndDate: 1237 rows
+2026-04-02 01:27:43,086 | INFO | __main__ |   WeatherUnderground: 243 rows
+2026-04-02 01:27:43,121 | INFO | __main__ | 
+================================================================================
+SCHEDULED SCRAPE STARTED - 2026-04-02 01:27:43.121337
+Before: {'Open-Meteo': 2433, 'TimeAndDate': 1237, 'WeatherUnderground': 243}
+================================================================================
+2026-04-02 01:27:43,121 | INFO | __main__ | 
+============================================================
+Open-Meteo: Collecting 0 days of data
+============================================================
+2026-04-02 01:27:43,121 | INFO | __main__ | [1/24] Beirut...
+2026-04-02 01:27:43,121 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Beirut
+2026-04-02 01:27:44,460 | INFO | scrapers.openmeteo_scraper | Got current weather for Beirut: 17.7°C
+2026-04-02 01:27:44,466 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:27:44,466 | INFO | __main__ |   OK 1 rows (Current: 17.7 C)
+2026-04-02 01:27:46,472 | INFO | __main__ | [2/24] New York...
+2026-04-02 01:27:46,473 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for New York
+2026-04-02 01:27:47,788 | INFO | scrapers.openmeteo_scraper | Got current weather for New York: 19.3°C
+2026-04-02 01:27:47,788 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:27:47,788 | INFO | __main__ |   OK 1 rows (Current: 19.3 C)
+2026-04-02 01:27:49,795 | INFO | __main__ | [3/24] Los Angeles...
+2026-04-02 01:27:49,795 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Los Angeles
+2026-04-02 01:27:51,028 | INFO | scrapers.openmeteo_scraper | Got current weather for Los Angeles: 21.8°C
+2026-04-02 01:27:51,036 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:27:51,036 | INFO | __main__ |   OK 1 rows (Current: 21.8 C)
+2026-04-02 01:27:53,037 | INFO | __main__ | [4/24] Chicago...
+2026-04-02 01:27:53,037 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Chicago
+2026-04-02 01:27:54,236 | INFO | scrapers.openmeteo_scraper | Got current weather for Chicago: 4.2°C
+2026-04-02 01:27:54,241 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:27:54,241 | INFO | __main__ |   OK 1 rows (Current: 4.2 C)
+2026-04-02 01:27:56,244 | INFO | __main__ | [5/24] Toronto...
+2026-04-02 01:27:56,244 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Toronto
+2026-04-02 01:28:06,338 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Toronto: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:28:06,338 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:28:08,340 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Toronto
+2026-04-02 01:28:09,565 | INFO | scrapers.openmeteo_scraper | Got current weather for Toronto: 2.9°C
+2026-04-02 01:28:09,571 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:28:09,571 | INFO | __main__ |   OK 1 rows (Current: 2.9 C)
+2026-04-02 01:28:11,573 | INFO | __main__ | [6/24] Mexico City...
+2026-04-02 01:28:11,573 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mexico City
+2026-04-02 01:28:22,246 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Mexico City: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:28:22,246 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Mexico City
+2026-04-02 01:28:22,246 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:28:24,250 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mexico City
+2026-04-02 01:28:25,447 | INFO | scrapers.openmeteo_scraper | Got current weather for Mexico City: 21.6°C
+2026-04-02 01:28:25,447 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:28:25,447 | INFO | __main__ |   OK 1 rows (Current: 21.6 C)
+2026-04-02 01:28:27,456 | INFO | __main__ | [7/24] Sao Paulo...
+2026-04-02 01:28:27,456 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sao Paulo
+2026-04-02 01:28:37,595 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Sao Paulo: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:28:37,595 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:28:39,601 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sao Paulo
+2026-04-02 01:28:40,795 | INFO | scrapers.openmeteo_scraper | Got current weather for São Paulo: 23.2°C
+2026-04-02 01:28:40,797 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:28:40,797 | INFO | __main__ |   OK 1 rows (Current: 23.2 C)
+2026-04-02 01:28:42,802 | INFO | __main__ | [8/24] Buenos Aires...
+2026-04-02 01:28:42,802 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Buenos Aires
+2026-04-02 01:28:53,514 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Buenos Aires: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:28:53,514 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Buenos Aires
+2026-04-02 01:28:53,514 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:28:55,517 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Buenos Aires
+2026-04-02 01:28:56,708 | INFO | scrapers.openmeteo_scraper | Got current weather for Buenos Aires: 24.8°C
+2026-04-02 01:28:56,708 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:28:56,708 | INFO | __main__ |   OK 1 rows (Current: 24.8 C)
+2026-04-02 01:28:58,715 | INFO | __main__ | [9/24] London...
+2026-04-02 01:28:58,715 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for London
+2026-04-02 01:28:59,924 | INFO | scrapers.openmeteo_scraper | Got current weather for London: 12.1°C
+2026-04-02 01:28:59,924 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:28:59,924 | INFO | __main__ |   OK 1 rows (Current: 12.1 C)
+2026-04-02 01:29:01,932 | INFO | __main__ | [10/24] Paris...
+2026-04-02 01:29:01,932 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Paris
+2026-04-02 01:29:11,991 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Paris: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:29:11,991 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:29:13,993 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Paris
+2026-04-02 01:29:15,225 | INFO | scrapers.openmeteo_scraper | Got current weather for Paris: 10.1°C
+2026-04-02 01:29:15,225 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:29:15,225 | INFO | __main__ |   OK 1 rows (Current: 10.1 C)
+2026-04-02 01:29:17,232 | INFO | __main__ | [11/24] Berlin...
+2026-04-02 01:29:17,232 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Berlin
+2026-04-02 01:29:27,302 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Berlin: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:29:27,302 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:29:29,304 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Berlin
+2026-04-02 01:29:39,354 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Berlin: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:29:39,354 | WARNING | __main__ |   No data (attempt 2/3)
+2026-04-02 01:29:43,356 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Berlin
+2026-04-02 01:29:44,552 | INFO | scrapers.openmeteo_scraper | Got current weather for Berlin: 5.8°C
+2026-04-02 01:29:44,552 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:29:44,561 | INFO | __main__ |   OK 1 rows (Current: 5.8 C)
+2026-04-02 01:29:46,562 | INFO | __main__ | [12/24] Madrid...
+2026-04-02 01:29:46,562 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Madrid
+2026-04-02 01:29:47,818 | INFO | scrapers.openmeteo_scraper | Got current weather for Madrid: 11.0°C
+2026-04-02 01:29:47,818 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:29:47,818 | INFO | __main__ |   OK 1 rows (Current: 11.0 C)
+2026-04-02 01:29:49,830 | INFO | __main__ | [13/24] Rome...
+2026-04-02 01:29:49,830 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Rome
+2026-04-02 01:29:51,085 | INFO | scrapers.openmeteo_scraper | Got current weather for Rome: 10.1°C
+2026-04-02 01:29:51,085 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:29:51,085 | INFO | __main__ |   OK 1 rows (Current: 10.1 C)
+2026-04-02 01:29:53,099 | INFO | __main__ | [14/24] Cairo...
+2026-04-02 01:29:53,099 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Cairo
+2026-04-02 01:29:54,269 | INFO | scrapers.openmeteo_scraper | Got current weather for Cairo: 19.5°C
+2026-04-02 01:29:54,269 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:29:54,269 | INFO | __main__ |   OK 1 rows (Current: 19.5 C)
+2026-04-02 01:29:56,282 | INFO | __main__ | [15/24] Nairobi...
+2026-04-02 01:29:56,282 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Nairobi
+2026-04-02 01:30:06,362 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Nairobi: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:30:06,362 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:30:08,365 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Nairobi
+2026-04-02 01:30:09,484 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Nairobi: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Max retries exceeded with url: /v1/forecast?latitude=-1.28333&longitude=36.81667&current=temperature_2m&current=relative_humidity_2m&current=apparent_temperature&current=weather_code&current=wind_speed_10m&current=precipitation&timezone=auto (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)')))
+2026-04-02 01:30:09,484 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Nairobi
+2026-04-02 01:30:09,484 | WARNING | __main__ |   No data (attempt 2/3)
+2026-04-02 01:30:13,487 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Nairobi
+2026-04-02 01:30:15,461 | INFO | scrapers.openmeteo_scraper | Got current weather for Nairobi: 16.5°C
+2026-04-02 01:30:15,469 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:30:15,469 | INFO | __main__ |   OK 1 rows (Current: 16.5 C)
+2026-04-02 01:30:17,471 | INFO | __main__ | [16/24] Johannesburg...
+2026-04-02 01:30:17,471 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Johannesburg
+2026-04-02 01:30:28,179 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Johannesburg: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:30:28,179 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Johannesburg
+2026-04-02 01:30:28,179 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:30:30,181 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Johannesburg
+2026-04-02 01:30:31,413 | INFO | scrapers.openmeteo_scraper | Got current weather for Johannesburg: 18.0°C
+2026-04-02 01:30:31,417 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:30:31,417 | INFO | __main__ |   OK 1 rows (Current: 18.0 C)
+2026-04-02 01:30:33,419 | INFO | __main__ | [17/24] Dubai...
+2026-04-02 01:30:33,419 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Dubai
+2026-04-02 01:30:34,853 | INFO | scrapers.openmeteo_scraper | Got current weather for Dubai: 22.2°C
+2026-04-02 01:30:34,853 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:30:34,853 | INFO | __main__ |   OK 1 rows (Current: 22.2 C)
+2026-04-02 01:30:36,866 | INFO | __main__ | [18/24] Mumbai...
+2026-04-02 01:30:36,866 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mumbai
+2026-04-02 01:30:46,924 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Mumbai: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:30:46,924 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:30:48,925 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mumbai
+2026-04-02 01:30:59,056 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Mumbai: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:30:59,057 | WARNING | __main__ |   No data (attempt 2/3)
+2026-04-02 01:31:03,057 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mumbai
+2026-04-02 01:31:04,305 | INFO | scrapers.openmeteo_scraper | Got current weather for Mumbai: 26.8°C
+2026-04-02 01:31:04,305 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:31:04,313 | INFO | __main__ |   OK 1 rows (Current: 26.8 C)
+2026-04-02 01:31:06,313 | INFO | __main__ | [19/24] Tokyo...
+2026-04-02 01:31:06,313 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Tokyo
+2026-04-02 01:31:07,532 | INFO | scrapers.openmeteo_scraper | Got current weather for Tokyo: 8.5°C
+2026-04-02 01:31:07,539 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:31:07,539 | INFO | __main__ |   OK 1 rows (Current: 8.5 C)
+2026-04-02 01:31:09,541 | INFO | __main__ | [20/24] Seoul...
+2026-04-02 01:31:09,556 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Seoul
+2026-04-02 01:31:11,434 | INFO | scrapers.openmeteo_scraper | Got current weather for Seoul: 2.9°C
+2026-04-02 01:31:11,439 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:31:11,439 | INFO | __main__ |   OK 1 rows (Current: 2.9 C)
+2026-04-02 01:31:13,443 | INFO | __main__ | [21/24] Singapore...
+2026-04-02 01:31:13,443 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Singapore
+2026-04-02 01:31:15,243 | INFO | scrapers.openmeteo_scraper | Got current weather for Temasek: 25.3°C
+2026-04-02 01:31:15,243 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:31:15,243 | INFO | __main__ |   OK 1 rows (Current: 25.3 C)
+2026-04-02 01:31:17,257 | INFO | __main__ | [22/24] Sydney...
+2026-04-02 01:31:17,258 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sydney
+2026-04-02 01:31:28,601 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Sydney: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:31:28,601 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Sydney
+2026-04-02 01:31:28,601 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:31:30,605 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sydney
+2026-04-02 01:31:41,080 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Sydney: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:31:41,080 | WARNING | __main__ |   No data (attempt 2/3)
+2026-04-02 01:31:45,083 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sydney
+2026-04-02 01:31:46,933 | INFO | scrapers.openmeteo_scraper | Got current weather for Sydney: 16.9°C
+2026-04-02 01:31:46,941 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:31:46,941 | INFO | __main__ |   OK 1 rows (Current: 16.9 C)
+2026-04-02 01:31:48,949 | INFO | __main__ | [23/24] Melbourne...
+2026-04-02 01:31:48,951 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Melbourne
+2026-04-02 01:31:59,534 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Melbourne: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:31:59,534 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:32:01,535 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Melbourne
+2026-04-02 01:32:02,720 | INFO | scrapers.openmeteo_scraper | Got current weather for Melbourne: 15.2°C
+2026-04-02 01:32:02,726 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:32:02,726 | INFO | __main__ |   OK 1 rows (Current: 15.2 C)
+2026-04-02 01:32:04,730 | INFO | __main__ | [24/24] Auckland...
+2026-04-02 01:32:04,730 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Auckland
+2026-04-02 01:32:14,868 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Auckland: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:32:14,868 | WARNING | __main__ |   No data (attempt 1/3)
+2026-04-02 01:32:16,869 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Auckland
+2026-04-02 01:35:26,396 | INFO | __main__ | Loaded 24 cities from C:\Users\Lenovo\Desktop\WebScraping\cities.csv
+2026-04-02 01:35:26,396 | INFO | __main__ | Loaded 24 cities
+2026-04-02 01:35:26,583 | INFO | utils | Loaded 8144 rows from openmeteo_raw.csv
+2026-04-02 01:35:26,631 | INFO | utils | Loaded 2203 rows from timeanddate_raw.csv
+2026-04-02 01:35:26,671 | INFO | utils | Loaded 1747 rows from wunderground_raw.csv
+2026-04-02 01:35:26,671 | INFO | __main__ | Loaded 12094 raw rows
+2026-04-02 01:35:27,016 | INFO | __main__ | Deduplicated: 12094 -> 3936 rows
+2026-04-02 01:35:27,056 | INFO | __main__ | Saved 3936 rows to C:\Users\Lenovo\Desktop\WebScraping\data\processed\weather_data.csv
+2026-04-02 01:35:28,213 | INFO | __main__ | Saved 3936 rows to C:\Users\Lenovo\Desktop\WebScraping\data\processed\weather_data.xlsx
+2026-04-02 01:35:28,297 | INFO | __main__ | Database updated. Inserted 47 new rows.
+2026-04-02 01:35:28,328 | INFO | utils | Updated summary report with 7 entries
+2026-04-02 01:35:28,348 | INFO | __main__ | 
+Current data counts:
+2026-04-02 01:35:28,348 | INFO | __main__ |   Open-Meteo: 2456 rows
+2026-04-02 01:35:28,348 | INFO | __main__ |   TimeAndDate: 1237 rows
+2026-04-02 01:35:28,348 | INFO | __main__ |   WeatherUnderground: 243 rows
+2026-04-02 01:35:28,371 | INFO | __main__ | 
+================================================================================
+SCHEDULED SCRAPE STARTED - 2026-04-02 01:35:28.371459
+Before: {'Open-Meteo': 2456, 'TimeAndDate': 1237, 'WeatherUnderground': 243}
+================================================================================
+2026-04-02 01:35:28,371 | INFO | __main__ | 
+============================================================
+Open-Meteo: Collecting 0 days of data
+============================================================
+2026-04-02 01:35:28,371 | INFO | __main__ | [1/24] Beirut...
+2026-04-02 01:35:28,378 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Beirut
+2026-04-02 01:35:29,720 | INFO | scrapers.openmeteo_scraper | Got current weather for Beirut: 17.7°C
+2026-04-02 01:35:29,728 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-02 01:35:29,728 | INFO | __main__ |   OK 1 rows (Current: 17.7 C)
+2026-04-02 01:35:31,729 | INFO | __main__ | [2/24] New York...
+2026-04-02 01:35:31,729 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for New York
+2026-04-02 01:35:41,793 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for New York: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-02 01:35:41,793 | WARNING | __main__ |   No data (attempt 1/3)

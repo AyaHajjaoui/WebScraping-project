@@ -295,9 +295,16 @@ def merge_raw_data() -> int:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
+    # Keep original ScrapeDateTime text (including microseconds) to avoid collapsing rows.
+    raw_scrape_dt = df["ScrapeDateTime"].astype(str).str.strip()
+    blank_scrape_dt = raw_scrape_dt.str.lower().isin({"", "none", "nan"})
+
+    # Preserve non-blank raw timestamps exactly; only synthesize truly blank values.
+    if blank_scrape_dt.any():
+        df.loc[blank_scrape_dt, "ScrapeDateTime"] = pd.Timestamp.now(tz="UTC").isoformat()
+    df.loc[~blank_scrape_dt, "ScrapeDateTime"] = raw_scrape_dt.loc[~blank_scrape_dt]
+
     scrape_dt = _normalize_scrape_datetime(df["ScrapeDateTime"])
-    scrape_dt = scrape_dt.fillna(pd.Timestamp.now(tz="UTC"))
-    df["ScrapeDateTime"] = scrape_dt.dt.strftime("%Y-%m-%dT%H:%M:%S%z")
 
     if "Date" not in df.columns:
         df["Date"] = scrape_dt.dt.strftime("%Y-%m-%d")
@@ -307,12 +314,24 @@ def merge_raw_data() -> int:
         missing_date = df["Date"].isna()
         df.loc[missing_date, "Date"] = scrape_dt.dt.strftime("%Y-%m-%d").loc[missing_date]
 
+    # Final fallback for Date when datetime parsing still fails: extract YYYY-MM-DD from text.
+    missing_date = df["Date"].isna()
+    if missing_date.any():
+        extracted = df.loc[missing_date, "ScrapeDateTime"].astype(str).str.extract(r"(\\d{4}-\\d{2}-\\d{2})", expand=False)
+        df.loc[missing_date, "Date"] = extracted
+
     dedupe_cols = ["SourceWebsite", "City", "Date", "ScrapeDateTime"]
     before = len(df)
     df = df.drop_duplicates(subset=dedupe_cols, keep="last")
     logger.info("Deduplicated: %s -> %s rows", before, len(df))
 
-    df = df.sort_values(by=["Date", "SourceWebsite", "City", "ScrapeDateTime"], ascending=True)
+    sort_date = pd.to_datetime(df["Date"], errors="coerce")
+    sort_scrape_dt = _normalize_scrape_datetime(df["ScrapeDateTime"])
+    df = (
+        df.assign(_sort_date=sort_date, _sort_scrape_dt=sort_scrape_dt)
+        .sort_values(by=["_sort_date", "SourceWebsite", "City", "_sort_scrape_dt"], ascending=True)
+        .drop(columns=["_sort_date", "_sort_scrape_dt"])
+    )
 
     output_cols = ["Date"] + config.STANDARD_COLUMNS
     for col in output_cols:

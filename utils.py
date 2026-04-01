@@ -171,33 +171,33 @@ def load_existing_rows(file_path: Path) -> List[Dict]:
         return []
 
 
+
 def load_and_merge_raw_files() -> List[Dict]:
     """Load and merge all raw data files"""
-    raw_files = []
+    all_rows = []
     
-    # Add Open-Meteo raw file
-    if hasattr(config, 'OPENMETEO_RAW_CSV') and config.OPENMETEO_RAW_CSV:
-        raw_files.append(config.OPENMETEO_RAW_CSV)
+    raw_files = [
+        (config.OPENMETEO_RAW_CSV, 'Open-Meteo'),
+        (config.TIMEANDDATE_RAW_CSV, 'TimeAndDate'),
+        (config.WUNDERGROUND_RAW_CSV, 'WeatherUnderground'),
+    ]
     
-    # Add legacy raw files if they exist (for backward compatibility)
-    legacy_files = ['OPENWEATHER_RAW_CSV', 'TIMEANDDATE_RAW_CSV', 'WUNDERGROUND_RAW_CSV']
-    for legacy in legacy_files:
-        if hasattr(config, legacy):
-            file_path = getattr(config, legacy)
-            if file_path and file_path.exists():
-                raw_files.append(file_path)
-    
-    all_rows: List[Dict] = []
-    for file_path in raw_files:
-        if file_path and file_path.exists():
-            rows = load_existing_rows(file_path)
-            if rows:
-                logger.info(f"Loaded {len(rows)} rows from {file_path.name}")
-                all_rows.extend(rows)
+    for file_path, source_name in raw_files:
+        if file_path.exists():
+            try:
+                df = pd.read_csv(file_path)
+                # Add source if missing
+                if 'Source' not in df.columns and 'SourceWebsite' not in df.columns:
+                    df['Source'] = source_name
+                
+                all_rows.extend(df.to_dict(orient='records'))
+                logger.info(f"Loaded {len(df)} rows from {file_path.name}")
+            except Exception as e:
+                logger.error(f"Could not load {file_path}: {e}")
         else:
-            logger.debug(f"Raw file not found: {file_path}")
+            logger.warning(f"Raw file not found: {file_path}")
     
-    return normalize_rows(all_rows)
+    return all_rows
 
 
 def replace_processed_outputs(rows: List[Dict]) -> int:

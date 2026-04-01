@@ -40,7 +40,10 @@ def load_cities() -> List[Dict]:
             for _, row in df.iterrows():
                 city = {
                     "City": row.get("City", ""),
-                    "Country": row.get("Country", "")
+                    "Country": row.get("Country", ""),
+                    "TimeAndDate URL": row.get("TimeAndDate URL", ""),
+                    "WeatherUnderground URL": row.get("WeatherUnderground URL", ""),
+                    "Meteostat URL": row.get("Meteostat URL", ""),
                 }
                 if city["City"]:
                     cities.append(city)
@@ -226,17 +229,29 @@ def collect_historical_batch_for_source(cities: List[Dict], scraper_func, histor
     
     expected_rows = len(cities) * (1 + history_days * 24)
     logger.info(f"Expected rows: ~{expected_rows}")
-    
+
+    # Create a shared session for scrapers that need one (e.g. scrape_timeanddate)
+    session = create_session()
+
     for i, city in enumerate(cities, 1):
         city_name = city.get("City")
         logger.info(f"[{i}/{len(cities)}] Processing {city_name}...")
         
         try:
-            rows = scraper_func(
-                city_info=city,
-                history_days=history_days,
-                pass_index=0
-            )
+            # scrape_timeanddate expects (session, city_info, ...) as positional args
+            if scraper_func is scrape_timeanddate:
+                rows = scraper_func(
+                    session,
+                    city_info=city,
+                    history_days=history_days,
+                    pass_index=0
+                )
+            else:
+                rows = scraper_func(
+                    city_info=city,
+                    history_days=history_days,
+                    pass_index=0
+                )
             
             if rows:
                 total_rows += len(rows)

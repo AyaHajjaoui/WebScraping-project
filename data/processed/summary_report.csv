@@ -1,49 +1,47 @@
 ReportGeneratedAt,Metric,City,Country,Value
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Melbourne,Australia,37.8
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Mumbai,India,37.78
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Los Angeles,United States,36.89
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Dubai,United Arab Emirates,36.75
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Sydney,Australia,36.24
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Johannesburg,South Africa,35.56
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Singapore,Singapore,35.28
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Paris,France,35.05
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Seoul,South Korea,34.19
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,London,United Kingdom,33.86
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Nairobi,Kenya,32.64
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Tokyo,Japan,32.63
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Buenos Aires,Argentina,32.21
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Beirut,Lebanon,32.06
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Berlin,Germany,31.94
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Cairo,Egypt,31.75
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Sao Paulo,Brazil,30.9
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Auckland,New Zealand,30.37
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Chicago,United States,30.16
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Rome,Italy,29.52
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Madrid,Spain,29.39
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Mexico City,Mexico,28.98
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,New York,United States,28.74
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Toronto,Canada,25.79
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,New York,USA,25.76
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,New York,US,25.43
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,OpenWeather,New York,25.43
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Dubai,UAE,22.61
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Cairo,EG,20.9
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Los Angeles,USA,20.46
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Chicago,USA,20.18
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Mexico City,MX,18.1
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Johannesburg,ZA,17.7
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,OpenWeather,Tokyo,15.81
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Tokyo,JP,14.49
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,OpenWeather,London,14.33
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,London,GB,14.19
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,London,UK,14.15
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Beirut,LB,13.74
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,OpenWeather,Beirut,13.74
-2026-03-31T21:36:50.728265+00:00,AverageTemperature_C,Seoul,KR,6.8
-2026-03-31T21:36:50.728265+00:00,HottestCityByAvgTemp,Melbourne,Australia,37.8
-2026-03-31T21:36:50.728265+00:00,ColdestCityByAvgTemp,Seoul,KR,6.8
-2026-03-31T21:36:50.728265+00:00,TopWindiestCity_1,New York,USA,31.5
-2026-03-31T21:36:50.728265+00:00,TopWindiestCity_2,New York,US,31.5
-2026-03-31T21:36:50.728265+00:00,TopWindiestCity_3,London,United Kingdom,18.78
-2026-03-31T21:36:50.728265+00:00,TopWindiestCity_4,Chicago,United States,18.11
-2026-03-31T21:36:50.728265+00:00,TopWindiestCity_5,Auckland,New Zealand,16.89
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Singapore,Singapore,34.81
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Mumbai,India,34.25
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Sao Paulo,Brazil,30.45
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Dubai,United Arab Emirates,29.3
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Buenos Aires,Argentina,28.74
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Los Angeles,United States,28.34
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Johannesburg,South Africa,27.77
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Melbourne,Australia,27.61
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Temasek,Singapore,27.54
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Sydney,Australia,27.49
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Nairobi,Kenya,26.13
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Cairo,Egypt,26.04
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,New York,USA,25.76
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,New York,US,25.43
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Beirut,Lebanon,24.36
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Auckland,New Zealand,24.28
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Tokyo,Japan,24.28
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Chicago,United States,23.6
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Seoul,South Korea,23.34
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Dubai,UAE,22.61
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Mexico City,Mexico,22.45
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Rome,Italy,22.45
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Paris,France,22.04
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,New York,United States,22.0
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,São Paulo,Brazil,21.36
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,London,United Kingdom,21.31
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Berlin,Germany,21.12
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Cairo,EG,20.9
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Madrid,Spain,20.53
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Los Angeles,USA,20.46
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Chicago,USA,20.18
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Mexico City,MX,18.1
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Johannesburg,ZA,17.7
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Toronto,Canada,17.43
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Tokyo,JP,14.49
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,London,GB,14.19
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,London,UK,14.15
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Beirut,LB,13.74
+2026-04-01T20:18:18.901005+00:00,AverageTemperature_C,Seoul,KR,6.8
+2026-04-01T20:18:18.901005+00:00,HottestCityByAvgTemp,Singapore,Singapore,34.81
+2026-04-01T20:18:18.901005+00:00,ColdestCityByAvgTemp,Seoul,KR,6.8
+2026-04-01T20:18:18.901005+00:00,TopWindiestCity_1,New York,USA,31.5
+2026-04-01T20:18:18.901005+00:00,TopWindiestCity_2,New York,US,31.5
+2026-04-01T20:18:18.901005+00:00,TopWindiestCity_3,Chicago,United States,18.84
+2026-04-01T20:18:18.901005+00:00,TopWindiestCity_4,Chicago,USA,16.67
+2026-04-01T20:18:18.901005+00:00,TopWindiestCity_5,Dubai,United Arab Emirates,16.65

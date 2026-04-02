@@ -27,31 +27,7 @@ jobs:
           pip install -r requirements.txt
       
       - name: Run weather scrapers
-        run: |
-          python -c "
-import logging
-import sys
-import time
-from main import load_cities, collect_for_source
-from scrapers.openmeteo_scraper import scrape_openmeteo
-from scrapers.timeanddate_scraper import scrape_timeanddate
-from scrapers.wunderground_scraper import scrape_wunderground
-from utils import setup_logging, ensure_directories
-import config
-
-setup_logging()
-ensure_directories()
-
-cities = load_cities()
-print(f'Loaded {len(cities)} cities')
-
-# Scrape all sources
-collect_for_source(cities, scrape_openmeteo, 0, 'Open-Meteo')
-time.sleep(30)
-collect_for_source(cities, scrape_timeanddate, 0, 'TimeAndDate')
-time.sleep(30)
-collect_for_source(cities, scrape_wunderground, 0, 'WeatherUnderground')
-          "
+        run: python main.py
       
       - name: Clean and merge data
         run: |

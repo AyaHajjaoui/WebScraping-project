@@ -1,15 +1,13 @@
 # main.py
 import logging
 import os
-import subprocess
 import sys
 import time
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import pandas as pd
 import requests
-from apscheduler.schedulers.blocking import BlockingScheduler
 
 import config
 import database
@@ -32,36 +30,21 @@ MAX_RETRIES = 3
 DELAY_BETWEEN_CITIES = 2
 DELAY_BETWEEN_SOURCES = 30
 RETRY_BASE_DELAY_SECONDS = 2
-SCHEDULER_RESTART_DELAY_SECONDS = 10
 
 
-def start_in_background_if_requested() -> bool:
-    """
-    If `--background` is passed, relaunch detached and return True in parent.
-    Child process runs with `--run` argument.
-    """
-    if "--background" not in sys.argv:
-        return False
+def run_scraping_batch(cities: List[Dict]) -> int:
+    """Run one batch of scraping - collects current weather from all sources."""
+    total = 0
+    # Only collect new/current data (no historical backfill).
+    total += collect_for_source(cities, scrape_openmeteo, 0, "Open-Meteo")
+    time.sleep(DELAY_BETWEEN_SOURCES)
 
-    script_path = os.path.abspath(__file__)
-    cmd = [sys.executable, script_path, "--run"]
+    total += collect_for_source(cities, scrape_timeanddate, 0, "TimeAndDate")
+    time.sleep(DELAY_BETWEEN_SOURCES)
 
-    creation_flags = 0
-    if os.name == "nt":
-        creation_flags = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
+    total += collect_for_source(cities, scrape_wunderground, 0, "WeatherUnderground")
+    return total
 
-    with open(os.devnull, "w", encoding="utf-8") as devnull:
-        subprocess.Popen(
-            cmd,
-            stdout=devnull,
-            stderr=devnull,
-            stdin=devnull,
-            creationflags=creation_flags,
-            close_fds=True,
-        )
-
-    print("Started main.py in background mode.")
-    return True
 
 
 def load_cities() -> List[Dict]:
@@ -227,38 +210,6 @@ def collect_for_source(cities: List[Dict], scraper_func, history_days: int, sour
     return total_rows
 
 
-def run_scheduled_batch(cities: List[Dict]) -> int:
-    """Run batch for scheduled job - collects current weather from all sources."""
-    total = 0
-    # Only collect new/current data (no historical backfill).
-    total += collect_for_source(cities, scrape_openmeteo, 0, "Open-Meteo")
-    time.sleep(DELAY_BETWEEN_SOURCES)
-
-    total += collect_for_source(cities, scrape_timeanddate, 0, "TimeAndDate")
-    time.sleep(DELAY_BETWEEN_SOURCES)
-
-    total += collect_for_source(cities, scrape_wunderground, 0, "WeatherUnderground")
-    return total
-
-
-def scheduled_job(cities: List[Dict], scheduler: Optional[BlockingScheduler] = None) -> None:
-    """Scheduled job: scrape current weather and auto-merge."""
-    before = count_rows_by_source()
-    logger.info("\n%s\nSCHEDULED SCRAPE STARTED - %s\nBefore: %s\n%s", "=" * 80, datetime.now(), before, "=" * 80)
-
-    run_scheduled_batch(cities)
-
-    logger.info("\nAuto-merging raw data...")
-    try:
-        written = merge_raw_data()
-        logger.info("Merge complete: %s rows", written)
-    except Exception as e:
-        logger.exception("Merge failed: %s", e)
-
-    after = count_rows_by_source()
-    logger.info("\n%s\nSCHEDULED SCRAPE COMPLETED\nAfter: %s\n%s\n", "=" * 80, after, "=" * 80)
-
-
 def merge_raw_data() -> int:
     """
     Merge all raw CSV files into processed output.
@@ -360,10 +311,7 @@ def merge_raw_data() -> int:
 
 
 def main() -> None:
-    """Main entry point."""
-    if start_in_background_if_requested():
-        return
-
+    """Main entry point - runs scraper once (for GitHub Actions)."""
     setup_logging()
     ensure_directories()
     database.init_db()
@@ -371,48 +319,47 @@ def main() -> None:
     cities = load_cities()
     logger.info("Loaded %s cities", len(cities))
 
-    merge_raw_data()
+    # Merge any existing raw data first
+    try:
+        merge_raw_data()
+    except Exception as e:
+        logger.warning("Initial merge failed: %s", e)
 
     counts = count_rows_by_source()
     logger.info("\nCurrent data counts:")
     for source, count in counts.items():
         logger.info("  %s: %s rows", source, count)
 
-    # Immediate run so the process does useful work right away.
+    # Run scraping batch once
+    logger.info("\n%s\nSCRAPE STARTED - %s\n%s", "=" * 80, datetime.now(), "=" * 80)
+    before = count_rows_by_source()
+    logger.info("Before: %s", before)
+
+    # Scrape from all sources
+    total = 0
+    total += collect_for_source(cities, scrape_openmeteo, 0, "Open-Meteo")
+    time.sleep(DELAY_BETWEEN_SOURCES)
+
+    total += collect_for_source(cities, scrape_timeanddate, 0, "TimeAndDate")
+    time.sleep(DELAY_BETWEEN_SOURCES)
+
+    total += collect_for_source(cities, scrape_wunderground, 0, "WeatherUnderground")
+
+    if total > 0:
+        logger.info("\nCollected %s rows total", total)
+    else:
+        logger.warning("No data collected")
+
+    logger.info("\nMerging raw data...")
     try:
-        scheduled_job(cities=cities, scheduler=None)
+        written = merge_raw_data()
+        logger.info("Merge complete: %s rows", written)
     except Exception as e:
-        logger.exception("Initial scheduled job run failed: %s", e)
+        logger.exception("Merge failed: %s", e)
 
-    logger.info("\n%s", "=" * 80)
-    logger.info("SCHEDULER STARTING - Every %s hours", config.SCRAPE_INTERVAL_HOURS)
-    logger.info("Auto-merge ENABLED | Press Ctrl+C to stop")
-    logger.info("%s\n", "=" * 80)
-
-    # Keep running: restart scheduler if it crashes unexpectedly.
-    while True:
-        scheduler = BlockingScheduler()
-        scheduler.add_job(
-            scheduled_job,
-            "interval",
-            hours=config.SCRAPE_INTERVAL_HOURS,
-            kwargs={"cities": cities, "scheduler": scheduler},
-            max_instances=1,
-            coalesce=True,
-        )
-
-        try:
-            scheduler.start()
-        except (KeyboardInterrupt, SystemExit):
-            logger.info("Scraper stopped by user.")
-            break
-        except Exception as e:
-            logger.exception(
-                "Scheduler crashed unexpectedly (%s). Restarting in %ss...",
-                e,
-                SCHEDULER_RESTART_DELAY_SECONDS,
-            )
-            time.sleep(SCHEDULER_RESTART_DELAY_SECONDS)
+    after = count_rows_by_source()
+    logger.info("\nAfter: %s", after)
+    logger.info("\n%s\nSCRAPE COMPLETED\n%s\n", "=" * 80, "=" * 80)
 
 
 if __name__ == "__main__":

@@ -1,38 +1,71 @@
-# main.py (fixed imports)
+# main.py
 import logging
+import os
+import subprocess
+import sys
 import time
-from typing import Dict, List
 from datetime import datetime
+from typing import Dict, List, Optional
 
 import pandas as pd
+import requests
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 import config
 import database
 from scrapers.openmeteo_scraper import scrape_openmeteo
 from scrapers.timeanddate_scraper import scrape_timeanddate
-from scrapers.wunderground_scraper import scrape_wunderground  # Fixed: wunderground, not underground
+from scrapers.wunderground_scraper import scrape_wunderground
 from utils import (
     append_raw_rows,
-    count_processed_rows,
     create_session,
     ensure_directories,
     load_and_merge_raw_files,
-    load_existing_rows,
-    normalize_rows,
-    replace_processed_outputs,
     setup_logging,
     update_summary_report,
-    write_processed_outputs,
 )
 
 logger = logging.getLogger(__name__)
 
+# Constants
+MAX_RETRIES = 3
+DELAY_BETWEEN_CITIES = 2
+DELAY_BETWEEN_SOURCES = 30
+RETRY_BASE_DELAY_SECONDS = 2
+SCHEDULER_RESTART_DELAY_SECONDS = 10
+
+
+def start_in_background_if_requested() -> bool:
+    """
+    If `--background` is passed, relaunch detached and return True in parent.
+    Child process runs with `--run` argument.
+    """
+    if "--background" not in sys.argv:
+        return False
+
+    script_path = os.path.abspath(__file__)
+    cmd = [sys.executable, script_path, "--run"]
+
+    creation_flags = 0
+    if os.name == "nt":
+        creation_flags = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
+
+    with open(os.devnull, "w", encoding="utf-8") as devnull:
+        subprocess.Popen(
+            cmd,
+            stdout=devnull,
+            stderr=devnull,
+            stdin=devnull,
+            creationflags=creation_flags,
+            close_fds=True,
+        )
+
+    print("Started main.py in background mode.")
+    return True
+
 
 def load_cities() -> List[Dict]:
-    """Load cities from CSV or use hardcoded list"""
-    
-    # Try to load from CSV
+    """Load cities from CSV or use hardcoded fallback list."""
     if config.CITIES_CSV.exists():
         try:
             df = pd.read_csv(config.CITIES_CSV)
@@ -47,14 +80,13 @@ def load_cities() -> List[Dict]:
                 }
                 if city["City"]:
                     cities.append(city)
-            
+
             if cities:
-                logger.info(f"Loaded {len(cities)} cities from {config.CITIES_CSV}")
+                logger.info("Loaded %s cities from %s", len(cities), config.CITIES_CSV)
                 return cities
         except Exception as e:
-            logger.warning(f"Could not load cities.csv: {e}")
-    
-    # Fallback to hardcoded list of 24 cities
+            logger.warning("Could not load cities.csv: %s", e)
+
     cities = [
         {"City": "Beirut", "Country": "LB"},
         {"City": "New York", "Country": "US"},
@@ -81,1800 +113,306 @@ def load_cities() -> List[Dict]:
         {"City": "Melbourne", "Country": "AU"},
         {"City": "Auckland", "Country": "NZ"},
     ]
-    logger.info(f"Using hardcoded list of {len(cities)} cities")
+    logger.info("Using hardcoded list of %s cities", len(cities))
     return cities
 
 
 def count_rows_by_source() -> Dict[str, int]:
-    """Count rows for each source in processed data"""
-    source_counts = {
-        "Open-Meteo": 0,
-        "TimeAndDate": 0,
-        "WeatherUnderground": 0
-    }
-    
-    if config.WEATHER_CSV.exists():
+    """Count rows for each source in processed data."""
+    if not config.WEATHER_CSV.exists():
+        return {"Open-Meteo": 0, "TimeAndDate": 0, "WeatherUnderground": 0}
+
+    try:
+        df = pd.read_csv(config.WEATHER_CSV, low_memory=False)
+    except Exception as e:
+        logger.error("Error counting rows by source: %s", e)
+        return {"Open-Meteo": 0, "TimeAndDate": 0, "WeatherUnderground": 0}
+
+    counts = {}
+    for source in ["Open-Meteo", "TimeAndDate", "WeatherUnderground"]:
+        counts[source] = int((df.get("SourceWebsite") == source).sum()) if "SourceWebsite" in df.columns else 0
+    return counts
+
+
+def _normalize_scrape_datetime(series: pd.Series) -> pd.Series:
+    """Parse mixed datetime formats into UTC timestamps."""
+    try:
+        parsed = pd.to_datetime(series, errors="coerce", utc=True, format="mixed")
+    except TypeError:
+        parsed = pd.to_datetime(series, errors="coerce", utc=True)
+
+    missing = parsed.isna()
+    if missing.any():
+        cleaned = (
+            series[missing]
+            .astype(str)
+            .str.strip()
+            .str.replace("/", "-", regex=False)
+            .str.replace("T", " ", regex=False)
+            .str.replace("Z", "+00:00", regex=False)
+        )
         try:
-            df = pd.read_csv(config.WEATHER_CSV)
-            for source in source_counts.keys():
-                source_counts[source] = len(df[df['SourceWebsite'] == source])
-        except Exception as e:
-            logger.error(f"Error counting rows by source: {e}")
-    
-    return source_counts
+            reparsed = pd.to_datetime(cleaned, errors="coerce", utc=True, format="mixed")
+        except TypeError:
+            reparsed = pd.to_datetime(cleaned, errors="coerce", utc=True)
+        parsed.loc[missing] = reparsed
+
+    return parsed
 
 
-def collect_for_source(cities: List[Dict], source_name: str, scraper_func, target_rows: int = 2000) -> int:
-    """
-    Collect data for a specific source until target rows are reached
-    
-    Args:
-        cities: List of city dictionaries
-        source_name: Name of the source (for logging)
-        scraper_func: Scraper function to use
-        target_rows: Minimum rows to collect (default: 2000)
-    
-    Returns:
-        Total rows collected for this source
-    """
-    logger.info(f"\n{'='*80}")
-    logger.info(f"COLLECTING DATA FOR {source_name.upper()}")
-    logger.info(f"{'='*80}")
-    
-    # Check current rows
-    current_counts = count_rows_by_source()
-    current_rows = current_counts.get(source_name, 0)
-    
-    logger.info(f"Current {source_name} rows: {current_rows}")
-    
-    if current_rows >= target_rows:
-        logger.info(f"✓ Already have {current_rows} rows, which meets the target of {target_rows}!")
-        return current_rows
-    
-    needed_rows = target_rows - current_rows
-    logger.info(f"Need {needed_rows} more rows to reach target")
-    
-    # Calculate how many days of history we need
-    # Each city contributes (1 + history_days * 24) rows
-    # For 24 cities, total rows = 24 * (1 + days * 24)
-    
-    days_needed = max(1, int(((needed_rows / len(cities)) - 1) / 24) + 1)
-    logger.info(f"Will collect {days_needed} days of historical data")
-    
-    total_collected = 0
-    
-    # Pass 1: Current weather only
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 1: Collecting current weather from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=0, pass_name=f"{source_name} Pass 1")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 1! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 2: 1 day of history
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 2: Collecting 1 day of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=1, pass_name=f"{source_name} Pass 2")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 2! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 3: Additional 2 days (total 3 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 3: Collecting 2 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=2, pass_name=f"{source_name} Pass 3")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 3! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 4: Additional 2 days (total 5 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 4: Collecting 2 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=2, pass_name=f"{source_name} Pass 4")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 4! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 5: Additional 3 days (total 8 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 5: Collecting 3 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=3, pass_name=f"{source_name} Pass 5")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-    
-    # Final check
-    logger.info(f"\n{source_name} Collection Summary:")
-    logger.info(f"  Total collected in this session: {total_collected}")
-    logger.info(f"  Total rows now: {current_rows}")
-    
-    if current_rows >= target_rows:
-        logger.info(f"  ✅ SUCCESS! Achieved {current_rows} rows, exceeding target of {target_rows}")
-    else:
-        logger.warning(f"  ⚠️ Only achieved {current_rows} rows, target was {target_rows}")
-        logger.warning(f"     Missing: {target_rows - current_rows} rows")
-    
-    return current_rows
+def collect_for_source(cities: List[Dict], scraper_func, history_days: int, source_name: str) -> int:
+    """Collect data for all cities using a specific scraper with retry logic."""
+    logger.info("\n%s\n%s: Collecting %s days of data\n%s", "=" * 60, source_name, history_days, "=" * 60)
 
-
-def collect_historical_batch_for_source(cities: List[Dict], scraper_func, history_days: int, pass_name: str) -> int:
-    """
-    Collect historical data for all cities using a specific scraper
-    
-    Args:
-        cities: List of city dictionaries
-        scraper_func: Scraper function to use
-        history_days: Number of days of historical data to collect
-        pass_name: Name for this collection pass
-    
-    Returns:
-        Total rows collected
-    """
-    logger.info(f"\n{pass_name}: Collecting {history_days} days of history")
-    
-    total_rows = 0
-    successful_cities = []
-    failed_cities = []
-    
-    expected_rows = len(cities) * (1 + history_days * 24)
-    logger.info(f"Expected rows: ~{expected_rows}")
-
-    # Create a shared session for scrapers that need one (e.g. scrape_timeanddate)
     session = create_session()
+    total_rows = 0
+    successful = []
+    failed = []
 
     for i, city in enumerate(cities, 1):
         city_name = city.get("City")
-        logger.info(f"[{i}/{len(cities)}] Processing {city_name}...")
-        
-        try:
-            # scrape_timeanddate expects (session, city_info, ...) as positional args
-            if scraper_func is scrape_timeanddate:
-                rows = scraper_func(
-                    session,
-                    city_info=city,
-                    history_days=history_days,
-                    pass_index=0
-                )
-            else:
-                rows = scraper_func(
-                    city_info=city,
-                    history_days=history_days,
-                    pass_index=0
-                )
-            
-            if rows:
-                total_rows += len(rows)
-                successful_cities.append(city_name)
-                
-                # Get the appropriate raw file
-                raw_file_map = {
-                    scrape_openmeteo: config.OPENMETEO_RAW_CSV,
-                    scrape_timeanddate: config.TIMEANDDATE_RAW_CSV,
-                    scrape_wunderground: config.WUNDERGROUND_RAW_CSV,
-                }
-                raw_file = raw_file_map.get(scraper_func)
-                
-                if raw_file:
-                    append_raw_rows(raw_file, rows)
-                
-                # Persist to processed data
-                write_processed_outputs(rows)
-                
-                current_temp = rows[0]['Temperature_C'] if rows else 'N/A'
-                historical_count = len(rows) - 1
-                logger.info(f"  ✓ Current: {current_temp}°C, Historical: {historical_count}, Total: {len(rows)}")
-                
-            else:
-                failed_cities.append(city_name)
-                logger.warning(f"  ✗ No data received")
-                
-        except Exception as e:
-            failed_cities.append(city_name)
-            logger.error(f"  ✗ Error: {e}")
-        
-        # Small delay between cities
-        time.sleep(1)
-    
-    # Log summary
-    logger.info(f"\n{pass_name} Summary:")
-    logger.info(f"  Total rows collected: {total_rows}")
-    logger.info(f"  Successful cities: {len(successful_cities)}/{len(cities)}")
-    
-    if failed_cities:
-        logger.warning(f"  Failed cities: {', '.join(failed_cities)}")
-    
+        logger.info("[%s/%s] %s...", i, len(cities), city_name)
+
+        for attempt in range(MAX_RETRIES):
+            try:
+                rows = scraper_func(session, city, history_days, pass_index=0)
+
+                if rows:
+                    total_rows += len(rows)
+                    successful.append(city_name)
+
+                    raw_files = {
+                        scrape_openmeteo: config.OPENMETEO_RAW_CSV,
+                        scrape_timeanddate: config.TIMEANDDATE_RAW_CSV,
+                        scrape_wunderground: config.WUNDERGROUND_RAW_CSV,
+                    }
+                    raw_file = raw_files.get(scraper_func)
+                    if raw_file:
+                        append_raw_rows(raw_file, rows)
+
+                    temp = rows[0].get("Temperature_C", "N/A")
+                    logger.info("  OK %s rows (Current: %s C)", len(rows), temp)
+                    break
+
+                logger.warning("  No data (attempt %s/%s)", attempt + 1, MAX_RETRIES)
+                if attempt < MAX_RETRIES - 1:
+                    time.sleep(RETRY_BASE_DELAY_SECONDS * (attempt + 1))
+
+            except Exception as e:
+                logger.error("  Error (attempt %s/%s): %s", attempt + 1, MAX_RETRIES, e)
+                if attempt < MAX_RETRIES - 1:
+                    is_connection_error = isinstance(
+                        e,
+                        (
+                            requests.exceptions.ConnectionError,
+                            requests.exceptions.Timeout,
+                            requests.exceptions.ChunkedEncodingError,
+                        ),
+                    )
+                    delay = RETRY_BASE_DELAY_SECONDS * (attempt + 1)
+                    if is_connection_error:
+                        logger.info("    Connection issue detected. Retrying in %ss...", delay)
+                    else:
+                        logger.info("    Retrying in %ss...", delay)
+                    time.sleep(delay)
+                else:
+                    failed.append(city_name)
+
+        time.sleep(DELAY_BETWEEN_CITIES)
+
+    logger.info("\n%s Summary: %s rows from %s/%s cities", source_name, total_rows, len(successful), len(cities))
+    if failed:
+        logger.warning("Failed: %s", ", ".join(failed))
+
     return total_rows
 
 
-def ensure_all_sources_target(cities: List[Dict], target_per_source: int = 2000) -> Dict[str, int]:
+def run_scheduled_batch(cities: List[Dict]) -> int:
+    """Run batch for scheduled job - collects current weather from all sources."""
+    total = 0
+    # Only collect new/current data (no historical backfill).
+    total += collect_for_source(cities, scrape_openmeteo, 0, "Open-Meteo")
+    time.sleep(DELAY_BETWEEN_SOURCES)
+
+    total += collect_for_source(cities, scrape_timeanddate, 0, "TimeAndDate")
+    time.sleep(DELAY_BETWEEN_SOURCES)
+
+    total += collect_for_source(cities, scrape_wunderground, 0, "WeatherUnderground")
+    return total
+
+
+def scheduled_job(cities: List[Dict], scheduler: Optional[BlockingScheduler] = None) -> None:
+    """Scheduled job: scrape current weather and auto-merge."""
+    before = count_rows_by_source()
+    logger.info("\n%s\nSCHEDULED SCRAPE STARTED - %s\nBefore: %s\n%s", "=" * 80, datetime.now(), before, "=" * 80)
+
+    run_scheduled_batch(cities)
+
+    logger.info("\nAuto-merging raw data...")
+    try:
+        written = merge_raw_data()
+        logger.info("Merge complete: %s rows", written)
+    except Exception as e:
+        logger.exception("Merge failed: %s", e)
+
+    after = count_rows_by_source()
+    logger.info("\n%s\nSCHEDULED SCRAPE COMPLETED\nAfter: %s\n%s\n", "=" * 80, after, "=" * 80)
+
+
+def merge_raw_data() -> int:
     """
-    Ensure each source has at least target_per_source rows
-    
-    Args:
-        cities: List of city dictionaries
-        target_per_source: Minimum rows per source (default: 2000)
-    
-    Returns:
-        Dictionary with final counts per source
+    Merge all raw CSV files into processed output.
+
+    Requirements handled:
+    - Merge all raw CSV files from data/raw
+    - Normalize values and create Date from ScrapeDateTime when missing
+    - Dedupe on ['SourceWebsite', 'City', 'Date', 'ScrapeDateTime']
+    - Sort by Date before save
+    - Update DB and summary report
     """
-    logger.info("\n" + "="*80)
-    logger.info("CHECKING DATA COLLECTION TARGET: 2,000+ ROWS PER WEBSITE")
-    logger.info("="*80)
-    
-    # Initial counts
-    initial_counts = count_rows_by_source()
-    logger.info("\nInitial data counts:")
-    for source, count in initial_counts.items():
-        logger.info(f"  {source}: {count} rows")
-    
-    results = {}
-    
-    # Collect for Open-Meteo
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 1: Open-Meteo - 2,000+ rows")
-    logger.info("="*80)
-    results['Open-Meteo'] = collect_for_source(
-        cities, 
-        "Open-Meteo", 
-        scrape_openmeteo, 
-        target_per_source
-    )
-    
-    # Collect for TimeAndDate
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 2: TimeAndDate - 2,000+ rows")
-    logger.info("="*80)
-    results['TimeAndDate'] = collect_for_source(
-        cities, 
-        "TimeAndDate", 
-        scrape_timeanddate, 
-        target_per_source
-    )
-    
-    # Collect for WeatherUnderground
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 3: WeatherUnderground - 2,000+ rows")
-    logger.info("="*80)
-    results['WeatherUnderground'] = collect_for_source(
-        cities, 
-        "WeatherUnderground", 
-        scrape_wunderground, 
-        target_per_source
-    )
-    
-    # Final summary
-    logger.info("\n" + "="*80)
-    logger.info("FINAL DATA COLLECTION SUMMARY")
-    logger.info("="*80)
-    
-    all_targets_reached = True
-    for source, count in results.items():
-        status = "✅" if count >= target_per_source else "⚠️"
-        logger.info(f"  {status} {source}: {count} rows (target: {target_per_source})")
-        if count < target_per_source:
-            all_targets_reached = False
-    
-    if all_targets_reached:
-        logger.info(f"\n✅ SUCCESS! All sources have at least {target_per_source} rows!")
-    else:
-        logger.info(f"\n⚠️ Some sources still need more data. Consider running again or increasing collection days.")
-    
-    return results
-
-
-def run_batch_for_scheduled(cities: List[Dict]) -> int:
-    """Run batch for all sources (used for scheduled jobs)"""
-    
-    total_rows = 0
-    
-    # Run Open-Meteo
-    logger.info("Running Open-Meteo scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_openmeteo, history_days=0, pass_name="Scheduled-OpenMeteo")
-    total_rows += rows
-    
-    # Run TimeAndDate
-    logger.info("Running TimeAndDate scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_timeanddate, history_days=0, pass_name="Scheduled-TimeAndDate")
-    total_rows += rows
-    
-    # Run WeatherUnderground
-    logger.info("Running WeatherUnderground scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_wunderground, history_days=0, pass_name="Scheduled-WUnderground")
-    total_rows += rows
-    
-    return total_rows
-
-
-def scheduled_job(cities: List[Dict], scheduler: BlockingScheduler) -> None:
-    """Scheduled job to fetch current weather from all sources"""
-    
-    before_counts = count_rows_by_source()
-    logger.info(f"Scheduled scrape started.")
-    logger.info(f"Before counts: {before_counts}")
-    
-    # Run batch for all sources (current weather only)
-    run_batch_for_scheduled(cities)
-    
-    after_counts = count_rows_by_source()
-    logger.info(f"Scheduled scrape completed.")
-    logger.info(f"After counts: {after_counts}")
-    
-
-def initialize_merged_dataset() -> int:
-    """Initialize the merged dataset from existing raw files"""
-    
     raw_rows = load_and_merge_raw_files()
-    existing_processed_rows = load_existing_rows(config.WEATHER_CSV)
-    merged_rows = normalize_rows(raw_rows + existing_processed_rows)
-    written = replace_processed_outputs(merged_rows)
-    inserted = database.insert_rows(merged_rows)
+    logger.info("Loaded %s raw rows", len(raw_rows))
+
+    if not raw_rows:
+        logger.warning("No raw rows found to merge")
+        return 0
+
+    df = pd.DataFrame(raw_rows)
+    if df.empty:
+        logger.warning("Raw rows produced empty dataframe")
+        return 0
+
+    for col in config.STANDARD_COLUMNS:
+        if col not in df.columns:
+            df[col] = None
+
+    for col in ["SourceWebsite", "City", "Country", "Condition", "ScrapeDateTime"]:
+        if col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
+            df[col] = df[col].replace({"": None, "nan": None, "None": None})
+
+    for col in ["Temperature_C", "FeelsLike_C", "Humidity_%", "WindSpeed_kmh", "Precipitation"]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    # Keep original ScrapeDateTime text (including microseconds) to avoid collapsing rows.
+    raw_scrape_dt = df["ScrapeDateTime"].astype(str).str.strip()
+    blank_scrape_dt = raw_scrape_dt.str.lower().isin({"", "none", "nan"})
+
+    # Preserve non-blank raw timestamps exactly; only synthesize truly blank values.
+    if blank_scrape_dt.any():
+        df.loc[blank_scrape_dt, "ScrapeDateTime"] = pd.Timestamp.now(tz="UTC").isoformat()
+    df.loc[~blank_scrape_dt, "ScrapeDateTime"] = raw_scrape_dt.loc[~blank_scrape_dt]
+
+    scrape_dt = _normalize_scrape_datetime(df["ScrapeDateTime"])
+
+    if "Date" not in df.columns:
+        df["Date"] = scrape_dt.dt.strftime("%Y-%m-%d")
+    else:
+        date_parsed = pd.to_datetime(df["Date"], errors="coerce")
+        df["Date"] = date_parsed.dt.strftime("%Y-%m-%d")
+        missing_date = df["Date"].isna()
+        df.loc[missing_date, "Date"] = scrape_dt.dt.strftime("%Y-%m-%d").loc[missing_date]
+
+    # Final fallback for Date when datetime parsing still fails: extract YYYY-MM-DD from text.
+    missing_date = df["Date"].isna()
+    if missing_date.any():
+        extracted = df.loc[missing_date, "ScrapeDateTime"].astype(str).str.extract(r"(\\d{4}-\\d{2}-\\d{2})", expand=False)
+        df.loc[missing_date, "Date"] = extracted
+
+    dedupe_cols = ["SourceWebsite", "City", "Date", "ScrapeDateTime"]
+    before = len(df)
+    df = df.drop_duplicates(subset=dedupe_cols, keep="last")
+    logger.info("Deduplicated: %s -> %s rows", before, len(df))
+
+    sort_date = pd.to_datetime(df["Date"], errors="coerce")
+    sort_scrape_dt = _normalize_scrape_datetime(df["ScrapeDateTime"])
+    df = (
+        df.assign(_sort_date=sort_date, _sort_scrape_dt=sort_scrape_dt)
+        .sort_values(by=["_sort_date", "SourceWebsite", "City", "_sort_scrape_dt"], ascending=True)
+        .drop(columns=["_sort_date", "_sort_scrape_dt"])
+    )
+
+    output_cols = ["Date"] + config.STANDARD_COLUMNS
+    for col in output_cols:
+        if col not in df.columns:
+            df[col] = None
+    df = df[output_cols]
+
+    config.PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    df.to_csv(config.WEATHER_CSV, index=False)
+    logger.info("Saved %s rows to %s", len(df), config.WEATHER_CSV)
+
+    try:
+        df.to_excel(config.WEATHER_XLSX, index=False)
+        logger.info("Saved %s rows to %s", len(df), config.WEATHER_XLSX)
+    except Exception as e:
+        logger.warning("Could not save Excel output: %s", e)
+
+    try:
+        inserted = database.insert_rows(df.to_dict(orient="records"))
+        logger.info("Database updated. Inserted %s new rows.", inserted)
+    except Exception as e:
+        logger.error("Database error: %s", e)
+
     update_summary_report()
-    
-    logger.info(f"Merged dataset prepared. rows_written={written}, rows_inserted_db={inserted}")
-    return written
+    return len(df)
 
 
 def main() -> None:
-    """Main entry point"""
-    
-    # Setup
+    """Main entry point."""
+    if start_in_background_if_requested():
+        return
+
     setup_logging()
     ensure_directories()
     database.init_db()
-    
-    # Load cities
+
     cities = load_cities()
-    logger.info(f"Loaded {len(cities)} cities")
-    
-    # Initialize merged dataset
-    initialize_merged_dataset()
-    
-    # Ensure each source has at least 2,000 rows
-    results = ensure_all_sources_target(cities, target_per_source=2000)
-    
-    # Start scheduler for regular updates
-    scheduler = BlockingScheduler()
-    scheduler.add_job(
-        scheduled_job,
-        "interval",
-        hours=config.SCRAPE_INTERVAL_HOURS,
-        kwargs={"cities": cities, "scheduler": scheduler},
-        max_instances=1,
-        coalesce=True,
-    )
-    
-    logger.info(f"\n{'='*80}")
-    logger.info("SCHEDULER STARTED")
-    logger.info(f"{'='*80}")
-    logger.info(f"Final counts: {results}")
-    logger.info(f"Scheduler running every {config.SCRAPE_INTERVAL_HOURS} hours")
-    logger.info(f"Press Ctrl+C to stop")
-    
+    logger.info("Loaded %s cities", len(cities))
+
+    merge_raw_data()
+
+    counts = count_rows_by_source()
+    logger.info("\nCurrent data counts:")
+    for source, count in counts.items():
+        logger.info("  %s: %s rows", source, count)
+
+    # Immediate run so the process does useful work right away.
     try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        logger.info("Scraper stopped by user.")
+        scheduled_job(cities=cities, scheduler=None)
+    except Exception as e:
+        logger.exception("Initial scheduled job run failed: %s", e)
 
+    logger.info("\n%s", "=" * 80)
+    logger.info("SCHEDULER STARTING - Every %s hours", config.SCRAPE_INTERVAL_HOURS)
+    logger.info("Auto-merge ENABLED | Press Ctrl+C to stop")
+    logger.info("%s\n", "=" * 80)
 
-if __name__ == "__main__":
-    main()# main.py (fixed imports)
-import logging
-import time
-from typing import Dict, List
-from datetime import datetime
+    # Keep running: restart scheduler if it crashes unexpectedly.
+    while True:
+        scheduler = BlockingScheduler()
+        scheduler.add_job(
+            scheduled_job,
+            "interval",
+            hours=config.SCRAPE_INTERVAL_HOURS,
+            kwargs={"cities": cities, "scheduler": scheduler},
+            max_instances=1,
+            coalesce=True,
+        )
 
-import pandas as pd
-from apscheduler.schedulers.blocking import BlockingScheduler
-
-import config
-import database
-from scrapers.openmeteo_scraper import scrape_openmeteo
-from scrapers.timeanddate_scraper import scrape_timeanddate
-from scrapers.wunderground_scraper import scrape_wunderground  # Fixed: wunderground, not underground
-from utils import (
-    append_raw_rows,
-    count_processed_rows,
-    create_session,
-    ensure_directories,
-    load_and_merge_raw_files,
-    load_existing_rows,
-    normalize_rows,
-    replace_processed_outputs,
-    setup_logging,
-    update_summary_report,
-    write_processed_outputs,
-)
-
-logger = logging.getLogger(__name__)
-
-
-def load_cities() -> List[Dict]:
-    """Load cities from CSV or use hardcoded list"""
-    
-    # Try to load from CSV
-    if config.CITIES_CSV.exists():
         try:
-            df = pd.read_csv(config.CITIES_CSV)
-            cities = []
-            for _, row in df.iterrows():
-                city = {
-                    "City": row.get("City", ""),
-                    "Country": row.get("Country", ""),
-                    "TimeAndDate URL": row.get("TimeAndDate URL", ""),
-                    "WeatherUnderground URL": row.get("WeatherUnderground URL", ""),
-                    "Meteostat URL": row.get("Meteostat URL", ""),
-                }
-                if city["City"]:
-                    cities.append(city)
-            
-            if cities:
-                logger.info(f"Loaded {len(cities)} cities from {config.CITIES_CSV}")
-                return cities
+            scheduler.start()
+        except (KeyboardInterrupt, SystemExit):
+            logger.info("Scraper stopped by user.")
+            break
         except Exception as e:
-            logger.warning(f"Could not load cities.csv: {e}")
-    
-    # Fallback to hardcoded list of 24 cities
-    cities = [
-        {"City": "Beirut", "Country": "LB"},
-        {"City": "New York", "Country": "US"},
-        {"City": "Los Angeles", "Country": "US"},
-        {"City": "Chicago", "Country": "US"},
-        {"City": "Toronto", "Country": "CA"},
-        {"City": "Mexico City", "Country": "MX"},
-        {"City": "Sao Paulo", "Country": "BR"},
-        {"City": "Buenos Aires", "Country": "AR"},
-        {"City": "London", "Country": "GB"},
-        {"City": "Paris", "Country": "FR"},
-        {"City": "Berlin", "Country": "DE"},
-        {"City": "Madrid", "Country": "ES"},
-        {"City": "Rome", "Country": "IT"},
-        {"City": "Cairo", "Country": "EG"},
-        {"City": "Nairobi", "Country": "KE"},
-        {"City": "Johannesburg", "Country": "ZA"},
-        {"City": "Dubai", "Country": "AE"},
-        {"City": "Mumbai", "Country": "IN"},
-        {"City": "Tokyo", "Country": "JP"},
-        {"City": "Seoul", "Country": "KR"},
-        {"City": "Singapore", "Country": "SG"},
-        {"City": "Sydney", "Country": "AU"},
-        {"City": "Melbourne", "Country": "AU"},
-        {"City": "Auckland", "Country": "NZ"},
-    ]
-    logger.info(f"Using hardcoded list of {len(cities)} cities")
-    return cities
-
-
-def count_rows_by_source() -> Dict[str, int]:
-    """Count rows for each source in processed data"""
-    source_counts = {
-        "Open-Meteo": 0,
-        "TimeAndDate": 0,
-        "WeatherUnderground": 0
-    }
-    
-    if config.WEATHER_CSV.exists():
-        try:
-            df = pd.read_csv(config.WEATHER_CSV)
-            for source in source_counts.keys():
-                source_counts[source] = len(df[df['SourceWebsite'] == source])
-        except Exception as e:
-            logger.error(f"Error counting rows by source: {e}")
-    
-    return source_counts
-
-
-def collect_for_source(cities: List[Dict], source_name: str, scraper_func, target_rows: int = 2000) -> int:
-    """
-    Collect data for a specific source until target rows are reached
-    
-    Args:
-        cities: List of city dictionaries
-        source_name: Name of the source (for logging)
-        scraper_func: Scraper function to use
-        target_rows: Minimum rows to collect (default: 2000)
-    
-    Returns:
-        Total rows collected for this source
-    """
-    logger.info(f"\n{'='*80}")
-    logger.info(f"COLLECTING DATA FOR {source_name.upper()}")
-    logger.info(f"{'='*80}")
-    
-    # Check current rows
-    current_counts = count_rows_by_source()
-    current_rows = current_counts.get(source_name, 0)
-    
-    logger.info(f"Current {source_name} rows: {current_rows}")
-    
-    if current_rows >= target_rows:
-        logger.info(f"✓ Already have {current_rows} rows, which meets the target of {target_rows}!")
-        return current_rows
-    
-    needed_rows = target_rows - current_rows
-    logger.info(f"Need {needed_rows} more rows to reach target")
-    
-    # Calculate how many days of history we need
-    # Each city contributes (1 + history_days * 24) rows
-    # For 24 cities, total rows = 24 * (1 + days * 24)
-    
-    days_needed = max(1, int(((needed_rows / len(cities)) - 1) / 24) + 1)
-    logger.info(f"Will collect {days_needed} days of historical data")
-    
-    total_collected = 0
-    
-    # Pass 1: Current weather only
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 1: Collecting current weather from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=0, pass_name=f"{source_name} Pass 1")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 1! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 2: 1 day of history
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 2: Collecting 1 day of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=1, pass_name=f"{source_name} Pass 2")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 2! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 3: Additional 2 days (total 3 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 3: Collecting 2 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=2, pass_name=f"{source_name} Pass 3")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 3! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 4: Additional 2 days (total 5 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 4: Collecting 2 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=2, pass_name=f"{source_name} Pass 4")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 4! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 5: Additional 3 days (total 8 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 5: Collecting 3 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=3, pass_name=f"{source_name} Pass 5")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-    
-    # Final check
-    logger.info(f"\n{source_name} Collection Summary:")
-    logger.info(f"  Total collected in this session: {total_collected}")
-    logger.info(f"  Total rows now: {current_rows}")
-    
-    if current_rows >= target_rows:
-        logger.info(f"  ✅ SUCCESS! Achieved {current_rows} rows, exceeding target of {target_rows}")
-    else:
-        logger.warning(f"  ⚠️ Only achieved {current_rows} rows, target was {target_rows}")
-        logger.warning(f"     Missing: {target_rows - current_rows} rows")
-    
-    return current_rows
-
-
-def collect_historical_batch_for_source(cities: List[Dict], scraper_func, history_days: int, pass_name: str) -> int:
-    """
-    Collect historical data for all cities using a specific scraper
-    
-    Args:
-        cities: List of city dictionaries
-        scraper_func: Scraper function to use
-        history_days: Number of days of historical data to collect
-        pass_name: Name for this collection pass
-    
-    Returns:
-        Total rows collected
-    """
-    logger.info(f"\n{pass_name}: Collecting {history_days} days of history")
-    
-    total_rows = 0
-    successful_cities = []
-    failed_cities = []
-    
-    expected_rows = len(cities) * (1 + history_days * 24)
-    logger.info(f"Expected rows: ~{expected_rows}")
-
-    # Create a shared session for scrapers that need one (e.g. scrape_timeanddate)
-    session = create_session()
-
-    for i, city in enumerate(cities, 1):
-        city_name = city.get("City")
-        logger.info(f"[{i}/{len(cities)}] Processing {city_name}...")
-        
-        try:
-            # scrape_timeanddate expects (session, city_info, ...) as positional args
-            if scraper_func is scrape_timeanddate:
-                rows = scraper_func(
-                    session,
-                    city_info=city,
-                    history_days=history_days,
-                    pass_index=0
-                )
-            else:
-                rows = scraper_func(
-                    city_info=city,
-                    history_days=history_days,
-                    pass_index=0
-                )
-            
-            if rows:
-                total_rows += len(rows)
-                successful_cities.append(city_name)
-                
-                # Get the appropriate raw file
-                raw_file_map = {
-                    scrape_openmeteo: config.OPENMETEO_RAW_CSV,
-                    scrape_timeanddate: config.TIMEANDDATE_RAW_CSV,
-                    scrape_wunderground: config.WUNDERGROUND_RAW_CSV,
-                }
-                raw_file = raw_file_map.get(scraper_func)
-                
-                if raw_file:
-                    append_raw_rows(raw_file, rows)
-                
-                # Persist to processed data
-                write_processed_outputs(rows)
-                
-                current_temp = rows[0]['Temperature_C'] if rows else 'N/A'
-                historical_count = len(rows) - 1
-                logger.info(f"  ✓ Current: {current_temp}°C, Historical: {historical_count}, Total: {len(rows)}")
-                
-            else:
-                failed_cities.append(city_name)
-                logger.warning(f"  ✗ No data received")
-                
-        except Exception as e:
-            failed_cities.append(city_name)
-            logger.error(f"  ✗ Error: {e}")
-        
-        # Small delay between cities
-        time.sleep(1)
-    
-    # Log summary
-    logger.info(f"\n{pass_name} Summary:")
-    logger.info(f"  Total rows collected: {total_rows}")
-    logger.info(f"  Successful cities: {len(successful_cities)}/{len(cities)}")
-    
-    if failed_cities:
-        logger.warning(f"  Failed cities: {', '.join(failed_cities)}")
-    
-    return total_rows
-
-
-def ensure_all_sources_target(cities: List[Dict], target_per_source: int = 2000) -> Dict[str, int]:
-    """
-    Ensure each source has at least target_per_source rows
-    
-    Args:
-        cities: List of city dictionaries
-        target_per_source: Minimum rows per source (default: 2000)
-    
-    Returns:
-        Dictionary with final counts per source
-    """
-    logger.info("\n" + "="*80)
-    logger.info("CHECKING DATA COLLECTION TARGET: 2,000+ ROWS PER WEBSITE")
-    logger.info("="*80)
-    
-    # Initial counts
-    initial_counts = count_rows_by_source()
-    logger.info("\nInitial data counts:")
-    for source, count in initial_counts.items():
-        logger.info(f"  {source}: {count} rows")
-    
-    results = {}
-    
-    # Collect for Open-Meteo
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 1: Open-Meteo - 2,000+ rows")
-    logger.info("="*80)
-    results['Open-Meteo'] = collect_for_source(
-        cities, 
-        "Open-Meteo", 
-        scrape_openmeteo, 
-        target_per_source
-    )
-    
-    # Collect for TimeAndDate
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 2: TimeAndDate - 2,000+ rows")
-    logger.info("="*80)
-    results['TimeAndDate'] = collect_for_source(
-        cities, 
-        "TimeAndDate", 
-        scrape_timeanddate, 
-        target_per_source
-    )
-    
-    # Collect for WeatherUnderground
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 3: WeatherUnderground - 2,000+ rows")
-    logger.info("="*80)
-    results['WeatherUnderground'] = collect_for_source(
-        cities, 
-        "WeatherUnderground", 
-        scrape_wunderground, 
-        target_per_source
-    )
-    
-    # Final summary
-    logger.info("\n" + "="*80)
-    logger.info("FINAL DATA COLLECTION SUMMARY")
-    logger.info("="*80)
-    
-    all_targets_reached = True
-    for source, count in results.items():
-        status = "✅" if count >= target_per_source else "⚠️"
-        logger.info(f"  {status} {source}: {count} rows (target: {target_per_source})")
-        if count < target_per_source:
-            all_targets_reached = False
-    
-    if all_targets_reached:
-        logger.info(f"\n✅ SUCCESS! All sources have at least {target_per_source} rows!")
-    else:
-        logger.info(f"\n⚠️ Some sources still need more data. Consider running again or increasing collection days.")
-    
-    return results
-
-
-def run_batch_for_scheduled(cities: List[Dict]) -> int:
-    """Run batch for all sources (used for scheduled jobs)"""
-    
-    total_rows = 0
-    
-    # Run Open-Meteo
-    logger.info("Running Open-Meteo scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_openmeteo, history_days=0, pass_name="Scheduled-OpenMeteo")
-    total_rows += rows
-    
-    # Run TimeAndDate
-    logger.info("Running TimeAndDate scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_timeanddate, history_days=0, pass_name="Scheduled-TimeAndDate")
-    total_rows += rows
-    
-    # Run WeatherUnderground
-    logger.info("Running WeatherUnderground scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_wunderground, history_days=0, pass_name="Scheduled-WUnderground")
-    total_rows += rows
-    
-    return total_rows
-
-
-def scheduled_job(cities: List[Dict], scheduler: BlockingScheduler) -> None:
-    """Scheduled job to fetch current weather from all sources"""
-    
-    before_counts = count_rows_by_source()
-    logger.info(f"Scheduled scrape started.")
-    logger.info(f"Before counts: {before_counts}")
-    
-    # Run batch for all sources (current weather only)
-    run_batch_for_scheduled(cities)
-    
-    after_counts = count_rows_by_source()
-    logger.info(f"Scheduled scrape completed.")
-    logger.info(f"After counts: {after_counts}")
-    
-
-def initialize_merged_dataset() -> int:
-    """Initialize the merged dataset from existing raw files"""
-    
-    raw_rows = load_and_merge_raw_files()
-    existing_processed_rows = load_existing_rows(config.WEATHER_CSV)
-    merged_rows = normalize_rows(raw_rows + existing_processed_rows)
-    written = replace_processed_outputs(merged_rows)
-    inserted = database.insert_rows(merged_rows)
-    update_summary_report()
-    
-    logger.info(f"Merged dataset prepared. rows_written={written}, rows_inserted_db={inserted}")
-    return written
-
-
-def main() -> None:
-    """Main entry point"""
-    
-    # Setup
-    setup_logging()
-    ensure_directories()
-    database.init_db()
-    
-    # Load cities
-    cities = load_cities()
-    logger.info(f"Loaded {len(cities)} cities")
-    
-    # Initialize merged dataset
-    initialize_merged_dataset()
-    
-    # Ensure each source has at least 2,000 rows
-    results = ensure_all_sources_target(cities, target_per_source=2000)
-    
-    # Start scheduler for regular updates
-    scheduler = BlockingScheduler()
-    scheduler.add_job(
-        scheduled_job,
-        "interval",
-        hours=config.SCRAPE_INTERVAL_HOURS,
-        kwargs={"cities": cities, "scheduler": scheduler},
-        max_instances=1,
-        coalesce=True,
-    )
-    
-    logger.info(f"\n{'='*80}")
-    logger.info("SCHEDULER STARTED")
-    logger.info(f"{'='*80}")
-    logger.info(f"Final counts: {results}")
-    logger.info(f"Scheduler running every {config.SCRAPE_INTERVAL_HOURS} hours")
-    logger.info(f"Press Ctrl+C to stop")
-    
-    try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        logger.info("Scraper stopped by user.")
-
-
-if __name__ == "__main__":
-    main()# main.py (fixed imports)
-import logging
-import time
-from typing import Dict, List
-from datetime import datetime
-
-import pandas as pd
-from apscheduler.schedulers.blocking import BlockingScheduler
-
-import config
-import database
-from scrapers.openmeteo_scraper import scrape_openmeteo
-from scrapers.timeanddate_scraper import scrape_timeanddate
-from scrapers.wunderground_scraper import scrape_wunderground  # Fixed: wunderground, not underground
-from utils import (
-    append_raw_rows,
-    count_processed_rows,
-    create_session,
-    ensure_directories,
-    load_and_merge_raw_files,
-    load_existing_rows,
-    normalize_rows,
-    replace_processed_outputs,
-    setup_logging,
-    update_summary_report,
-    write_processed_outputs,
-)
-
-logger = logging.getLogger(__name__)
-
-
-def load_cities() -> List[Dict]:
-    """Load cities from CSV or use hardcoded list"""
-    
-    # Try to load from CSV
-    if config.CITIES_CSV.exists():
-        try:
-            df = pd.read_csv(config.CITIES_CSV)
-            cities = []
-            for _, row in df.iterrows():
-                city = {
-                    "City": row.get("City", ""),
-                    "Country": row.get("Country", ""),
-                    "TimeAndDate URL": row.get("TimeAndDate URL", ""),
-                    "WeatherUnderground URL": row.get("WeatherUnderground URL", ""),
-                    "Meteostat URL": row.get("Meteostat URL", ""),
-                }
-                if city["City"]:
-                    cities.append(city)
-            
-            if cities:
-                logger.info(f"Loaded {len(cities)} cities from {config.CITIES_CSV}")
-                return cities
-        except Exception as e:
-            logger.warning(f"Could not load cities.csv: {e}")
-    
-    # Fallback to hardcoded list of 24 cities
-    cities = [
-        {"City": "Beirut", "Country": "LB"},
-        {"City": "New York", "Country": "US"},
-        {"City": "Los Angeles", "Country": "US"},
-        {"City": "Chicago", "Country": "US"},
-        {"City": "Toronto", "Country": "CA"},
-        {"City": "Mexico City", "Country": "MX"},
-        {"City": "Sao Paulo", "Country": "BR"},
-        {"City": "Buenos Aires", "Country": "AR"},
-        {"City": "London", "Country": "GB"},
-        {"City": "Paris", "Country": "FR"},
-        {"City": "Berlin", "Country": "DE"},
-        {"City": "Madrid", "Country": "ES"},
-        {"City": "Rome", "Country": "IT"},
-        {"City": "Cairo", "Country": "EG"},
-        {"City": "Nairobi", "Country": "KE"},
-        {"City": "Johannesburg", "Country": "ZA"},
-        {"City": "Dubai", "Country": "AE"},
-        {"City": "Mumbai", "Country": "IN"},
-        {"City": "Tokyo", "Country": "JP"},
-        {"City": "Seoul", "Country": "KR"},
-        {"City": "Singapore", "Country": "SG"},
-        {"City": "Sydney", "Country": "AU"},
-        {"City": "Melbourne", "Country": "AU"},
-        {"City": "Auckland", "Country": "NZ"},
-    ]
-    logger.info(f"Using hardcoded list of {len(cities)} cities")
-    return cities
-
-
-def count_rows_by_source() -> Dict[str, int]:
-    """Count rows for each source in processed data"""
-    source_counts = {
-        "Open-Meteo": 0,
-        "TimeAndDate": 0,
-        "WeatherUnderground": 0
-    }
-    
-    if config.WEATHER_CSV.exists():
-        try:
-            df = pd.read_csv(config.WEATHER_CSV)
-            for source in source_counts.keys():
-                source_counts[source] = len(df[df['SourceWebsite'] == source])
-        except Exception as e:
-            logger.error(f"Error counting rows by source: {e}")
-    
-    return source_counts
-
-
-def collect_for_source(cities: List[Dict], source_name: str, scraper_func, target_rows: int = 2000) -> int:
-    """
-    Collect data for a specific source until target rows are reached
-    
-    Args:
-        cities: List of city dictionaries
-        source_name: Name of the source (for logging)
-        scraper_func: Scraper function to use
-        target_rows: Minimum rows to collect (default: 2000)
-    
-    Returns:
-        Total rows collected for this source
-    """
-    logger.info(f"\n{'='*80}")
-    logger.info(f"COLLECTING DATA FOR {source_name.upper()}")
-    logger.info(f"{'='*80}")
-    
-    # Check current rows
-    current_counts = count_rows_by_source()
-    current_rows = current_counts.get(source_name, 0)
-    
-    logger.info(f"Current {source_name} rows: {current_rows}")
-    
-    if current_rows >= target_rows:
-        logger.info(f"✓ Already have {current_rows} rows, which meets the target of {target_rows}!")
-        return current_rows
-    
-    needed_rows = target_rows - current_rows
-    logger.info(f"Need {needed_rows} more rows to reach target")
-    
-    # Calculate how many days of history we need
-    # Each city contributes (1 + history_days * 24) rows
-    # For 24 cities, total rows = 24 * (1 + days * 24)
-    
-    days_needed = max(1, int(((needed_rows / len(cities)) - 1) / 24) + 1)
-    logger.info(f"Will collect {days_needed} days of historical data")
-    
-    total_collected = 0
-    
-    # Pass 1: Current weather only
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 1: Collecting current weather from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=0, pass_name=f"{source_name} Pass 1")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 1! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 2: 1 day of history
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 2: Collecting 1 day of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=1, pass_name=f"{source_name} Pass 2")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 2! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 3: Additional 2 days (total 3 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 3: Collecting 2 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=2, pass_name=f"{source_name} Pass 3")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 3! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 4: Additional 2 days (total 5 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 4: Collecting 2 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=2, pass_name=f"{source_name} Pass 4")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 4! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 5: Additional 3 days (total 8 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 5: Collecting 3 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=3, pass_name=f"{source_name} Pass 5")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-    
-    # Final check
-    logger.info(f"\n{source_name} Collection Summary:")
-    logger.info(f"  Total collected in this session: {total_collected}")
-    logger.info(f"  Total rows now: {current_rows}")
-    
-    if current_rows >= target_rows:
-        logger.info(f"  ✅ SUCCESS! Achieved {current_rows} rows, exceeding target of {target_rows}")
-    else:
-        logger.warning(f"  ⚠️ Only achieved {current_rows} rows, target was {target_rows}")
-        logger.warning(f"     Missing: {target_rows - current_rows} rows")
-    
-    return current_rows
-
-
-def collect_historical_batch_for_source(cities: List[Dict], scraper_func, history_days: int, pass_name: str) -> int:
-    """
-    Collect historical data for all cities using a specific scraper
-    
-    Args:
-        cities: List of city dictionaries
-        scraper_func: Scraper function to use
-        history_days: Number of days of historical data to collect
-        pass_name: Name for this collection pass
-    
-    Returns:
-        Total rows collected
-    """
-    logger.info(f"\n{pass_name}: Collecting {history_days} days of history")
-    
-    total_rows = 0
-    successful_cities = []
-    failed_cities = []
-    
-    expected_rows = len(cities) * (1 + history_days * 24)
-    logger.info(f"Expected rows: ~{expected_rows}")
-
-    # Create a shared session for scrapers that need one (e.g. scrape_timeanddate)
-    session = create_session()
-
-    for i, city in enumerate(cities, 1):
-        city_name = city.get("City")
-        logger.info(f"[{i}/{len(cities)}] Processing {city_name}...")
-        
-        try:
-            # scrape_timeanddate expects (session, city_info, ...) as positional args
-            if scraper_func is scrape_timeanddate:
-                rows = scraper_func(
-                    session,
-                    city_info=city,
-                    history_days=history_days,
-                    pass_index=0
-                )
-            else:
-                rows = scraper_func(
-                    city_info=city,
-                    history_days=history_days,
-                    pass_index=0
-                )
-            
-            if rows:
-                total_rows += len(rows)
-                successful_cities.append(city_name)
-                
-                # Get the appropriate raw file
-                raw_file_map = {
-                    scrape_openmeteo: config.OPENMETEO_RAW_CSV,
-                    scrape_timeanddate: config.TIMEANDDATE_RAW_CSV,
-                    scrape_wunderground: config.WUNDERGROUND_RAW_CSV,
-                }
-                raw_file = raw_file_map.get(scraper_func)
-                
-                if raw_file:
-                    append_raw_rows(raw_file, rows)
-                
-                # Persist to processed data
-                write_processed_outputs(rows)
-                
-                current_temp = rows[0]['Temperature_C'] if rows else 'N/A'
-                historical_count = len(rows) - 1
-                logger.info(f"  ✓ Current: {current_temp}°C, Historical: {historical_count}, Total: {len(rows)}")
-                
-            else:
-                failed_cities.append(city_name)
-                logger.warning(f"  ✗ No data received")
-                
-        except Exception as e:
-            failed_cities.append(city_name)
-            logger.error(f"  ✗ Error: {e}")
-        
-        # Small delay between cities
-        time.sleep(1)
-    
-    # Log summary
-    logger.info(f"\n{pass_name} Summary:")
-    logger.info(f"  Total rows collected: {total_rows}")
-    logger.info(f"  Successful cities: {len(successful_cities)}/{len(cities)}")
-    
-    if failed_cities:
-        logger.warning(f"  Failed cities: {', '.join(failed_cities)}")
-    
-    return total_rows
-
-
-def ensure_all_sources_target(cities: List[Dict], target_per_source: int = 2000) -> Dict[str, int]:
-    """
-    Ensure each source has at least target_per_source rows
-    
-    Args:
-        cities: List of city dictionaries
-        target_per_source: Minimum rows per source (default: 2000)
-    
-    Returns:
-        Dictionary with final counts per source
-    """
-    logger.info("\n" + "="*80)
-    logger.info("CHECKING DATA COLLECTION TARGET: 2,000+ ROWS PER WEBSITE")
-    logger.info("="*80)
-    
-    # Initial counts
-    initial_counts = count_rows_by_source()
-    logger.info("\nInitial data counts:")
-    for source, count in initial_counts.items():
-        logger.info(f"  {source}: {count} rows")
-    
-    results = {}
-    
-    # Collect for Open-Meteo
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 1: Open-Meteo - 2,000+ rows")
-    logger.info("="*80)
-    results['Open-Meteo'] = collect_for_source(
-        cities, 
-        "Open-Meteo", 
-        scrape_openmeteo, 
-        target_per_source
-    )
-    
-    # Collect for TimeAndDate
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 2: TimeAndDate - 2,000+ rows")
-    logger.info("="*80)
-    results['TimeAndDate'] = collect_for_source(
-        cities, 
-        "TimeAndDate", 
-        scrape_timeanddate, 
-        target_per_source
-    )
-    
-    # Collect for WeatherUnderground
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 3: WeatherUnderground - 2,000+ rows")
-    logger.info("="*80)
-    results['WeatherUnderground'] = collect_for_source(
-        cities, 
-        "WeatherUnderground", 
-        scrape_wunderground, 
-        target_per_source
-    )
-    
-    # Final summary
-    logger.info("\n" + "="*80)
-    logger.info("FINAL DATA COLLECTION SUMMARY")
-    logger.info("="*80)
-    
-    all_targets_reached = True
-    for source, count in results.items():
-        status = "✅" if count >= target_per_source else "⚠️"
-        logger.info(f"  {status} {source}: {count} rows (target: {target_per_source})")
-        if count < target_per_source:
-            all_targets_reached = False
-    
-    if all_targets_reached:
-        logger.info(f"\n✅ SUCCESS! All sources have at least {target_per_source} rows!")
-    else:
-        logger.info(f"\n⚠️ Some sources still need more data. Consider running again or increasing collection days.")
-    
-    return results
-
-
-def run_batch_for_scheduled(cities: List[Dict]) -> int:
-    """Run batch for all sources (used for scheduled jobs)"""
-    
-    total_rows = 0
-    
-    # Run Open-Meteo
-    logger.info("Running Open-Meteo scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_openmeteo, history_days=0, pass_name="Scheduled-OpenMeteo")
-    total_rows += rows
-    
-    # Run TimeAndDate
-    logger.info("Running TimeAndDate scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_timeanddate, history_days=0, pass_name="Scheduled-TimeAndDate")
-    total_rows += rows
-    
-    # Run WeatherUnderground
-    logger.info("Running WeatherUnderground scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_wunderground, history_days=0, pass_name="Scheduled-WUnderground")
-    total_rows += rows
-    
-    return total_rows
-
-
-def scheduled_job(cities: List[Dict], scheduler: BlockingScheduler) -> None:
-    """Scheduled job to fetch current weather from all sources"""
-    
-    before_counts = count_rows_by_source()
-    logger.info(f"Scheduled scrape started.")
-    logger.info(f"Before counts: {before_counts}")
-    
-    # Run batch for all sources (current weather only)
-    run_batch_for_scheduled(cities)
-    
-    after_counts = count_rows_by_source()
-    logger.info(f"Scheduled scrape completed.")
-    logger.info(f"After counts: {after_counts}")
-    
-
-def initialize_merged_dataset() -> int:
-    """Initialize the merged dataset from existing raw files"""
-    
-    raw_rows = load_and_merge_raw_files()
-    existing_processed_rows = load_existing_rows(config.WEATHER_CSV)
-    merged_rows = normalize_rows(raw_rows + existing_processed_rows)
-    written = replace_processed_outputs(merged_rows)
-    inserted = database.insert_rows(merged_rows)
-    update_summary_report()
-    
-    logger.info(f"Merged dataset prepared. rows_written={written}, rows_inserted_db={inserted}")
-    return written
-
-
-def main() -> None:
-    """Main entry point"""
-    
-    # Setup
-    setup_logging()
-    ensure_directories()
-    database.init_db()
-    
-    # Load cities
-    cities = load_cities()
-    logger.info(f"Loaded {len(cities)} cities")
-    
-    # Initialize merged dataset
-    initialize_merged_dataset()
-    
-    # Ensure each source has at least 2,000 rows
-    results = ensure_all_sources_target(cities, target_per_source=2000)
-    
-    # Start scheduler for regular updates
-    scheduler = BlockingScheduler()
-    scheduler.add_job(
-        scheduled_job,
-        "interval",
-        hours=config.SCRAPE_INTERVAL_HOURS,
-        kwargs={"cities": cities, "scheduler": scheduler},
-        max_instances=1,
-        coalesce=True,
-    )
-    
-    logger.info(f"\n{'='*80}")
-    logger.info("SCHEDULER STARTED")
-    logger.info(f"{'='*80}")
-    logger.info(f"Final counts: {results}")
-    logger.info(f"Scheduler running every {config.SCRAPE_INTERVAL_HOURS} hours")
-    logger.info(f"Press Ctrl+C to stop")
-    
-    try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        logger.info("Scraper stopped by user.")
-
-
-if __name__ == "__main__":
-    main()# main.py (fixed imports)
-import logging
-import time
-from typing import Dict, List
-from datetime import datetime
-
-import pandas as pd
-from apscheduler.schedulers.blocking import BlockingScheduler
-
-import config
-import database
-from scrapers.openmeteo_scraper import scrape_openmeteo
-from scrapers.timeanddate_scraper import scrape_timeanddate
-from scrapers.wunderground_scraper import scrape_wunderground  # Fixed: wunderground, not underground
-from utils import (
-    append_raw_rows,
-    count_processed_rows,
-    create_session,
-    ensure_directories,
-    load_and_merge_raw_files,
-    load_existing_rows,
-    normalize_rows,
-    replace_processed_outputs,
-    setup_logging,
-    update_summary_report,
-    write_processed_outputs,
-)
-
-logger = logging.getLogger(__name__)
-
-
-def load_cities() -> List[Dict]:
-    """Load cities from CSV or use hardcoded list"""
-    
-    # Try to load from CSV
-    if config.CITIES_CSV.exists():
-        try:
-            df = pd.read_csv(config.CITIES_CSV)
-            cities = []
-            for _, row in df.iterrows():
-                city = {
-                    "City": row.get("City", ""),
-                    "Country": row.get("Country", ""),
-                    "TimeAndDate URL": row.get("TimeAndDate URL", ""),
-                    "WeatherUnderground URL": row.get("WeatherUnderground URL", ""),
-                    "Meteostat URL": row.get("Meteostat URL", ""),
-                }
-                if city["City"]:
-                    cities.append(city)
-            
-            if cities:
-                logger.info(f"Loaded {len(cities)} cities from {config.CITIES_CSV}")
-                return cities
-        except Exception as e:
-            logger.warning(f"Could not load cities.csv: {e}")
-    
-    # Fallback to hardcoded list of 24 cities
-    cities = [
-        {"City": "Beirut", "Country": "LB"},
-        {"City": "New York", "Country": "US"},
-        {"City": "Los Angeles", "Country": "US"},
-        {"City": "Chicago", "Country": "US"},
-        {"City": "Toronto", "Country": "CA"},
-        {"City": "Mexico City", "Country": "MX"},
-        {"City": "Sao Paulo", "Country": "BR"},
-        {"City": "Buenos Aires", "Country": "AR"},
-        {"City": "London", "Country": "GB"},
-        {"City": "Paris", "Country": "FR"},
-        {"City": "Berlin", "Country": "DE"},
-        {"City": "Madrid", "Country": "ES"},
-        {"City": "Rome", "Country": "IT"},
-        {"City": "Cairo", "Country": "EG"},
-        {"City": "Nairobi", "Country": "KE"},
-        {"City": "Johannesburg", "Country": "ZA"},
-        {"City": "Dubai", "Country": "AE"},
-        {"City": "Mumbai", "Country": "IN"},
-        {"City": "Tokyo", "Country": "JP"},
-        {"City": "Seoul", "Country": "KR"},
-        {"City": "Singapore", "Country": "SG"},
-        {"City": "Sydney", "Country": "AU"},
-        {"City": "Melbourne", "Country": "AU"},
-        {"City": "Auckland", "Country": "NZ"},
-    ]
-    logger.info(f"Using hardcoded list of {len(cities)} cities")
-    return cities
-
-
-def count_rows_by_source() -> Dict[str, int]:
-    """Count rows for each source in processed data"""
-    source_counts = {
-        "Open-Meteo": 0,
-        "TimeAndDate": 0,
-        "WeatherUnderground": 0
-    }
-    
-    if config.WEATHER_CSV.exists():
-        try:
-            df = pd.read_csv(config.WEATHER_CSV)
-            for source in source_counts.keys():
-                source_counts[source] = len(df[df['SourceWebsite'] == source])
-        except Exception as e:
-            logger.error(f"Error counting rows by source: {e}")
-    
-    return source_counts
-
-
-def collect_for_source(cities: List[Dict], source_name: str, scraper_func, target_rows: int = 2000) -> int:
-    """
-    Collect data for a specific source until target rows are reached
-    
-    Args:
-        cities: List of city dictionaries
-        source_name: Name of the source (for logging)
-        scraper_func: Scraper function to use
-        target_rows: Minimum rows to collect (default: 2000)
-    
-    Returns:
-        Total rows collected for this source
-    """
-    logger.info(f"\n{'='*80}")
-    logger.info(f"COLLECTING DATA FOR {source_name.upper()}")
-    logger.info(f"{'='*80}")
-    
-    # Check current rows
-    current_counts = count_rows_by_source()
-    current_rows = current_counts.get(source_name, 0)
-    
-    logger.info(f"Current {source_name} rows: {current_rows}")
-    
-    if current_rows >= target_rows:
-        logger.info(f"✓ Already have {current_rows} rows, which meets the target of {target_rows}!")
-        return current_rows
-    
-    needed_rows = target_rows - current_rows
-    logger.info(f"Need {needed_rows} more rows to reach target")
-    
-    # Calculate how many days of history we need
-    # Each city contributes (1 + history_days * 24) rows
-    # For 24 cities, total rows = 24 * (1 + days * 24)
-    
-    days_needed = max(1, int(((needed_rows / len(cities)) - 1) / 24) + 1)
-    logger.info(f"Will collect {days_needed} days of historical data")
-    
-    total_collected = 0
-    
-    # Pass 1: Current weather only
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 1: Collecting current weather from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=0, pass_name=f"{source_name} Pass 1")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 1! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 2: 1 day of history
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 2: Collecting 1 day of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=1, pass_name=f"{source_name} Pass 2")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 2! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 3: Additional 2 days (total 3 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 3: Collecting 2 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=2, pass_name=f"{source_name} Pass 3")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 3! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 4: Additional 2 days (total 5 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 4: Collecting 2 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=2, pass_name=f"{source_name} Pass 4")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-        
-        if current_rows >= target_rows:
-            logger.info(f"✓ Target reached after Pass 4! {source_name} rows: {current_rows}")
-            return current_rows
-    
-    # Pass 5: Additional 3 days (total 8 days)
-    if current_rows < target_rows:
-        logger.info(f"\n📊 Pass 5: Collecting 3 more days of historical data from {source_name}...")
-        rows = collect_historical_batch_for_source(cities, scraper_func, history_days=3, pass_name=f"{source_name} Pass 5")
-        total_collected += rows
-        current_rows = count_rows_by_source().get(source_name, 0)
-    
-    # Final check
-    logger.info(f"\n{source_name} Collection Summary:")
-    logger.info(f"  Total collected in this session: {total_collected}")
-    logger.info(f"  Total rows now: {current_rows}")
-    
-    if current_rows >= target_rows:
-        logger.info(f"  ✅ SUCCESS! Achieved {current_rows} rows, exceeding target of {target_rows}")
-    else:
-        logger.warning(f"  ⚠️ Only achieved {current_rows} rows, target was {target_rows}")
-        logger.warning(f"     Missing: {target_rows - current_rows} rows")
-    
-    return current_rows
-
-
-def collect_historical_batch_for_source(cities: List[Dict], scraper_func, history_days: int, pass_name: str) -> int:
-    """
-    Collect historical data for all cities using a specific scraper
-    
-    Args:
-        cities: List of city dictionaries
-        scraper_func: Scraper function to use
-        history_days: Number of days of historical data to collect
-        pass_name: Name for this collection pass
-    
-    Returns:
-        Total rows collected
-    """
-    logger.info(f"\n{pass_name}: Collecting {history_days} days of history")
-    
-    total_rows = 0
-    successful_cities = []
-    failed_cities = []
-    
-    expected_rows = len(cities) * (1 + history_days * 24)
-    logger.info(f"Expected rows: ~{expected_rows}")
-
-    # Create a shared session for scrapers that need one (e.g. scrape_timeanddate)
-    session = create_session()
-
-    for i, city in enumerate(cities, 1):
-        city_name = city.get("City")
-        logger.info(f"[{i}/{len(cities)}] Processing {city_name}...")
-        
-        try:
-            # scrape_timeanddate expects (session, city_info, ...) as positional args
-            if scraper_func is scrape_timeanddate:
-                rows = scraper_func(
-                    session,
-                    city_info=city,
-                    history_days=history_days,
-                    pass_index=0
-                )
-            else:
-                rows = scraper_func(
-                    city_info=city,
-                    history_days=history_days,
-                    pass_index=0
-                )
-            
-            if rows:
-                total_rows += len(rows)
-                successful_cities.append(city_name)
-                
-                # Get the appropriate raw file
-                raw_file_map = {
-                    scrape_openmeteo: config.OPENMETEO_RAW_CSV,
-                    scrape_timeanddate: config.TIMEANDDATE_RAW_CSV,
-                    scrape_wunderground: config.WUNDERGROUND_RAW_CSV,
-                }
-                raw_file = raw_file_map.get(scraper_func)
-                
-                if raw_file:
-                    append_raw_rows(raw_file, rows)
-                
-                # Persist to processed data
-                write_processed_outputs(rows)
-                
-                current_temp = rows[0]['Temperature_C'] if rows else 'N/A'
-                historical_count = len(rows) - 1
-                logger.info(f"  ✓ Current: {current_temp}°C, Historical: {historical_count}, Total: {len(rows)}")
-                
-            else:
-                failed_cities.append(city_name)
-                logger.warning(f"  ✗ No data received")
-                
-        except Exception as e:
-            failed_cities.append(city_name)
-            logger.error(f"  ✗ Error: {e}")
-        
-        # Small delay between cities
-        time.sleep(1)
-    
-    # Log summary
-    logger.info(f"\n{pass_name} Summary:")
-    logger.info(f"  Total rows collected: {total_rows}")
-    logger.info(f"  Successful cities: {len(successful_cities)}/{len(cities)}")
-    
-    if failed_cities:
-        logger.warning(f"  Failed cities: {', '.join(failed_cities)}")
-    
-    return total_rows
-
-
-def ensure_all_sources_target(cities: List[Dict], target_per_source: int = 2000) -> Dict[str, int]:
-    """
-    Ensure each source has at least target_per_source rows
-    
-    Args:
-        cities: List of city dictionaries
-        target_per_source: Minimum rows per source (default: 2000)
-    
-    Returns:
-        Dictionary with final counts per source
-    """
-    logger.info("\n" + "="*80)
-    logger.info("CHECKING DATA COLLECTION TARGET: 2,000+ ROWS PER WEBSITE")
-    logger.info("="*80)
-    
-    # Initial counts
-    initial_counts = count_rows_by_source()
-    logger.info("\nInitial data counts:")
-    for source, count in initial_counts.items():
-        logger.info(f"  {source}: {count} rows")
-    
-    results = {}
-    
-    # Collect for Open-Meteo
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 1: Open-Meteo - 2,000+ rows")
-    logger.info("="*80)
-    results['Open-Meteo'] = collect_for_source(
-        cities, 
-        "Open-Meteo", 
-        scrape_openmeteo, 
-        target_per_source
-    )
-    
-    # Collect for TimeAndDate
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 2: TimeAndDate - 2,000+ rows")
-    logger.info("="*80)
-    results['TimeAndDate'] = collect_for_source(
-        cities, 
-        "TimeAndDate", 
-        scrape_timeanddate, 
-        target_per_source
-    )
-    
-    # Collect for WeatherUnderground
-    logger.info("\n" + "="*80)
-    logger.info("TARGET 3: WeatherUnderground - 2,000+ rows")
-    logger.info("="*80)
-    results['WeatherUnderground'] = collect_for_source(
-        cities, 
-        "WeatherUnderground", 
-        scrape_wunderground, 
-        target_per_source
-    )
-    
-    # Final summary
-    logger.info("\n" + "="*80)
-    logger.info("FINAL DATA COLLECTION SUMMARY")
-    logger.info("="*80)
-    
-    all_targets_reached = True
-    for source, count in results.items():
-        status = "✅" if count >= target_per_source else "⚠️"
-        logger.info(f"  {status} {source}: {count} rows (target: {target_per_source})")
-        if count < target_per_source:
-            all_targets_reached = False
-    
-    if all_targets_reached:
-        logger.info(f"\n✅ SUCCESS! All sources have at least {target_per_source} rows!")
-    else:
-        logger.info(f"\n⚠️ Some sources still need more data. Consider running again or increasing collection days.")
-    
-    return results
-
-
-def run_batch_for_scheduled(cities: List[Dict]) -> int:
-    """Run batch for all sources (used for scheduled jobs)"""
-    
-    total_rows = 0
-    
-    # Run Open-Meteo
-    logger.info("Running Open-Meteo scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_openmeteo, history_days=0, pass_name="Scheduled-OpenMeteo")
-    total_rows += rows
-    
-    # Run TimeAndDate
-    logger.info("Running TimeAndDate scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_timeanddate, history_days=0, pass_name="Scheduled-TimeAndDate")
-    total_rows += rows
-    
-    # Run WeatherUnderground
-    logger.info("Running WeatherUnderground scheduled scrape...")
-    rows = collect_historical_batch_for_source(cities, scrape_wunderground, history_days=0, pass_name="Scheduled-WUnderground")
-    total_rows += rows
-    
-    return total_rows
-
-
-def scheduled_job(cities: List[Dict], scheduler: BlockingScheduler) -> None:
-    """Scheduled job to fetch current weather from all sources"""
-    
-    before_counts = count_rows_by_source()
-    logger.info(f"Scheduled scrape started.")
-    logger.info(f"Before counts: {before_counts}")
-    
-    # Run batch for all sources (current weather only)
-    run_batch_for_scheduled(cities)
-    
-    after_counts = count_rows_by_source()
-    logger.info(f"Scheduled scrape completed.")
-    logger.info(f"After counts: {after_counts}")
-    
-
-def initialize_merged_dataset() -> int:
-    """Initialize the merged dataset from existing raw files"""
-    
-    raw_rows = load_and_merge_raw_files()
-    existing_processed_rows = load_existing_rows(config.WEATHER_CSV)
-    merged_rows = normalize_rows(raw_rows + existing_processed_rows)
-    written = replace_processed_outputs(merged_rows)
-    inserted = database.insert_rows(merged_rows)
-    update_summary_report()
-    
-    logger.info(f"Merged dataset prepared. rows_written={written}, rows_inserted_db={inserted}")
-    return written
-
-
-def main() -> None:
-    """Main entry point"""
-    
-    # Setup
-    setup_logging()
-    ensure_directories()
-    database.init_db()
-    
-    # Load cities
-    cities = load_cities()
-    logger.info(f"Loaded {len(cities)} cities")
-    
-    # Initialize merged dataset
-    initialize_merged_dataset()
-    
-    # Ensure each source has at least 2,000 rows
-    results = ensure_all_sources_target(cities, target_per_source=2000)
-    
-    # Start scheduler for regular updates
-    scheduler = BlockingScheduler()
-    scheduler.add_job(
-        scheduled_job,
-        "interval",
-        hours=config.SCRAPE_INTERVAL_HOURS,
-        kwargs={"cities": cities, "scheduler": scheduler},
-        max_instances=1,
-        coalesce=True,
-    )
-    
-    logger.info(f"\n{'='*80}")
-    logger.info("SCHEDULER STARTED")
-    logger.info(f"{'='*80}")
-    logger.info(f"Final counts: {results}")
-    logger.info(f"Scheduler running every {config.SCRAPE_INTERVAL_HOURS} hours")
-    logger.info(f"Press Ctrl+C to stop")
-    
-    try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        logger.info("Scraper stopped by user.")
+            logger.exception(
+                "Scheduler crashed unexpectedly (%s). Restarting in %ss...",
+                e,
+                SCHEDULER_RESTART_DELAY_SECONDS,
+            )
+            time.sleep(SCHEDULER_RESTART_DELAY_SECONDS)
 
 
 if __name__ == "__main__":

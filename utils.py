@@ -171,33 +171,39 @@ def load_existing_rows(file_path: Path) -> List[Dict]:
         return []
 
 
+
 def load_and_merge_raw_files() -> List[Dict]:
-    """Load and merge all raw data files"""
-    raw_files = []
-    
-    # Add Open-Meteo raw file
-    if hasattr(config, 'OPENMETEO_RAW_CSV') and config.OPENMETEO_RAW_CSV:
-        raw_files.append(config.OPENMETEO_RAW_CSV)
-    
-    # Add legacy raw files if they exist (for backward compatibility)
-    legacy_files = ['OPENWEATHER_RAW_CSV', 'TIMEANDDATE_RAW_CSV', 'WUNDERGROUND_RAW_CSV']
-    for legacy in legacy_files:
-        if hasattr(config, legacy):
-            file_path = getattr(config, legacy)
-            if file_path and file_path.exists():
-                raw_files.append(file_path)
-    
-    all_rows: List[Dict] = []
+    """Load and merge all raw CSV files from the raw directory."""
+    all_rows = []
+
+    raw_files = sorted(config.RAW_DIR.glob("*.csv"))
+    if not raw_files:
+        logger.warning("No raw CSV files found in %s", config.RAW_DIR)
+        return all_rows
+
+    source_by_file = {
+        config.OPENMETEO_RAW_CSV.name.lower(): "Open-Meteo",
+        config.TIMEANDDATE_RAW_CSV.name.lower(): "TimeAndDate",
+        config.WUNDERGROUND_RAW_CSV.name.lower(): "WeatherUnderground",
+    }
+
     for file_path in raw_files:
-        if file_path and file_path.exists():
-            rows = load_existing_rows(file_path)
-            if rows:
-                logger.info(f"Loaded {len(rows)} rows from {file_path.name}")
-                all_rows.extend(rows)
-        else:
-            logger.debug(f"Raw file not found: {file_path}")
-    
-    return normalize_rows(all_rows)
+        try:
+            df = pd.read_csv(file_path, dtype=str, low_memory=False, on_bad_lines="skip")
+            if df.empty:
+                logger.info("Loaded 0 rows from %s", file_path.name)
+                continue
+
+            if "SourceWebsite" not in df.columns:
+                guessed_source = source_by_file.get(file_path.name.lower(), file_path.stem)
+                df["SourceWebsite"] = guessed_source
+
+            all_rows.extend(df.to_dict(orient="records"))
+            logger.info("Loaded %s rows from %s", len(df), file_path.name)
+        except Exception as e:
+            logger.error("Could not load %s: %s", file_path, e)
+
+    return all_rows
 
 
 def replace_processed_outputs(rows: List[Dict]) -> int:
@@ -293,99 +299,80 @@ def count_processed_rows() -> int:
 
 
 def update_summary_report() -> None:
-    """Update summary report with current statistics"""
+    """Write a compact summary report from the processed CSV."""
     if not config.WEATHER_CSV.exists():
         logger.debug("Weather CSV not found, skipping summary report")
         return
-    
+
     try:
-        df = pd.read_csv(config.WEATHER_CSV)
+        df = pd.read_csv(config.WEATHER_CSV, low_memory=False)
         if df.empty:
             return
 
-        # Convert numeric columns
-        for col in ("Temperature_C", "WindSpeed_kmh"):
-            if col in df.columns:
-                df[col] = pd.to_numeric(df[col], errors="coerce")
-
-        report_rows = []
         generated_at = now_utc_iso()
+        report_rows = []
 
-        # Average temperature by city
-        avg_temp = (
-            df.groupby(["City", "Country"], dropna=False)["Temperature_C"]
-            .mean()
-            .reset_index()
-            .sort_values("Temperature_C", ascending=False)
+        if "Date" not in df.columns and "ScrapeDateTime" in df.columns:
+            try:
+                dt = pd.to_datetime(df["ScrapeDateTime"], errors="coerce", utc=True, format="mixed")
+            except TypeError:
+                dt = pd.to_datetime(df["ScrapeDateTime"], errors="coerce", utc=True)
+            df["Date"] = dt.dt.strftime("%Y-%m-%d")
+
+        date_series = df["Date"] if "Date" in df.columns else pd.Series(dtype="object")
+        valid_dates = pd.to_datetime(date_series, errors="coerce")
+        min_date = valid_dates.min()
+        max_date = valid_dates.max()
+        unique_dates = int(valid_dates.dt.date.nunique()) if not valid_dates.empty else 0
+
+        report_rows.append(
+            {
+                "ReportGeneratedAt": generated_at,
+                "Metric": "TotalRows",
+                "Value": int(len(df)),
+            }
         )
-        
-        for _, row in avg_temp.iterrows():
-            report_rows.append(
-                {
-                    "ReportGeneratedAt": generated_at,
-                    "Metric": "AverageTemperature_C",
-                    "City": row["City"],
-                    "Country": row["Country"],
-                    "Value": round(float(row["Temperature_C"]), 2)
-                    if pd.notna(row["Temperature_C"])
-                    else None,
-                }
-            )
 
-        # Hottest and coldest cities
-        if not avg_temp.empty:
-            hottest = avg_temp.iloc[0]
-            coldest = avg_temp.iloc[-1]
-            
-            report_rows.append(
-                {
-                    "ReportGeneratedAt": generated_at,
-                    "Metric": "HottestCityByAvgTemp",
-                    "City": hottest["City"],
-                    "Country": hottest["Country"],
-                    "Value": round(float(hottest["Temperature_C"]), 2)
-                    if pd.notna(hottest["Temperature_C"])
-                    else None,
-                }
-            )
-            report_rows.append(
-                {
-                    "ReportGeneratedAt": generated_at,
-                    "Metric": "ColdestCityByAvgTemp",
-                    "City": coldest["City"],
-                    "Country": coldest["Country"],
-                    "Value": round(float(coldest["Temperature_C"]), 2)
-                    if pd.notna(coldest["Temperature_C"])
-                    else None,
-                }
-            )
-
-        # Top windiest cities
-        top_wind = (
-            df.groupby(["City", "Country"], dropna=False)["WindSpeed_kmh"]
-            .mean()
-            .reset_index()
-            .sort_values("WindSpeed_kmh", ascending=False)
-            .head(5)
+        by_source = (
+            df.groupby("SourceWebsite", dropna=False)
+            .size()
+            .reset_index(name="Count")
+            .sort_values("Count", ascending=False)
         )
-        
-        for rank, (_, row) in enumerate(top_wind.iterrows(), start=1):
+        for _, row in by_source.iterrows():
             report_rows.append(
                 {
                     "ReportGeneratedAt": generated_at,
-                    "Metric": f"TopWindiestCity_{rank}",
-                    "City": row["City"],
-                    "Country": row["Country"],
-                    "Value": round(float(row["WindSpeed_kmh"]), 2)
-                    if pd.notna(row["WindSpeed_kmh"])
-                    else None,
+                    "Metric": f"RowsBySource:{row['SourceWebsite']}",
+                    "Value": int(row["Count"]),
                 }
             )
 
-        # Save summary report
+        report_rows.append(
+            {
+                "ReportGeneratedAt": generated_at,
+                "Metric": "DateRangeStart",
+                "Value": min_date.strftime("%Y-%m-%d") if pd.notna(min_date) else None,
+            }
+        )
+        report_rows.append(
+            {
+                "ReportGeneratedAt": generated_at,
+                "Metric": "DateRangeEnd",
+                "Value": max_date.strftime("%Y-%m-%d") if pd.notna(max_date) else None,
+            }
+        )
+        report_rows.append(
+            {
+                "ReportGeneratedAt": generated_at,
+                "Metric": "UniqueDates",
+                "Value": unique_dates,
+            }
+        )
+
         report_df = pd.DataFrame(report_rows)
         report_df.to_csv(config.SUMMARY_CSV, index=False)
-        logger.info(f"Updated summary report with {len(report_rows)} entries")
-        
+        logger.info("Updated summary report with %s entries", len(report_rows))
+
     except Exception as e:
-        logger.error(f"Error updating summary report: {e}")
+        logger.error("Error updating summary report: %s", e)

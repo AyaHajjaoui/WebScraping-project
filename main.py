@@ -173,6 +173,8 @@ def collect_for_source(cities: List[Dict], scraper_func, history_days: int, sour
         city_name = city.get("City")
         logger.info("[%s/%s] %s...", i, len(cities), city_name)
 
+        city_succeeded = False
+
         for attempt in range(MAX_RETRIES):
             try:
                 rows = scraper_func(session, city, history_days, pass_index=0)
@@ -192,6 +194,7 @@ def collect_for_source(cities: List[Dict], scraper_func, history_days: int, sour
 
                     temp = rows[0].get("Temperature_C", "N/A")
                     logger.info("  OK %s rows (Current: %s C)", len(rows), temp)
+                    city_succeeded = True
                     break
 
                 logger.warning("  No data (attempt %s/%s)", attempt + 1, MAX_RETRIES)
@@ -215,8 +218,9 @@ def collect_for_source(cities: List[Dict], scraper_func, history_days: int, sour
                     else:
                         logger.info("    Retrying in %ss...", delay)
                     time.sleep(delay)
-                else:
-                    failed.append(city_name)
+
+        if not city_succeeded:
+            failed.append(city_name)
 
         time.sleep(DELAY_BETWEEN_CITIES)
 
@@ -230,7 +234,7 @@ def collect_for_source(cities: List[Dict], scraper_func, history_days: int, sour
 def run_scheduled_batch(cities: List[Dict]) -> int:
     """Run batch for scheduled job - collects current weather from all sources."""
     total = 0
-    # Only collect new/current data (no historical backfill).
+
     total += collect_for_source(cities, scrape_openmeteo, 0, "Open-Meteo")
     time.sleep(DELAY_BETWEEN_SOURCES)
 
@@ -238,6 +242,7 @@ def run_scheduled_batch(cities: List[Dict]) -> int:
     time.sleep(DELAY_BETWEEN_SOURCES)
 
     total += collect_for_source(cities, scrape_wunderground, 0, "WeatherUnderground")
+
     return total
 
 
@@ -295,11 +300,9 @@ def merge_raw_data() -> int:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    # Keep original ScrapeDateTime text (including microseconds) to avoid collapsing rows.
     raw_scrape_dt = df["ScrapeDateTime"].astype(str).str.strip()
     blank_scrape_dt = raw_scrape_dt.str.lower().isin({"", "none", "nan"})
 
-    # Preserve non-blank raw timestamps exactly; only synthesize truly blank values.
     if blank_scrape_dt.any():
         df.loc[blank_scrape_dt, "ScrapeDateTime"] = pd.Timestamp.now(tz="UTC").isoformat()
     df.loc[~blank_scrape_dt, "ScrapeDateTime"] = raw_scrape_dt.loc[~blank_scrape_dt]
@@ -314,10 +317,9 @@ def merge_raw_data() -> int:
         missing_date = df["Date"].isna()
         df.loc[missing_date, "Date"] = scrape_dt.dt.strftime("%Y-%m-%d").loc[missing_date]
 
-    # Final fallback for Date when datetime parsing still fails: extract YYYY-MM-DD from text.
     missing_date = df["Date"].isna()
     if missing_date.any():
-        extracted = df.loc[missing_date, "ScrapeDateTime"].astype(str).str.extract(r"(\\d{4}-\\d{2}-\\d{2})", expand=False)
+        extracted = df.loc[missing_date, "ScrapeDateTime"].astype(str).str.extract(r"(\d{4}-\d{2}-\d{2})", expand=False)
         df.loc[missing_date, "Date"] = extracted
 
     dedupe_cols = ["SourceWebsite", "City", "Date", "ScrapeDateTime"]
@@ -359,11 +361,8 @@ def merge_raw_data() -> int:
     return len(df)
 
 
-def main() -> None:
-    """Main entry point."""
-    if start_in_background_if_requested():
-        return
-
+def initialize_app() -> List[Dict]:
+    """Shared startup logic."""
     setup_logging()
     ensure_directories()
     database.init_db()
@@ -371,14 +370,33 @@ def main() -> None:
     cities = load_cities()
     logger.info("Loaded %s cities", len(cities))
 
-    merge_raw_data()
+    try:
+        merge_raw_data()
+    except Exception as e:
+        logger.exception("Initial merge failed: %s", e)
 
     counts = count_rows_by_source()
     logger.info("\nCurrent data counts:")
     for source, count in counts.items():
         logger.info("  %s: %s rows", source, count)
 
-    # Immediate run so the process does useful work right away.
+    return cities
+
+
+def run_once() -> None:
+    """Run scraper one time only, then exit. Best for GitHub Actions."""
+    cities = initialize_app()
+
+    try:
+        scheduled_job(cities=cities, scheduler=None)
+    except Exception as e:
+        logger.exception("Single-run job failed: %s", e)
+
+
+def run_scheduler_forever() -> None:
+    """Run scraper continuously with APScheduler. Best for local machine/server."""
+    cities = initialize_app()
+
     try:
         scheduled_job(cities=cities, scheduler=None)
     except Exception as e:
@@ -389,7 +407,6 @@ def main() -> None:
     logger.info("Auto-merge ENABLED | Press Ctrl+C to stop")
     logger.info("%s\n", "=" * 80)
 
-    # Keep running: restart scheduler if it crashes unexpectedly.
     while True:
         scheduler = BlockingScheduler()
         scheduler.add_job(
@@ -413,6 +430,18 @@ def main() -> None:
                 SCHEDULER_RESTART_DELAY_SECONDS,
             )
             time.sleep(SCHEDULER_RESTART_DELAY_SECONDS)
+
+
+def main() -> None:
+    """Main entry point."""
+    if start_in_background_if_requested():
+        return
+
+    if "--once" in sys.argv:
+        run_once()
+        return
+
+    run_scheduler_forever()
 
 
 if __name__ == "__main__":

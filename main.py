@@ -1,7 +1,5 @@
 # main.py
 import logging
-import os
-import subprocess
 import sys
 import time
 from datetime import datetime
@@ -37,31 +35,24 @@ SCHEDULER_RESTART_DELAY_SECONDS = 10
 
 def start_in_background_if_requested() -> bool:
     """
-    If `--background` is passed, relaunch detached and return True in parent.
-    Child process runs with `--run` argument.
+    Placeholder hook for background mode.
+    Returns False by default so normal execution continues.
     """
-    if "--background" not in sys.argv:
-        return False
+    return False
 
-    script_path = os.path.abspath(__file__)
-    cmd = [sys.executable, script_path, "--run"]
 
-    creation_flags = 0
-    if os.name == "nt":
-        creation_flags = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
+def run_scraping_batch(cities: List[Dict]) -> int:
+    """Run one batch of scraping - collects current weather from all sources."""
+    total = 0
 
-    with open(os.devnull, "w", encoding="utf-8") as devnull:
-        subprocess.Popen(
-            cmd,
-            stdout=devnull,
-            stderr=devnull,
-            stdin=devnull,
-            creationflags=creation_flags,
-            close_fds=True,
-        )
+    total += collect_for_source(cities, scrape_openmeteo, 0, "Open-Meteo")
+    time.sleep(DELAY_BETWEEN_SOURCES)
 
-    print("Started main.py in background mode.")
-    return True
+    total += collect_for_source(cities, scrape_timeanddate, 0, "TimeAndDate")
+    time.sleep(DELAY_BETWEEN_SOURCES)
+
+    total += collect_for_source(cities, scrape_wunderground, 0, "WeatherUnderground")
+    return total
 
 
 def load_cities() -> List[Dict]:
@@ -70,6 +61,7 @@ def load_cities() -> List[Dict]:
         try:
             df = pd.read_csv(config.CITIES_CSV)
             cities = []
+
             for _, row in df.iterrows():
                 city = {
                     "City": row.get("City", ""),
@@ -396,11 +388,6 @@ def run_once() -> None:
 def run_scheduler_forever() -> None:
     """Run scraper continuously with APScheduler. Best for local machine/server."""
     cities = initialize_app()
-
-    try:
-        scheduled_job(cities=cities, scheduler=None)
-    except Exception as e:
-        logger.exception("Initial scheduled job run failed: %s", e)
 
     logger.info("\n%s", "=" * 80)
     logger.info("SCHEDULER STARTING - Every %s hours", config.SCRAPE_INTERVAL_HOURS)

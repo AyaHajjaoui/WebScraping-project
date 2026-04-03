@@ -9,8 +9,7 @@ import pandas as pd
 import requests
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-import config
-import database
+import config 
 from scrapers.openmeteo_scraper import scrape_openmeteo
 from scrapers.timeanddate_scraper import scrape_timeanddate
 from scrapers.wunderground_scraper import scrape_wunderground
@@ -342,12 +341,7 @@ def merge_raw_data() -> int:
         logger.info("Saved %s rows to %s", len(df), config.WEATHER_XLSX)
     except Exception as e:
         logger.warning("Could not save Excel output: %s", e)
-
-    try:
-        inserted = database.insert_rows(df.to_dict(orient="records"))
-        logger.info("Database updated. Inserted %s new rows.", inserted)
-    except Exception as e:
-        logger.error("Database error: %s", e)
+ 
 
     update_summary_report()
     return len(df)
@@ -356,8 +350,7 @@ def merge_raw_data() -> int:
 def initialize_app() -> List[Dict]:
     """Shared startup logic."""
     setup_logging()
-    ensure_directories()
-    database.init_db()
+    ensure_directories() 
 
     cities = load_cities()
     logger.info("Loaded %s cities", len(cities))

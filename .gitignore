@@ -44,9 +44,4 @@ logs/
 # OS
 .DS_Store
 Thumbs.db
-
-# Project specific
-data/raw/
-data/processed/
-*.csv
-*.xlsx
+ 

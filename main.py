@@ -420,15 +420,7 @@ def run_scheduler_forever() -> None:
 
 
 def main() -> None:
-    """Main entry point."""
-    if start_in_background_if_requested():
-        return
-
-    if "--once" in sys.argv:
-        run_once()
-        return
-
-    run_scheduler_forever()
+    run_once()
 
 
 if __name__ == "__main__":

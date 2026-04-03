@@ -12,7 +12,7 @@ from urllib3.util.retry import Retry
 
 logger = logging.getLogger(__name__)
 DEFAULT_HISTORY_DAYS = 2
-REQUEST_TIMEOUT = 30
+REQUEST_TIMEOUT = 120
 
 
 def _safe_text(value) -> Optional[str]:
@@ -96,43 +96,141 @@ def _ensure_session(session=None) -> requests.Session:
     return new_session
 
 
-def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[float]]:
-    text = soup.get_text(" ", strip=True)
+def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[object]]:
+    """
+    Extract FeelsLike_C, WindSpeed_kmh, Condition, Humidity_%, and Precipitation
+    from the current-weather section of a timeanddate.com weather page.
+
+    Page structure (confirmed via live DOM inspection):
+      - #qlook > p:nth-of-type(1)  → weather condition text
+      - #qlook > p:nth-of-type(2)  → "Feels Like: X °C … Wind: Y km/h …"
+      - table rows where <th> text matches label  → humidity / precip details
+    """
     feels_like = None
-    humidity = None
     wind_speed = None
+    condition = None
+    humidity = None
     precipitation = None
 
-    feels_match = re.search(r"Feels Like[:\s]+(-?\d+(?:\.\d+)?)", text, flags=re.I)
-    if feels_match:
-        feels_like = _parse_numeric(feels_match.group(1))
+    # ── Condition ────────────────────────────────────────────────────────────
+    # Primary: first <p> in #qlook
+    qlook = soup.select_one("#qlook")
+    if qlook:
+        cond_candidates = qlook.find_all("p", recursive=False)
+        if cond_candidates:
+            condition = _safe_text(cond_candidates[0].get_text(" ", strip=True))
 
-    humidity_match = re.search(r"Humidity[:\s]+(\d+(?:\.\d+)?)\s*%", text, flags=re.I)
-    if humidity_match:
-        humidity = _parse_numeric(humidity_match.group(1))
+    # Fallback: any <p> directly inside #qlook whose text looks like a condition
+    if not condition and qlook:
+        for p in qlook.find_all("p"):
+            txt = _safe_text(p.get_text(" ", strip=True))
+            if txt and len(txt) < 120 and not re.search(r"\d+\s*°", txt):
+                condition = txt
+                break
 
-    # Accept values like "7 mph" or "11 km/h".
-    wind_match = re.search(
-        r"Wind[:\s]+(?:from\s+\w+\s+at\s+)?(\d+(?:\.\d+)?)\s*(km/h|kph|mph)",
-        text,
-        flags=re.I,
-    )
-    if wind_match:
-        speed = _parse_numeric(wind_match.group(1))
-        unit = wind_match.group(2).lower()
-        if speed is not None:
-            wind_speed = round(speed * 1.60934, 2) if unit == "mph" else speed
+    # ── Feels Like & Wind (both live in the 2nd <p> of #qlook) ───────────────
+    detail_p = None
+    if qlook:
+        all_p = qlook.find_all("p", recursive=False)
+        if len(all_p) >= 2:
+            detail_p = all_p[1]
+        elif len(all_p) == 1:
+            # Sometimes merged into one block
+            detail_p = all_p[0]
 
-    precip_match = re.search(r"Precip(?:itation)?[:\s]+(\d+(?:\.\d+)?)", text, flags=re.I)
-    if precip_match:
-        precipitation = _parse_numeric(precip_match.group(1))
+    if detail_p:
+        detail_text = detail_p.get_text(" ", strip=True)
+
+        # Feels Like ─ handles "Feels Like: 16 °C" or "Feels Like: 16°C"
+        fl_match = re.search(r"Feels\s+Like[:\s]+(-?\d+(?:\.\d+)?)\s*°?", detail_text, re.I)
+        if fl_match:
+            feels_like = _parse_numeric(fl_match.group(1))
+
+        # Wind ─ handles "Wind: 7 km/h", "Wind: 11 mph", "Wind: from NW at 7 km/h"
+        wind_match = re.search(
+            r"Wind[:\s]+(?:from\s+\w+\s+at\s+)?(-?\d+(?:\.\d+)?)\s*(km/h|kph|mph)",
+            detail_text,
+            re.I,
+        )
+        if wind_match:
+            speed = _parse_numeric(wind_match.group(1))
+            unit = wind_match.group(2).lower()
+            if speed is not None:
+                wind_speed = round(speed * 1.60934, 2) if unit == "mph" else speed
+
+    # ── Fallback: scan all page text when #qlook approach misses values ──────
+    if feels_like is None or wind_speed is None:
+        full_text = soup.get_text(" ", strip=True)
+
+        if feels_like is None:
+            fl_fb = re.search(r"Feels\s+Like[:\s]+(-?\d+(?:\.\d+)?)\s*°?", full_text, re.I)
+            if fl_fb:
+                feels_like = _parse_numeric(fl_fb.group(1))
+
+        if wind_speed is None:
+            wind_fb = re.search(
+                r"Wind[:\s]+(?:from\s+\w+\s+at\s+)?(-?\d+(?:\.\d+)?)\s*(km/h|kph|mph)",
+                full_text,
+                re.I,
+            )
+            if wind_fb:
+                speed = _parse_numeric(wind_fb.group(1))
+                unit = wind_fb.group(2).lower()
+                if speed is not None:
+                    wind_speed = round(speed * 1.60934, 2) if unit == "mph" else speed
+
+    # ── Humidity & Precipitation: scan <table> rows by <th> label ────────────
+    for row in soup.find_all("tr"):
+        th = row.find("th")
+        td = row.find("td")
+        if not th or not td:
+            continue
+        label = th.get_text(" ", strip=True).lower()
+        value_text = td.get_text(" ", strip=True)
+
+        if "humidity" in label and humidity is None:
+            humidity = _parse_numeric(value_text)
+
+        if "precip" in label and precipitation is None:
+            # Grab first numeric value (could be "3 mm" or "12%")
+            precipitation = _parse_numeric(value_text)
+
+    # ── Fallback for humidity / precipitation from full page text ─────────────
+    if humidity is None or precipitation is None:
+        full_text = soup.get_text(" ", strip=True)
+
+        if humidity is None:
+            hum_match = re.search(r"Humidity[:\s]+(\d+(?:\.\d+)?)\s*%", full_text, re.I)
+            if hum_match:
+                humidity = _parse_numeric(hum_match.group(1))
+
+        if precipitation is None:
+            precip_match = re.search(r"Precip(?:itation)?[:\s]+(\d+(?:\.\d+)?)", full_text, re.I)
+            if precip_match:
+                precipitation = _parse_numeric(precip_match.group(1))
 
     return {
         "FeelsLike_C": feels_like,
         "Humidity_%": humidity,
         "WindSpeed_kmh": wind_speed,
         "Precipitation": precipitation,
+        "Condition": condition,
     }
+
+
+def _flatten_columns(frame: pd.DataFrame) -> pd.DataFrame:
+    """
+    Flatten MultiIndex columns (common with pd.read_html on tables with
+    merged headers) into a single level by joining non-empty parts.
+    """
+    if isinstance(frame.columns, pd.MultiIndex):
+        frame.columns = [
+            " ".join(str(c).strip() for c in col if str(c).strip() and str(c) != "Unnamed: 0 level_0")
+            for col in frame.columns
+        ]
+    else:
+        frame.columns = [str(c).strip() for c in frame.columns]
+    return frame
 
 
 def _parse_table_rows(
@@ -141,17 +239,27 @@ def _parse_table_rows(
     country: str,
     scrape_dt_prefix: str,
 ) -> List[Dict]:
+    # Flatten any MultiIndex headers first
+    frame = _flatten_columns(frame)
+
     records = []
-    temp_col = next((c for c in frame.columns if "temp" in str(c).lower()), None)
-    feels_col = next((c for c in frame.columns if "feels" in str(c).lower()), None)
-    humidity_col = next((c for c in frame.columns if "humid" in str(c).lower()), None)
-    wind_col = next((c for c in frame.columns if "wind" in str(c).lower()), None)
-    condition_col = next((c for c in frame.columns if "weather" in str(c).lower()), None)
-    precip_col = next((c for c in frame.columns if "precip" in str(c).lower()), None)
-    time_col = next(
-        (c for c in frame.columns if any(k in str(c).lower() for k in ("time", "hour"))),
-        None,
-    )
+
+    def _find_col(keywords: List[str]) -> Optional[str]:
+        """Return the first column name that contains any of the keywords."""
+        col_lower = {c: c.lower() for c in frame.columns}
+        for kw in keywords:
+            for col, cl in col_lower.items():
+                if kw in cl:
+                    return col
+        return None
+
+    temp_col      = _find_col(["temp"])
+    feels_col     = _find_col(["feels", "feel"])
+    humidity_col  = _find_col(["humid"])
+    wind_col      = _find_col(["wind"])
+    condition_col = _find_col(["weather", "condition", "desc"])
+    precip_col    = _find_col(["precip"])
+    time_col      = _find_col(["time", "hour"])
 
     if not temp_col:
         return []
@@ -189,11 +297,14 @@ def scrape_timeanddate(
     base_url = city_info["TimeAndDate URL"].rstrip("/")
     all_records: List[Dict] = []
 
+    # ── Current weather ───────────────────────────────────────────────────────
     try:
         html = _fetch_url(local_session, base_url)
         soup = BeautifulSoup(html, "lxml")
-        temp_box = soup.select_one(".h2")
-        cond_box = soup.select_one("#qlook p")
+
+        # Temperature: .h2 inside #qlook (most reliable)
+        temp_box = soup.select_one("#qlook .h2") or soup.select_one(".h2")
+
         details = _extract_current_details(soup)
         current_record = {
             "SourceWebsite": "TimeAndDate",
@@ -204,7 +315,7 @@ def scrape_timeanddate(
             "FeelsLike_C": details["FeelsLike_C"],
             "Humidity_%": details["Humidity_%"],
             "WindSpeed_kmh": details["WindSpeed_kmh"],
-            "Condition": _safe_text(cond_box.text if cond_box else None),
+            "Condition": details["Condition"],
             "Precipitation": details["Precipitation"],
         }
         if any(
@@ -212,9 +323,18 @@ def scrape_timeanddate(
             for field in ["Temperature_C", "FeelsLike_C", "Humidity_%", "WindSpeed_kmh", "Condition", "Precipitation"]
         ):
             all_records.append(current_record)
+            logger.debug(
+                "Current record for %s: FL=%s Wind=%s Cond=%s Precip=%s",
+                city,
+                details["FeelsLike_C"],
+                details["WindSpeed_kmh"],
+                details["Condition"],
+                details["Precipitation"],
+            )
     except Exception as exc:
         logger.warning("TimeAndDate current scrape failed for %s: %s", city, exc)
 
+    # ── Historic weather ──────────────────────────────────────────────────────
     historic_url = f"{base_url}/historic"
     start_days_ago = pass_index * history_days + 1
     for day_offset in range(start_days_ago, start_days_ago + history_days):
@@ -225,12 +345,14 @@ def scrape_timeanddate(
             html = _fetch_url(local_session, url)
             tables = pd.read_html(StringIO(html))
             for table in tables:
-                table_columns = " ".join([str(c).lower() for c in table.columns])
-                if "temp" not in table_columns:
+                # Flatten MultiIndex first, then check for temperature column
+                flat = _flatten_columns(table.copy())
+                table_columns_str = " ".join([str(c).lower() for c in flat.columns])
+                if "temp" not in table_columns_str:
                     continue
                 all_records.extend(
                     _parse_table_rows(
-                        table,
+                        flat,
                         city=city,
                         country=country,
                         scrape_dt_prefix=date_obj.strftime("%Y-%m-%d"),

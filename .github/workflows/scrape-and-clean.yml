@@ -1,0 +1,61 @@
+name: Scrape Weather Data & Clean
+
+on:
+  # Schedule runs daily at 2 AM UTC
+  schedule:
+    - cron: '0 2 * * *'
+  
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  scrape-and-clean:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests openpyxl
+
+      - name: Run weather scraper
+        run: |
+          cd ${{ github.workspace }}
+          python main.py
+
+      - name: Clean and combine data
+        run: |
+          cd ${{ github.workspace }}
+          python processing/clean_data.py
+
+      - name: Commit and push changes
+        if: always()
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || (
+            git commit -m "chore: update weather data $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git push origin main
+          ) || true
+
+      - name: Upload data artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: weather-data
+          path: |
+            data/processed/
+            logs/
+          retention-days: 30

@@ -1,199 +1,365 @@
+# main.py
 import logging
+import os
+import sys
 import time
+from datetime import datetime
 from typing import Dict, List
 
 import pandas as pd
-from apscheduler.schedulers.blocking import BlockingScheduler
+import requests
 
 import config
 import database
-from scrapers import scrape_timeanddate, scrape_wunderground
+from scrapers.openmeteo_scraper import scrape_openmeteo
+from scrapers.timeanddate_scraper import scrape_timeanddate
+from scrapers.wunderground_scraper import scrape_wunderground
 from utils import (
     append_raw_rows,
-    count_processed_rows,
     create_session,
     ensure_directories,
     load_and_merge_raw_files,
-    load_existing_rows,
-    normalize_rows,
-    replace_processed_outputs,
     setup_logging,
     update_summary_report,
-    write_processed_outputs,
 )
 
 logger = logging.getLogger(__name__)
 
+# Constants
+MAX_RETRIES = 3
+DELAY_BETWEEN_CITIES = 2
+DELAY_BETWEEN_SOURCES = 30
+RETRY_BASE_DELAY_SECONDS = 2
+
+
+def run_scraping_batch(cities: List[Dict]) -> int:
+    """Run one batch of scraping - collects current weather from all sources."""
+    total = 0
+    # Only collect new/current data (no historical backfill).
+    total += collect_for_source(cities, scrape_openmeteo, 0, "Open-Meteo")
+    time.sleep(DELAY_BETWEEN_SOURCES)
+
+    total += collect_for_source(cities, scrape_timeanddate, 0, "TimeAndDate")
+    time.sleep(DELAY_BETWEEN_SOURCES)
+
+    total += collect_for_source(cities, scrape_wunderground, 0, "WeatherUnderground")
+    return total
+
+
 
 def load_cities() -> List[Dict]:
-    if not config.CITIES_CSV.exists():
-        raise FileNotFoundError(f"Missing cities file: {config.CITIES_CSV}")
+    """Load cities from CSV or use hardcoded fallback list."""
+    if config.CITIES_CSV.exists():
+        try:
+            df = pd.read_csv(config.CITIES_CSV)
+            cities = []
+            for _, row in df.iterrows():
+                city = {
+                    "City": row.get("City", ""),
+                    "Country": row.get("Country", ""),
+                    "TimeAndDate URL": row.get("TimeAndDate URL", ""),
+                    "WeatherUnderground URL": row.get("WeatherUnderground URL", ""),
+                    "Meteostat URL": row.get("Meteostat URL", ""),
+                }
+                if city["City"]:
+                    cities.append(city)
 
-    df = pd.read_csv(config.CITIES_CSV)
-    expected_columns = {
-        "City",
-        "Country",
-        "TimeAndDate URL",
-        "WeatherUnderground URL",
-        "Meteostat URL",
-    }
-    missing = expected_columns.difference(df.columns)
-    if missing:
-        raise ValueError(f"cities.csv missing required columns: {missing}")
+            if cities:
+                logger.info("Loaded %s cities from %s", len(cities), config.CITIES_CSV)
+                return cities
+        except Exception as e:
+            logger.warning("Could not load cities.csv: %s", e)
 
-    if len(df.index) < config.MIN_CITIES_REQUIRED:
-        raise ValueError(
-            f"cities.csv must include at least {config.MIN_CITIES_REQUIRED} cities; found {len(df.index)}"
+    cities = [
+        {"City": "Beirut", "Country": "LB"},
+        {"City": "New York", "Country": "US"},
+        {"City": "Los Angeles", "Country": "US"},
+        {"City": "Chicago", "Country": "US"},
+        {"City": "Toronto", "Country": "CA"},
+        {"City": "Mexico City", "Country": "MX"},
+        {"City": "Sao Paulo", "Country": "BR"},
+        {"City": "Buenos Aires", "Country": "AR"},
+        {"City": "London", "Country": "GB"},
+        {"City": "Paris", "Country": "FR"},
+        {"City": "Berlin", "Country": "DE"},
+        {"City": "Madrid", "Country": "ES"},
+        {"City": "Rome", "Country": "IT"},
+        {"City": "Cairo", "Country": "EG"},
+        {"City": "Nairobi", "Country": "KE"},
+        {"City": "Johannesburg", "Country": "ZA"},
+        {"City": "Dubai", "Country": "AE"},
+        {"City": "Mumbai", "Country": "IN"},
+        {"City": "Tokyo", "Country": "JP"},
+        {"City": "Seoul", "Country": "KR"},
+        {"City": "Singapore", "Country": "SG"},
+        {"City": "Sydney", "Country": "AU"},
+        {"City": "Melbourne", "Country": "AU"},
+        {"City": "Auckland", "Country": "NZ"},
+    ]
+    logger.info("Using hardcoded list of %s cities", len(cities))
+    return cities
+
+
+def count_rows_by_source() -> Dict[str, int]:
+    """Count rows for each source in processed data."""
+    if not config.WEATHER_CSV.exists():
+        return {"Open-Meteo": 0, "TimeAndDate": 0, "WeatherUnderground": 0}
+
+    try:
+        df = pd.read_csv(config.WEATHER_CSV, low_memory=False)
+    except Exception as e:
+        logger.error("Error counting rows by source: %s", e)
+        return {"Open-Meteo": 0, "TimeAndDate": 0, "WeatherUnderground": 0}
+
+    counts = {}
+    for source in ["Open-Meteo", "TimeAndDate", "WeatherUnderground"]:
+        counts[source] = int((df.get("SourceWebsite") == source).sum()) if "SourceWebsite" in df.columns else 0
+    return counts
+
+
+def _normalize_scrape_datetime(series: pd.Series) -> pd.Series:
+    """Parse mixed datetime formats into UTC timestamps."""
+    try:
+        parsed = pd.to_datetime(series, errors="coerce", utc=True, format="mixed")
+    except TypeError:
+        parsed = pd.to_datetime(series, errors="coerce", utc=True)
+
+    missing = parsed.isna()
+    if missing.any():
+        cleaned = (
+            series[missing]
+            .astype(str)
+            .str.strip()
+            .str.replace("/", "-", regex=False)
+            .str.replace("T", " ", regex=False)
+            .str.replace("Z", "+00:00", regex=False)
         )
-    return df.to_dict(orient="records")
+        try:
+            reparsed = pd.to_datetime(cleaned, errors="coerce", utc=True, format="mixed")
+        except TypeError:
+            reparsed = pd.to_datetime(cleaned, errors="coerce", utc=True)
+        parsed.loc[missing] = reparsed
+
+    return parsed
 
 
-def _run_scrapers_for_city(session, city_info: Dict, pass_index: int, history_days: int, history_hours: int) -> List[Dict]:
-    rows_tad = scrape_timeanddate(session, city_info, history_days=history_days, pass_index=pass_index)
-    rows_wu = scrape_wunderground(session, city_info, history_days=history_days, pass_index=pass_index)
+def collect_for_source(cities: List[Dict], scraper_func, history_days: int, source_name: str) -> int:
+    """Collect data for all cities using a specific scraper with retry logic."""
+    logger.info("\n%s\n%s: Collecting %s days of data\n%s", "=" * 60, source_name, history_days, "=" * 60)
 
-    append_raw_rows(config.TIMEANDDATE_RAW_CSV, rows_tad)
-    append_raw_rows(config.WUNDERGROUND_RAW_CSV, rows_wu)
-    return normalize_rows(rows_tad + rows_wu)
-
-
-def persist_rows(rows: List[Dict]) -> int:
-    if not rows:
-        return 0
-    inserted_db = database.insert_rows(rows)
-    write_processed_outputs(rows)
-    update_summary_report()
-    return inserted_db
-
-
-def initialize_merged_dataset() -> int:
-    raw_rows = load_and_merge_raw_files()
-    existing_processed_rows = load_existing_rows(config.WEATHER_CSV)
-    merged_rows = normalize_rows(raw_rows + existing_processed_rows)
-    written = replace_processed_outputs(merged_rows)
-    inserted = database.insert_rows(merged_rows)
-    update_summary_report()
-    logger.info(
-        "Merged startup dataset prepared. rows_written=%s rows_inserted_db=%s",
-        written,
-        inserted,
-    )
-    return written
-
-
-def run_batch(
-    cities: List[Dict],
-    pass_index: int = 0,
-    history_days: int = config.DEFAULT_HISTORY_DAYS,
-    history_hours: int = config.DEFAULT_HISTORY_HOURS,
-) -> int:
     session = create_session()
     total_rows = 0
-    for city in cities:
-        try:
-            rows = _run_scrapers_for_city(
-                session=session,
-                city_info=city,
-                pass_index=pass_index,
-                history_days=history_days,
-                history_hours=history_hours,
-            )
-            inserted = persist_rows(rows)
-            total_rows += max(inserted, len(rows))
-            logger.info(
-                "Batch pass=%s city=%s rows_scraped=%s rows_db_inserted=%s",
-                pass_index,
-                city.get("City"),
-                len(rows),
-                inserted,
-            )
-            time.sleep(0.6)
-        except Exception as exc:
-            logger.exception("City scrape failed for %s: %s", city.get("City"), exc)
+    successful = []
+    failed = []
+
+    for i, city in enumerate(cities, 1):
+        city_name = city.get("City")
+        logger.info("[%s/%s] %s...", i, len(cities), city_name)
+
+        for attempt in range(MAX_RETRIES):
+            try:
+                rows = scraper_func(session, city, history_days, pass_index=0)
+
+                if rows:
+                    total_rows += len(rows)
+                    successful.append(city_name)
+
+                    raw_files = {
+                        scrape_openmeteo: config.OPENMETEO_RAW_CSV,
+                        scrape_timeanddate: config.TIMEANDDATE_RAW_CSV,
+                        scrape_wunderground: config.WUNDERGROUND_RAW_CSV,
+                    }
+                    raw_file = raw_files.get(scraper_func)
+                    if raw_file:
+                        append_raw_rows(raw_file, rows)
+
+                    temp = rows[0].get("Temperature_C", "N/A")
+                    logger.info("  OK %s rows (Current: %s C)", len(rows), temp)
+                    break
+
+                logger.warning("  No data (attempt %s/%s)", attempt + 1, MAX_RETRIES)
+                if attempt < MAX_RETRIES - 1:
+                    time.sleep(RETRY_BASE_DELAY_SECONDS * (attempt + 1))
+
+            except Exception as e:
+                logger.error("  Error (attempt %s/%s): %s", attempt + 1, MAX_RETRIES, e)
+                if attempt < MAX_RETRIES - 1:
+                    is_connection_error = isinstance(
+                        e,
+                        (
+                            requests.exceptions.ConnectionError,
+                            requests.exceptions.Timeout,
+                            requests.exceptions.ChunkedEncodingError,
+                        ),
+                    )
+                    delay = RETRY_BASE_DELAY_SECONDS * (attempt + 1)
+                    if is_connection_error:
+                        logger.info("    Connection issue detected. Retrying in %ss...", delay)
+                    else:
+                        logger.info("    Retrying in %ss...", delay)
+                    time.sleep(delay)
+                else:
+                    failed.append(city_name)
+
+        time.sleep(DELAY_BETWEEN_CITIES)
+
+    logger.info("\n%s Summary: %s rows from %s/%s cities", source_name, total_rows, len(successful), len(cities))
+    if failed:
+        logger.warning("Failed: %s", ", ".join(failed))
+
     return total_rows
 
 
-def run_initial_backfill(cities: List[Dict]) -> None:
-    current_rows = max(database.count_rows(), count_processed_rows())
-    if current_rows >= config.INITIAL_TARGET_ROWS:
-        logger.info("Initial backfill skipped. Existing rows: %s", current_rows)
-        return
+def merge_raw_data() -> int:
+    """
+    Merge all raw CSV files into processed output.
 
-    logger.info("Starting initial backfill. Current rows=%s target=%s", current_rows, config.INITIAL_TARGET_ROWS)
+    Requirements handled:
+    - Merge all raw CSV files from data/raw
+    - Normalize values and create Date from ScrapeDateTime when missing
+    - Dedupe on ['SourceWebsite', 'City', 'Date', 'ScrapeDateTime']
+    - Sort by Date before save
+    - Update DB and summary report
+    """
+    raw_rows = load_and_merge_raw_files()
+    logger.info("Loaded %s raw rows", len(raw_rows))
 
-    for pass_index in range(config.MAX_INITIAL_PASSES):
-        if current_rows >= config.INITIAL_TARGET_ROWS:
-            break
-        history_days = config.DEFAULT_HISTORY_DAYS + pass_index
-        history_hours = config.DEFAULT_HISTORY_HOURS + pass_index * 24
-        scraped = run_batch(
-            cities=cities,
-            pass_index=pass_index,
-            history_days=history_days,
-            history_hours=history_hours,
-        )
-        current_rows = max(database.count_rows(), count_processed_rows())
-        logger.info(
-            "Initial backfill pass %s done. scraped=%s current_total_rows=%s",
-            pass_index + 1,
-            scraped,
-            current_rows,
-        )
+    if not raw_rows:
+        logger.warning("No raw rows found to merge")
+        return 0
 
-    if current_rows < config.INITIAL_TARGET_ROWS:
-        logger.warning(
-            "Initial backfill stopped at %s rows, below target %s. The scheduler will continue appending.",
-            current_rows,
-            config.INITIAL_TARGET_ROWS,
-        )
+    df = pd.DataFrame(raw_rows)
+    if df.empty:
+        logger.warning("Raw rows produced empty dataframe")
+        return 0
+
+    for col in config.STANDARD_COLUMNS:
+        if col not in df.columns:
+            df[col] = None
+
+    for col in ["SourceWebsite", "City", "Country", "Condition", "ScrapeDateTime"]:
+        if col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
+            df[col] = df[col].replace({"": None, "nan": None, "None": None})
+
+    for col in ["Temperature_C", "FeelsLike_C", "Humidity_%", "WindSpeed_kmh", "Precipitation"]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    # Keep original ScrapeDateTime text (including microseconds) to avoid collapsing rows.
+    raw_scrape_dt = df["ScrapeDateTime"].astype(str).str.strip()
+    blank_scrape_dt = raw_scrape_dt.str.lower().isin({"", "none", "nan"})
+
+    # Preserve non-blank raw timestamps exactly; only synthesize truly blank values.
+    if blank_scrape_dt.any():
+        df.loc[blank_scrape_dt, "ScrapeDateTime"] = pd.Timestamp.now(tz="UTC").isoformat()
+    df.loc[~blank_scrape_dt, "ScrapeDateTime"] = raw_scrape_dt.loc[~blank_scrape_dt]
+
+    scrape_dt = _normalize_scrape_datetime(df["ScrapeDateTime"])
+
+    if "Date" not in df.columns:
+        df["Date"] = scrape_dt.dt.strftime("%Y-%m-%d")
     else:
-        logger.info("Initial backfill completed with %s rows.", current_rows)
+        date_parsed = pd.to_datetime(df["Date"], errors="coerce")
+        df["Date"] = date_parsed.dt.strftime("%Y-%m-%d")
+        missing_date = df["Date"].isna()
+        df.loc[missing_date, "Date"] = scrape_dt.dt.strftime("%Y-%m-%d").loc[missing_date]
 
+    # Final fallback for Date when datetime parsing still fails: extract YYYY-MM-DD from text.
+    missing_date = df["Date"].isna()
+    if missing_date.any():
+        extracted = df.loc[missing_date, "ScrapeDateTime"].astype(str).str.extract(r"(\\d{4}-\\d{2}-\\d{2})", expand=False)
+        df.loc[missing_date, "Date"] = extracted
 
-def scheduled_job(cities: List[Dict], scheduler: BlockingScheduler) -> None:
-    before = max(database.count_rows(), count_processed_rows())
-    logger.info("Scheduled scrape started. Existing rows=%s", before)
-    run_batch(cities=cities, pass_index=0, history_days=1, history_hours=8)
-    after = max(database.count_rows(), count_processed_rows())
-    logger.info("Scheduled scrape completed. Total rows=%s", after)
+    dedupe_cols = ["SourceWebsite", "City", "Date", "ScrapeDateTime"]
+    before = len(df)
+    df = df.drop_duplicates(subset=dedupe_cols, keep="last")
+    logger.info("Deduplicated: %s -> %s rows", before, len(df))
 
-    if after >= config.AUTO_TARGET_ROWS:
-        logger.info(
-            "Auto target reached (%s rows >= %s). Stopping scheduler.",
-            after,
-            config.AUTO_TARGET_ROWS,
-        )
-        scheduler.shutdown(wait=False)
+    sort_date = pd.to_datetime(df["Date"], errors="coerce")
+    sort_scrape_dt = _normalize_scrape_datetime(df["ScrapeDateTime"])
+    df = (
+        df.assign(_sort_date=sort_date, _sort_scrape_dt=sort_scrape_dt)
+        .sort_values(by=["_sort_date", "SourceWebsite", "City", "_sort_scrape_dt"], ascending=True)
+        .drop(columns=["_sort_date", "_sort_scrape_dt"])
+    )
+
+    output_cols = ["Date"] + config.STANDARD_COLUMNS
+    for col in output_cols:
+        if col not in df.columns:
+            df[col] = None
+    df = df[output_cols]
+
+    config.PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    df.to_csv(config.WEATHER_CSV, index=False)
+    logger.info("Saved %s rows to %s", len(df), config.WEATHER_CSV)
+
+    try:
+        df.to_excel(config.WEATHER_XLSX, index=False)
+        logger.info("Saved %s rows to %s", len(df), config.WEATHER_XLSX)
+    except Exception as e:
+        logger.warning("Could not save Excel output: %s", e)
+
+    try:
+        inserted = database.insert_rows(df.to_dict(orient="records"))
+        logger.info("Database updated. Inserted %s new rows.", inserted)
+    except Exception as e:
+        logger.error("Database error: %s", e)
+
+    update_summary_report()
+    return len(df)
 
 
 def main() -> None:
+    """Main entry point - runs scraper once (for GitHub Actions)."""
     setup_logging()
     ensure_directories()
     database.init_db()
+
     cities = load_cities()
-    initialize_merged_dataset()
+    logger.info("Loaded %s cities", len(cities))
 
-    run_initial_backfill(cities)
-
-    scheduler = BlockingScheduler()
-    scheduler.add_job(
-        scheduled_job,
-        "interval",
-        hours=config.SCRAPE_INTERVAL_HOURS,
-        kwargs={"cities": cities, "scheduler": scheduler},
-        max_instances=1,
-        coalesce=True,
-        next_run_time=None,
-    )
-
-    logger.info(
-        "Scheduler started. Running every %s hours. Press Ctrl+C to stop.",
-        config.SCRAPE_INTERVAL_HOURS,
-    )
+    # Merge any existing raw data first
     try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        logger.info("Scraper stopped by user.")
+        merge_raw_data()
+    except Exception as e:
+        logger.warning("Initial merge failed: %s", e)
+
+    counts = count_rows_by_source()
+    logger.info("\nCurrent data counts:")
+    for source, count in counts.items():
+        logger.info("  %s: %s rows", source, count)
+
+    # Run scraping batch once
+    logger.info("\n%s\nSCRAPE STARTED - %s\n%s", "=" * 80, datetime.now(), "=" * 80)
+    before = count_rows_by_source()
+    logger.info("Before: %s", before)
+
+    # Scrape from all sources
+    total = 0
+    total += collect_for_source(cities, scrape_openmeteo, 0, "Open-Meteo")
+    time.sleep(DELAY_BETWEEN_SOURCES)
+
+    total += collect_for_source(cities, scrape_timeanddate, 0, "TimeAndDate")
+    time.sleep(DELAY_BETWEEN_SOURCES)
+
+    total += collect_for_source(cities, scrape_wunderground, 0, "WeatherUnderground")
+
+    if total > 0:
+        logger.info("\nCollected %s rows total", total)
+    else:
+        logger.warning("No data collected")
+
+    logger.info("\nMerging raw data...")
+    try:
+        written = merge_raw_data()
+        logger.info("Merge complete: %s rows", written)
+    except Exception as e:
+        logger.exception("Merge failed: %s", e)
+
+    after = count_rows_by_source()
+    logger.info("\nAfter: %s", after)
+    logger.info("\n%s\nSCRAPE COMPLETED\n%s\n", "=" * 80, "=" * 80)
 
 
 if __name__ == "__main__":

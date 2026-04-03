@@ -1,0 +1,6 @@
+2026-03-31 19:36:52,258 | INFO | __main__ | Merged startup dataset prepared. rows_written=2077 rows_inserted_db=0
+2026-03-31 19:36:52,264 | INFO | __main__ | Initial backfill skipped. Existing rows: 2077
+2026-03-31 19:36:52,273 | INFO | apscheduler.scheduler | Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-31 19:36:52,273 | INFO | __main__ | Scheduler started. Running every 3 hours. Press Ctrl+C to stop.
+2026-03-31 19:36:52,275 | INFO | apscheduler.scheduler | Added job "scheduled_job" to job store "default"
+2026-03-31 19:36:52,275 | INFO | apscheduler.scheduler | Scheduler started

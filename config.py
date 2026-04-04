@@ -66,7 +66,6 @@ STANDARD_COLUMNS = [
     "Humidity_%",
     "WindSpeed_kmh",
     "Condition",
-    "Precipitation",
 ]
 
 # User agents for requests

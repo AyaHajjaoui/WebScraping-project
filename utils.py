@@ -125,7 +125,6 @@ def normalize_row(row: Dict) -> Dict:
     normalized["FeelsLike_C"] = parse_numeric(normalized.get("FeelsLike_C"))
     normalized["Humidity_%"] = parse_numeric(normalized.get("Humidity_%"))
     normalized["WindSpeed_kmh"] = parse_numeric(normalized.get("WindSpeed_kmh"))
-    normalized["Precipitation"] = parse_numeric(normalized.get("Precipitation"))
     normalized["Condition"] = safe_text(normalized.get("Condition"))
     normalized["ScrapeDateTime"] = safe_text(normalized.get("ScrapeDateTime")) or now_utc_iso()
     return normalized

@@ -287,7 +287,7 @@ def merge_raw_data() -> int:
             df[col] = df[col].astype(str).str.strip()
             df[col] = df[col].replace({"": None, "nan": None, "None": None})
 
-    for col in ["Temperature_C", "FeelsLike_C", "Humidity_%", "WindSpeed_kmh", "Precipitation"]:
+    for col in ["Temperature_C", "FeelsLike_C", "Humidity_%", "WindSpeed_kmh"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 

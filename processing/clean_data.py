@@ -85,7 +85,7 @@ def remove_key_duplicates(df):
 
 def fill_missing_numerical_values(df, source_name):
     """Fill missing numerical values with median for the source"""
-    numerical_cols = ['FeelsLike_C', 'Humidity_%', 'WindSpeed_kmh', 'Precipitation']
+    numerical_cols = ['FeelsLike_C', 'Humidity_%', 'WindSpeed_kmh']
     
     for col in numerical_cols:
         missing_count = df[col].isna().sum()
@@ -123,7 +123,6 @@ def clean_dataframes(dataframes):
         df_clean['FeelsLike_C'] = df_clean['FeelsLike_C'].apply(clean_numeric)
         df_clean['Humidity_%'] = df_clean['Humidity_%'].apply(clean_numeric)
         df_clean['WindSpeed_kmh'] = df_clean['WindSpeed_kmh'].apply(clean_numeric)
-        df_clean['Precipitation'] = df_clean['Precipitation'].apply(clean_numeric)
         
         # Standardize text columns
         df_clean['Condition'] = df_clean['Condition'].fillna('').str.strip()
@@ -173,7 +172,7 @@ def combine_data(cleaned_dfs):
     # Reorder columns for better readability
     column_order = ['ScrapeDateTime', 'SourceWebsite', 'City', 'Country', 
                     'Temperature_C', 'FeelsLike_C', 'Humidity_%', 'WindSpeed_kmh', 
-                    'Condition', 'Precipitation']
+                    'Condition']
     combined = combined[column_order]
     
     return combined

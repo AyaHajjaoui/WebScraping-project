@@ -56,8 +56,7 @@ def get_current_weather(lat: float, lon: float, city_name: str, country: str) ->
                 "relative_humidity_2m",
                 "apparent_temperature",
                 "weather_code",
-                "wind_speed_10m",
-                "precipitation"
+                "wind_speed_10m"
             ],
             "timezone": "auto"
         }
@@ -82,8 +81,7 @@ def get_current_weather(lat: float, lon: float, city_name: str, country: str) ->
             "FeelsLike_C": current.get("apparent_temperature"),
             "Humidity_%": current.get("relative_humidity_2m"),
             "WindSpeed_kmh": current.get("wind_speed_10m"),
-            "Condition": condition,
-            "Precipitation": current.get("precipitation", 0)
+            "Condition": condition
         }
         
         return weather_data
@@ -115,8 +113,7 @@ def get_historical_weather(lat: float, lon: float, city_name: str, country: str,
                 "relative_humidity_2m",
                 "apparent_temperature",
                 "weather_code",
-                "wind_speed_10m",
-                "precipitation"
+                "wind_speed_10m"
             ],
             "timezone": "auto"
         }
@@ -134,7 +131,6 @@ def get_historical_weather(lat: float, lon: float, city_name: str, country: str,
             humidity = hourly.get("relative_humidity_2m", [])
             wind_speed = hourly.get("wind_speed_10m", [])
             weather_codes = hourly.get("weather_code", [])
-            precipitation = hourly.get("precipitation", [])
             
             for i in range(len(times)):
                 weather_code = weather_codes[i] if i < len(weather_codes) else None
@@ -149,8 +145,7 @@ def get_historical_weather(lat: float, lon: float, city_name: str, country: str,
                     "FeelsLike_C": feels_like[i] if i < len(feels_like) else None,
                     "Humidity_%": humidity[i] if i < len(humidity) else None,
                     "WindSpeed_kmh": wind_speed[i] if i < len(wind_speed) else None,
-                    "Condition": condition,
-                    "Precipitation": precipitation[i] if i < len(precipitation) else 0
+                    "Condition": condition
                 }
                 historical_data.append(weather_data)
             

@@ -63,7 +63,6 @@ def _normalize_rows(rows: List[Dict]) -> List[Dict]:
         "Humidity_%",
         "WindSpeed_kmh",
         "Condition",
-        "Precipitation",
     ]
     for col in expected_cols:
         if col not in frame.columns:
@@ -98,19 +97,18 @@ def _ensure_session(session=None) -> requests.Session:
 
 def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[object]]:
     """
-    Extract FeelsLike_C, WindSpeed_kmh, Condition, Humidity_%, and Precipitation
+    Extract FeelsLike_C, WindSpeed_kmh, Condition, and Humidity_%
     from the current-weather section of a timeanddate.com weather page.
 
     Page structure (confirmed via live DOM inspection):
       - #qlook > p:nth-of-type(1)  → weather condition text
       - #qlook > p:nth-of-type(2)  → "Feels Like: X °C … Wind: Y km/h …"
-      - table rows where <th> text matches label  → humidity / precip details
+      - table rows where <th> text matches label  → humidity details
     """
     feels_like = None
     wind_speed = None
     condition = None
     humidity = None
-    precipitation = None
 
     # ── Condition ────────────────────────────────────────────────────────────
     # Primary: first <p> in #qlook
@@ -179,7 +177,7 @@ def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[object]]
                 if speed is not None:
                     wind_speed = round(speed * 1.60934, 2) if unit == "mph" else speed
 
-    # ── Humidity & Precipitation: scan <table> rows by <th> label ────────────
+    # ── Humidity: scan <table> rows by <th> label ─────────────────────────────
     for row in soup.find_all("tr"):
         th = row.find("th")
         td = row.find("td")
@@ -191,12 +189,8 @@ def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[object]]
         if "humidity" in label and humidity is None:
             humidity = _parse_numeric(value_text)
 
-        if "precip" in label and precipitation is None:
-            # Grab first numeric value (could be "3 mm" or "12%")
-            precipitation = _parse_numeric(value_text)
-
-    # ── Fallback for humidity / precipitation from full page text ─────────────
-    if humidity is None or precipitation is None:
+    # ── Fallback for humidity from full page text ──────────────────────────────
+    if humidity is None:
         full_text = soup.get_text(" ", strip=True)
 
         if humidity is None:
@@ -204,16 +198,10 @@ def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[object]]
             if hum_match:
                 humidity = _parse_numeric(hum_match.group(1))
 
-        if precipitation is None:
-            precip_match = re.search(r"Precip(?:itation)?[:\s]+(\d+(?:\.\d+)?)", full_text, re.I)
-            if precip_match:
-                precipitation = _parse_numeric(precip_match.group(1))
-
     return {
         "FeelsLike_C": feels_like,
         "Humidity_%": humidity,
         "WindSpeed_kmh": wind_speed,
-        "Precipitation": precipitation,
         "Condition": condition,
     }
 
@@ -258,7 +246,6 @@ def _parse_table_rows(
     humidity_col  = _find_col(["humid"])
     wind_col      = _find_col(["wind"])
     condition_col = _find_col(["weather", "condition", "desc"])
-    precip_col    = _find_col(["precip"])
     time_col      = _find_col(["time", "hour"])
 
     if not temp_col:
@@ -279,7 +266,6 @@ def _parse_table_rows(
                 "Humidity_%": _parse_numeric(row.get(humidity_col)) if humidity_col else None,
                 "WindSpeed_kmh": _parse_numeric(row.get(wind_col)) if wind_col else None,
                 "Condition": _safe_text(row.get(condition_col)) if condition_col else None,
-                "Precipitation": _parse_numeric(row.get(precip_col)) if precip_col else None,
             }
         )
     return records
@@ -316,20 +302,18 @@ def scrape_timeanddate(
             "Humidity_%": details["Humidity_%"],
             "WindSpeed_kmh": details["WindSpeed_kmh"],
             "Condition": details["Condition"],
-            "Precipitation": details["Precipitation"],
         }
         if any(
             current_record.get(field) is not None
-            for field in ["Temperature_C", "FeelsLike_C", "Humidity_%", "WindSpeed_kmh", "Condition", "Precipitation"]
+            for field in ["Temperature_C", "FeelsLike_C", "Humidity_%", "WindSpeed_kmh", "Condition"]
         ):
             all_records.append(current_record)
             logger.debug(
-                "Current record for %s: FL=%s Wind=%s Cond=%s Precip=%s",
+                "Current record for %s: FL=%s Wind=%s Cond=%s",
                 city,
                 details["FeelsLike_C"],
                 details["WindSpeed_kmh"],
                 details["Condition"],
-                details["Precipitation"],
             )
     except Exception as exc:
         logger.warning("TimeAndDate current scrape failed for %s: %s", city, exc)

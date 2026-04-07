@@ -54,6 +54,7 @@ jobs:
             python processing/clean_data.py
           else
             echo "processing/clean_data.py not found. Skipping extra cleaning."
+          fi
 
       - name: Upload artifacts
         if: always()

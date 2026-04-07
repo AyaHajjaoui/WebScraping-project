@@ -28,7 +28,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -52,7 +54,6 @@ jobs:
             python processing/clean_data.py
           else
             echo "processing/clean_data.py not found. Skipping extra cleaning."
-          fi
 
       - name: Upload artifacts
         if: always()
@@ -68,11 +69,9 @@ jobs:
             logs/**/*.log
             logs/**/*.txt
 
-            - name: Detect changes
+      - name: Detect changes
         id: detect_changes
         run: |
-          changed=false
-
           if [ -d "data" ]; then
             git add data/
           fi
@@ -83,13 +82,10 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit changes
+      - name: Commit and push changes
         if: steps.detect_changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: update scraped weather data (run ${{ github.run_id }})"
-
-      - name: Push changes
-        if: steps.detect_changes.outputs.changed == 'true'
-        run: git push
+          git push origin HEAD:${{ github.ref_name }}

@@ -68,15 +68,15 @@ jobs:
             logs/**/*.log
             logs/**/*.txt
 
-      - name: Detect changes
+            - name: Detect changes
         id: detect_changes
         run: |
+          changed=false
+
           if [ -d "data" ]; then
             git add data/
           fi
-          if [ -d "logs" ]; then
-            git add logs/
-          fi
+
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else

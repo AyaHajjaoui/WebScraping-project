@@ -4890,27 +4890,69 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 2026-04-07,TimeAndDate,Tokyo,Japan,2026-04-07T21:25:46.662161+00:00,8.0,4.0,43.0,36.0,Clear.
 2026-04-07,TimeAndDate,Toronto,Canada,2026-04-07T21:25:15.260277+00:00,0.0,-4.0,34.0,11.0,Passing clouds.
 2026-04-08,Open-Meteo,Auckland,New Zealand,2026-04-08T00:24:33.248498,20.8,22.5,87.0,10.4,Overcast
+2026-04-08,Open-Meteo,Auckland,New Zealand,2026-04-08T04:51:05.238844,20.8,21.6,83.0,13.3,Overcast
 2026-04-08,Open-Meteo,Beirut,Lebanon,2026-04-08T00:16:57.683473,15.2,14.5,77.0,7.0,Partly cloudy
+2026-04-08,Open-Meteo,Beirut,Lebanon,2026-04-08T04:35:26.585767,15.7,14.4,66.0,7.4,Mainly clear
 2026-04-08,Open-Meteo,Berlin,Germany,2026-04-08T00:19:56.856258,7.1,3.6,47.0,5.9,Clear sky
+2026-04-08,Open-Meteo,Berlin,Germany,2026-04-08T04:42:23.628524,1.9,-1.3,57.0,2.5,Clear sky
 2026-04-08,Open-Meteo,Buenos Aires,Argentina,2026-04-08T00:18:53.593452,18.9,18.5,86.0,18.4,Overcast
 2026-04-08,Open-Meteo,Cairo,Egypt,2026-04-08T00:20:33.272056,16.0,15.5,71.0,5.4,Mainly clear
+2026-04-08,Open-Meteo,Cairo,Egypt,2026-04-08T04:43:38.339503,13.6,13.9,89.0,2.3,Partly cloudy
 2026-04-08,Open-Meteo,Chicago,United States,2026-04-08T00:17:44.215732,1.0,-3.6,60.0,13.4,Clear sky
+2026-04-08,Open-Meteo,Dubai,United Arab Emirates,2026-04-08T04:45:54.997501,23.0,22.6,65.0,16.6,Mainly clear
 2026-04-08,Open-Meteo,Johannesburg,South Africa,2026-04-08T00:21:19.322262,15.4,15.8,91.0,5.9,Partly cloudy
+2026-04-08,Open-Meteo,Johannesburg,South Africa,2026-04-08T04:45:52.114218,13.1,13.1,92.0,4.0,Overcast
 2026-04-08,Open-Meteo,London,United Kingdom,2026-04-08T00:19:23.012596,13.6,10.9,59.0,11.2,Clear sky
+2026-04-08,Open-Meteo,London,United Kingdom,2026-04-08T04:40:09.301418,10.7,8.4,69.0,7.9,Clear sky
 2026-04-08,Open-Meteo,Los Angeles,United States,2026-04-08T00:17:28.323130,24.8,25.7,52.0,15.6,Clear sky
+2026-04-08,Open-Meteo,Los Angeles,United States,2026-04-08T04:35:32.204284,17.1,17.9,84.0,4.6,Clear sky
 2026-04-08,Open-Meteo,Madrid,Spain,2026-04-08T00:20:26.841936,15.5,14.4,69.0,7.6,Partly cloudy
+2026-04-08,Open-Meteo,Madrid,Spain,2026-04-08T04:42:26.437881,11.9,11.2,88.0,4.9,Overcast
 2026-04-08,Open-Meteo,Melbourne,Australia,2026-04-08T00:24:01.399408,11.7,10.5,80.0,5.4,Overcast
 2026-04-08,Open-Meteo,Mexico City,Mexico,2026-04-08T00:18:18.102431,22.3,21.4,41.0,3.3,Slight rain showers
+2026-04-08,Open-Meteo,Mexico City,Mexico,2026-04-08T04:38:23.059586,15.2,14.1,68.0,6.5,Partly cloudy
 2026-04-08,Open-Meteo,Mumbai,India,2026-04-08T00:22:38.699053,28.3,33.2,76.0,7.2,Mainly clear
+2026-04-08,Open-Meteo,Mumbai,India,2026-04-08T04:45:57.793946,28.3,33.7,74.0,8.9,Mainly clear
 2026-04-08,Open-Meteo,Nairobi,Kenya,2026-04-08T00:21:03.244122,17.1,17.4,84.0,7.7,Partly cloudy
 2026-04-08,Open-Meteo,New York,United States,2026-04-08T00:17:13.030569,8.5,0.9,24.0,29.2,Clear sky
+2026-04-08,Open-Meteo,New York,United States,2026-04-08T04:35:29.402287,-0.0,-5.2,46.0,12.7,Clear sky
 2026-04-08,Open-Meteo,Paris,France,2026-04-08T00:19:53.494886,17.7,16.3,51.0,5.1,Clear sky
 2026-04-08,Open-Meteo,Rome,Italy,2026-04-08T00:20:30.021355,12.6,12.8,94.0,2.2,Clear sky
+2026-04-08,Open-Meteo,Rome,Italy,2026-04-08T04:42:29.232994,8.5,7.6,100.0,3.4,Fog
 2026-04-08,Open-Meteo,Seoul,South Korea,2026-04-08T00:22:57.190126,1.8,-1.1,78.0,3.3,Clear sky
 2026-04-08,Open-Meteo,Sydney,Australia,2026-04-08T00:23:57.461257,16.2,17.0,87.0,3.3,Partly cloudy
+2026-04-08,Open-Meteo,Sydney,Australia,2026-04-08T04:48:51.438774,27.3,27.8,40.0,2.3,Mainly clear
 2026-04-08,Open-Meteo,São Paulo,Brazil,2026-04-08T00:18:22.235808,26.6,28.5,60.0,7.5,Partly cloudy
+2026-04-08,Open-Meteo,São Paulo,Brazil,2026-04-08T04:38:25.865224,22.5,25.5,86.0,6.4,Partly cloudy
+2026-04-08,Open-Meteo,Temasek,Singapore,2026-04-08T04:48:48.555980,31.2,38.5,67.0,5.5,Overcast
 2026-04-08,Open-Meteo,Tokyo,Japan,2026-04-08T00:22:53.988785,6.2,3.0,55.0,5.4,Clear sky
+2026-04-08,Open-Meteo,Tokyo,Japan,2026-04-08T04:47:06.888584,16.3,15.2,34.0,3.7,Clear sky
 2026-04-08,Open-Meteo,Toronto,Canada,2026-04-08T00:17:47.443819,-1.1,-7.2,47.0,19.3,Clear sky
+2026-04-08,Open-Meteo,Toronto,Canada,2026-04-08T04:38:20.260345,-2.6,-6.6,56.0,4.7,Mainly clear
+2026-04-08,TimeAndDate,Auckland,New Zealand,2026-04-08T04:52:25.387083+00:00,68.0,68.0,88.0,20.92,Broken clouds.
+2026-04-08,TimeAndDate,Beirut,Lebanon,2026-04-08T04:51:37.423197+00:00,45.0,41.0,93.0,11.27,Fog.
+2026-04-08,TimeAndDate,Berlin,Germany,2026-04-08T04:51:58.174319+00:00,28.0,28.0,80.0,1.61,Clear.
+2026-04-08,TimeAndDate,Buenos Aires,Argentina,2026-04-08T04:51:51.953526+00:00,63.0,63.0,94.0,14.48,Drizzle. Mostly cloudy.
+2026-04-08,TimeAndDate,Cairo,Egypt,2026-04-08T04:52:04.400467+00:00,61.0,61.0,72.0,9.66,Partly sunny.
+2026-04-08,TimeAndDate,Chicago,United States,2026-04-08T04:51:43.622584+00:00,36.0,30.0,73.0,11.27,Mostly cloudy.
+2026-04-08,TimeAndDate,Dubai,United Arab Emirates,2026-04-08T04:52:10.741756+00:00,79.0,78.0,23.0,4.83,Passing clouds.
+2026-04-08,TimeAndDate,Johannesburg,South Africa,2026-04-08T04:52:08.676684+00:00,61.0,61.0,83.0,8.05,Passing clouds.
+2026-04-08,TimeAndDate,London,United Kingdom,2026-04-08T04:51:54.031847+00:00,43.0,43.0,93.0,3.22,Clear.
+2026-04-08,TimeAndDate,Los Angeles,United States,2026-04-08T04:51:41.560780+00:00,64.0,64.0,81.0,9.66,Clear.
+2026-04-08,TimeAndDate,Madrid,Spain,2026-04-08T04:52:00.234772+00:00,52.0,52.0,94.0,3.22,Partly cloudy.
+2026-04-08,TimeAndDate,Melbourne,Australia,2026-04-08T04:52:23.318486+00:00,66.0,66.0,49.0,8.05,Sunny.
+2026-04-08,TimeAndDate,Mexico City,Mexico,2026-04-08T04:51:47.792958+00:00,64.0,64.0,64.0,16.09,Passing clouds.
+2026-04-08,TimeAndDate,Mumbai,India,2026-04-08T04:52:12.815575+00:00,83.0,94.0,86.0,,Haze.
+2026-04-08,TimeAndDate,Nairobi,Kenya,2026-04-08T04:52:06.586336+00:00,64.0,64.0,83.0,9.66,Partly sunny.
+2026-04-08,TimeAndDate,New York,United States,2026-04-08T04:51:39.502689+00:00,34.0,26.0,44.0,14.48,Clear.
+2026-04-08,TimeAndDate,Paris,France,2026-04-08T04:51:56.094891+00:00,50.0,48.0,71.0,9.66,Clear.
+2026-04-08,TimeAndDate,Rome,Italy,2026-04-08T04:52:02.312062+00:00,46.0,44.0,87.0,8.05,Clear.
+2026-04-08,TimeAndDate,Sao Paulo,Brazil,2026-04-08T04:51:49.872542+00:00,72.0,71.0,83.0,12.87,Clear.
+2026-04-08,TimeAndDate,Seoul,South Korea,2026-04-08T04:52:16.936519+00:00,55.0,53.0,44.0,12.87,Passing clouds.
+2026-04-08,TimeAndDate,Singapore,Singapore,2026-04-08T04:52:19.114733+00:00,91.0,103.0,59.0,8.05,Broken clouds.
+2026-04-08,TimeAndDate,Sydney,Australia,2026-04-08T04:52:21.248550+00:00,77.0,79.0,65.0,19.31,Passing clouds.
+2026-04-08,TimeAndDate,Tokyo,Japan,2026-04-08T04:52:14.876231+00:00,63.0,63.0,19.0,16.09,Passing clouds.
+2026-04-08,TimeAndDate,Toronto,Canada,2026-04-08T04:51:45.720836+00:00,25.0,18.0,63.0,9.66,Clear.
 ,WeatherUnderground,Auckland,New Zealand,1774874366,58.0,,66.0,3.22,Partly Cloudy
 ,WeatherUnderground,Auckland,New Zealand,1774874466,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Auckland,New Zealand,1774874368,54.0,,59.0,12.87,Cloudy
@@ -4958,6 +5000,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Auckland,New Zealand,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,Auckland,New Zealand,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Auckland,New Zealand,1775597049,20.56,20.56,93.0,24.14,Light Rain
+,WeatherUnderground,Auckland,New Zealand,1775623773,51.0,47.0,97.0,17.7,Fair
+,WeatherUnderground,Auckland,New Zealand,1775623889,34.0,27.0,47.0,14.48,Clear
+,WeatherUnderground,Auckland,New Zealand,1775623795,34.0,28.0,73.0,11.27,Cloudy
+,WeatherUnderground,Auckland,New Zealand,1775623929,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Auckland,New Zealand,1775623852,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Auckland,New Zealand,1775623766,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Auckland,New Zealand,1775623489,28.33,33.33,77.0,14.48,Partly Cloudy
 ,WeatherUnderground,Beirut,Lebanon,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Beirut,Lebanon,1774873939,19.44,,93.0,12.87,Partly Cloudy
 ,WeatherUnderground,Beirut,Lebanon,1774874038,53.0,,55.0,20.92,Mostly Cloudy
@@ -5000,6 +5049,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Beirut,Lebanon,1775596642,24.44,24.44,28.0,14.48,Fair
 ,WeatherUnderground,Beirut,Lebanon,1775597175,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Beirut,Lebanon,1775596952,60.0,59.0,69.0,11.27,Fair
+,WeatherUnderground,Beirut,Lebanon,1775623865,52.0,48.0,96.0,17.7,Fair
+,WeatherUnderground,Beirut,Lebanon,1775623831,34.0,27.0,47.0,14.48,Clear
+,WeatherUnderground,Beirut,Lebanon,1775623666,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Beirut,Lebanon,1775623936,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Beirut,Lebanon,1775623684,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Beirut,Lebanon,1775623618,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Beirut,Lebanon,1775623396,60.0,60.0,67.0,8.05,Fair
 ,WeatherUnderground,Berlin,Germany,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Berlin,Germany,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Berlin,Germany,1774873939,19.44,,93.0,12.87,Partly Cloudy
@@ -5047,6 +5103,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Berlin,Germany,1775596642,24.44,24.44,28.0,14.48,Fair
 ,WeatherUnderground,Berlin,Germany,1775597175,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Berlin,Germany,1775596923,42.0,39.0,48.0,8.05,Clear
+,WeatherUnderground,Berlin,Germany,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Berlin,Germany,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Berlin,Germany,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Berlin,Germany,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Berlin,Germany,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Berlin,Germany,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Berlin,Germany,1775623479,34.0,34.0,68.0,4.83,Sunny
 ,WeatherUnderground,Buenos Aires,Argentina,1774874452,58.0,,66.0,3.22,Partly Cloudy
 ,WeatherUnderground,Buenos Aires,Argentina,1774874415,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Buenos Aires,Argentina,1774874242,54.0,,59.0,12.87,Cloudy
@@ -5092,6 +5155,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Buenos Aires,Argentina,1775596642,24.44,24.44,28.0,14.48,Fair
 ,WeatherUnderground,Buenos Aires,Argentina,1775597175,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Buenos Aires,Argentina,1775596845,18.33,18.33,88.0,11.27,Light Rain
+,WeatherUnderground,Buenos Aires,Argentina,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Buenos Aires,Argentina,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Buenos Aires,Argentina,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Buenos Aires,Argentina,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Buenos Aires,Argentina,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Buenos Aires,Argentina,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Buenos Aires,Argentina,1775623598,17.78,17.22,90.0,14.48,Light Drizzle
 ,WeatherUnderground,Cairo,Egypt,1774874452,58.0,,66.0,3.22,Partly Cloudy
 ,WeatherUnderground,Cairo,Egypt,1774874415,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Cairo,Egypt,1774874242,54.0,,59.0,12.87,Cloudy
@@ -5141,6 +5211,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Cairo,Egypt,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,Cairo,Egypt,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Cairo,Egypt,1775596708,16.67,16.11,64.0,17.7,Fair
+,WeatherUnderground,Cairo,Egypt,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Cairo,Egypt,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Cairo,Egypt,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Cairo,Egypt,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Cairo,Egypt,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Cairo,Egypt,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Cairo,Egypt,1775623760,59.0,59.0,76.0,9.66,Haze
 ,WeatherUnderground,Chicago,United States,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Chicago,United States,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Chicago,United States,1774874354,54.0,,59.0,12.87,Cloudy
@@ -5190,6 +5267,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Chicago,United States,1775596642,24.44,24.44,28.0,14.48,Fair
 ,WeatherUnderground,Chicago,United States,1775597175,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Chicago,United States,1775596664,34.0,27.0,51.0,14.48,Partly Cloudy
+,WeatherUnderground,Chicago,United States,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Chicago,United States,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Chicago,United States,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Chicago,United States,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Chicago,United States,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Chicago,United States,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Chicago,United States,1775623420,36.0,29.0,73.0,16.09,Cloudy
 ,WeatherUnderground,Dubai,United Arab Emirates,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Dubai,United Arab Emirates,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Dubai,United Arab Emirates,1774874354,54.0,,59.0,12.87,Cloudy
@@ -5239,6 +5323,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Dubai,United Arab Emirates,1775597243,24.44,24.44,28.0,16.09,Fair
 ,WeatherUnderground,Dubai,United Arab Emirates,1775597175,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Dubai,United Arab Emirates,1775597127,22.78,22.78,59.0,22.53,Clear
+,WeatherUnderground,Dubai,United Arab Emirates,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Dubai,United Arab Emirates,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Dubai,United Arab Emirates,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Dubai,United Arab Emirates,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Dubai,United Arab Emirates,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Dubai,United Arab Emirates,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Dubai,United Arab Emirates,1775623732,24.44,24.44,53.0,22.53,Sunny
 ,WeatherUnderground,Johannesburg,South Africa,1774873911,49.0,,68.0,20.92,Partly Cloudy
 ,WeatherUnderground,Johannesburg,South Africa,1774873991,27.22,,37.0,16.09,Fair
 ,WeatherUnderground,Johannesburg,South Africa,1774874452,58.0,,66.0,3.22,Partly Cloudy
@@ -5283,6 +5374,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Johannesburg,South Africa,1775597243,24.44,24.44,28.0,16.09,Fair
 ,WeatherUnderground,Johannesburg,South Africa,1775597175,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Johannesburg,South Africa,1775596795,57.0,55.0,90.0,16.09,Mostly Cloudy
+,WeatherUnderground,Johannesburg,South Africa,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Johannesburg,South Africa,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Johannesburg,South Africa,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Johannesburg,South Africa,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Johannesburg,South Africa,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Johannesburg,South Africa,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Johannesburg,South Africa,1775624003,55.0,53.0,90.0,11.27,Fair
 ,WeatherUnderground,London,United Kingdom,1774874452,58.0,,66.0,3.22,Partly Cloudy
 ,WeatherUnderground,London,United Kingdom,1774874415,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,London,United Kingdom,1774874242,54.0,,59.0,12.87,Cloudy
@@ -5323,6 +5421,12 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,London,United Kingdom,1775596648,42.0,35.0,58.0,24.14,Mostly Cloudy
 ,WeatherUnderground,London,United Kingdom,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,London,United Kingdom,1775597013,53.0,52.0,66.0,6.44,Clear
+,WeatherUnderground,London,United Kingdom,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,London,United Kingdom,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,London,United Kingdom,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,London,United Kingdom,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,London,United Kingdom,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,London,United Kingdom,1775623456,47.0,47.0,84.0,3.22,Clear
 ,WeatherUnderground,Los Angeles,United States,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Los Angeles,United States,1774873939,19.44,,93.0,12.87,Partly Cloudy
 ,WeatherUnderground,Los Angeles,United States,1774874038,53.0,,55.0,20.92,Mostly Cloudy
@@ -5369,6 +5473,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Los Angeles,United States,1775596642,24.44,24.44,28.0,14.48,Fair
 ,WeatherUnderground,Los Angeles,United States,1775597175,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Los Angeles,United States,1775596690,21.11,21.11,61.0,3.22,Fair
+,WeatherUnderground,Los Angeles,United States,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Los Angeles,United States,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Los Angeles,United States,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Los Angeles,United States,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Los Angeles,United States,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Los Angeles,United States,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Los Angeles,United States,1775623527,57.0,57.0,94.0,3.22,Fair
 ,WeatherUnderground,Madrid,Spain,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Madrid,Spain,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Madrid,Spain,1774874354,54.0,,59.0,12.87,Cloudy
@@ -5418,6 +5529,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Madrid,Spain,1775596642,24.44,24.44,28.0,14.48,Fair
 ,WeatherUnderground,Madrid,Spain,1775597175,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Madrid,Spain,1775596749,56.0,56.0,82.0,4.83,Showers in the Vicinity
+,WeatherUnderground,Madrid,Spain,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Madrid,Spain,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Madrid,Spain,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Madrid,Spain,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Madrid,Spain,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Madrid,Spain,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Madrid,Spain,1775623695,51.0,51.0,96.0,4.83,Rain
 ,WeatherUnderground,Melbourne,Australia,1774874242,54.0,,59.0,12.87,Cloudy
 ,WeatherUnderground,Melbourne,Australia,1774874219,53.0,,55.0,20.92,Mostly Cloudy
 ,WeatherUnderground,Melbourne,Australia,1774873992,17.78,,64.0,9.66,Partly Cloudy
@@ -5461,6 +5579,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Melbourne,Australia,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,Melbourne,Australia,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Melbourne,Australia,1775596862,55.0,55.0,79.0,3.22,Cloudy
+,WeatherUnderground,Melbourne,Australia,1775623773,51.0,47.0,97.0,17.7,Fair
+,WeatherUnderground,Melbourne,Australia,1775623889,34.0,27.0,47.0,14.48,Clear
+,WeatherUnderground,Melbourne,Australia,1775623795,34.0,28.0,73.0,11.27,Cloudy
+,WeatherUnderground,Melbourne,Australia,1775623929,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Melbourne,Australia,1775623852,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Melbourne,Australia,1775623766,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Melbourne,Australia,1775623674,19.44,19.44,50.0,12.87,Mostly Cloudy
 ,WeatherUnderground,Mexico City,Mexico,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Mexico City,Mexico,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Mexico City,Mexico,1774874354,54.0,,59.0,12.87,Cloudy
@@ -5510,6 +5635,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Mexico City,Mexico,1775596642,24.44,24.44,28.0,14.48,Fair
 ,WeatherUnderground,Mexico City,Mexico,1775597175,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Mexico City,Mexico,1775597191,28.89,33.89,75.0,14.48,Mostly Cloudy
+,WeatherUnderground,Mexico City,Mexico,1775623865,52.0,48.0,96.0,17.7,Fair
+,WeatherUnderground,Mexico City,Mexico,1775623831,34.0,27.0,47.0,14.48,Clear
+,WeatherUnderground,Mexico City,Mexico,1775623666,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Mexico City,Mexico,1775623936,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Mexico City,Mexico,1775623684,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Mexico City,Mexico,1775623618,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Mexico City,Mexico,1775623643,28.33,33.33,77.0,14.48,Partly Cloudy
 ,WeatherUnderground,Mumbai,India,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Mumbai,India,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Mumbai,India,1774874354,54.0,,59.0,12.87,Cloudy
@@ -5559,6 +5691,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Mumbai,India,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,Mumbai,India,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Mumbai,India,1775597123,27.78,31.67,74.0,8.05,Haze
+,WeatherUnderground,Mumbai,India,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Mumbai,India,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Mumbai,India,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Mumbai,India,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Mumbai,India,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Mumbai,India,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Mumbai,India,1775623569,31.11,35.0,59.0,14.48,Haze
 ,WeatherUnderground,Nairobi,Kenya,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Nairobi,Kenya,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Nairobi,Kenya,1774874354,54.0,,59.0,12.87,Cloudy
@@ -5614,6 +5753,14 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Nairobi,Kenya,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Nairobi,Kenya,1775597131,17.78,17.78,80.0,,Fair
 ,WeatherUnderground,Nairobi,Kenya,1775596893,18.33,18.33,83.0,9.66,Partly Cloudy
+,WeatherUnderground,Nairobi,Kenya,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Nairobi,Kenya,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Nairobi,Kenya,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Nairobi,Kenya,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Nairobi,Kenya,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Nairobi,Kenya,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Nairobi,Kenya,1775623977,18.89,18.89,82.0,9.66,Mostly Cloudy
+,WeatherUnderground,Nairobi,Kenya,1775623491,18.33,18.33,86.0,9.66,Mostly Cloudy
 ,WeatherUnderground,New York,United States,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,New York,United States,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,New York,United States,1774874354,54.0,,59.0,12.87,Cloudy
@@ -5663,6 +5810,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,New York,United States,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,New York,United States,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,New York,United States,1775597028,49.0,45.0,25.0,12.87,Sunny
+,WeatherUnderground,New York,United States,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,New York,United States,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,New York,United States,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,New York,United States,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,New York,United States,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,New York,United States,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,New York,United States,1775623470,34.0,28.0,50.0,11.27,Clear
 ,WeatherUnderground,Paris,France,1774874452,58.0,,66.0,3.22,Partly Cloudy
 ,WeatherUnderground,Paris,France,1774874415,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Paris,France,1774874242,54.0,,59.0,12.87,Cloudy
@@ -5712,6 +5866,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Paris,France,1775596642,24.44,24.44,28.0,14.48,Fair
 ,WeatherUnderground,Paris,France,1775597175,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Paris,France,1775596670,17.78,17.78,51.0,8.05,Clear
+,WeatherUnderground,Paris,France,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Paris,France,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Paris,France,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Paris,France,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Paris,France,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Paris,France,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Paris,France,1775623537,53.0,53.0,64.0,4.83,Clear
 ,WeatherUnderground,Rome,Italy,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Rome,Italy,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Rome,Italy,1774874354,54.0,,59.0,12.87,Cloudy
@@ -5761,6 +5922,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Rome,Italy,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,Rome,Italy,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Rome,Italy,1775597080,60.0,60.0,70.0,4.83,Clear
+,WeatherUnderground,Rome,Italy,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Rome,Italy,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Rome,Italy,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Rome,Italy,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Rome,Italy,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Rome,Italy,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Rome,Italy,1775623524,53.0,53.0,76.0,6.44,Sunny
 ,WeatherUnderground,Sao Paulo,Brazil,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Sao Paulo,Brazil,1774873939,19.44,,93.0,12.87,Partly Cloudy
 ,WeatherUnderground,Sao Paulo,Brazil,1774874038,53.0,,55.0,20.92,Mostly Cloudy
@@ -5805,6 +5973,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Sao Paulo,Brazil,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,Sao Paulo,Brazil,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Sao Paulo,Brazil,1775596926,23.89,23.89,77.0,9.66,Partly Cloudy
+,WeatherUnderground,Sao Paulo,Brazil,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Sao Paulo,Brazil,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Sao Paulo,Brazil,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Sao Paulo,Brazil,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Sao Paulo,Brazil,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Sao Paulo,Brazil,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Sao Paulo,Brazil,1775623973,22.22,22.22,82.0,12.87,Fair
 ,WeatherUnderground,Seoul,South Korea,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Seoul,South Korea,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Seoul,South Korea,1774874354,54.0,,59.0,12.87,Cloudy
@@ -5854,6 +6029,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Seoul,South Korea,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,Seoul,South Korea,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Seoul,South Korea,1775597256,38.0,38.0,77.0,4.83,Sunny
+,WeatherUnderground,Seoul,South Korea,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Seoul,South Korea,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Seoul,South Korea,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Seoul,South Korea,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Seoul,South Korea,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Seoul,South Korea,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Seoul,South Korea,1775623699,59.0,58.0,33.0,9.66,Sunny
 ,WeatherUnderground,Singapore,Singapore,1774874242,54.0,,59.0,12.87,Cloudy
 ,WeatherUnderground,Singapore,Singapore,1774874219,53.0,,55.0,20.92,Mostly Cloudy
 ,WeatherUnderground,Singapore,Singapore,1774874452,58.0,,66.0,3.22,Partly Cloudy
@@ -5896,6 +6078,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Singapore,Singapore,1775597243,24.44,24.44,28.0,16.09,Fair
 ,WeatherUnderground,Singapore,Singapore,1775597175,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Singapore,Singapore,1775597130,26.11,30.56,90.0,1.61,Mostly Cloudy
+,WeatherUnderground,Singapore,Singapore,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Singapore,Singapore,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Singapore,Singapore,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Singapore,Singapore,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Singapore,Singapore,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Singapore,Singapore,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Singapore,Singapore,1775623694,32.22,38.89,65.0,8.05,Mostly Cloudy
 ,WeatherUnderground,Sydney,Australia,1774874242,54.0,,59.0,12.87,Cloudy
 ,WeatherUnderground,Sydney,Australia,1774874219,53.0,,55.0,20.92,Mostly Cloudy
 ,WeatherUnderground,Sydney,Australia,1774874452,58.0,,66.0,3.22,Partly Cloudy
@@ -5940,6 +6129,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Sydney,Australia,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,Sydney,Australia,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Sydney,Australia,1775597192,19.44,19.44,79.0,8.05,Fair
+,WeatherUnderground,Sydney,Australia,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Sydney,Australia,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Sydney,Australia,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Sydney,Australia,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Sydney,Australia,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Sydney,Australia,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Sydney,Australia,1775623636,26.67,27.78,55.0,12.87,Partly Cloudy
 ,WeatherUnderground,Tokyo,Japan,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Tokyo,Japan,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Tokyo,Japan,1774874354,54.0,,59.0,12.87,Cloudy
@@ -5989,6 +6185,13 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Tokyo,Japan,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,Tokyo,Japan,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Tokyo,Japan,1775597141,50.0,46.0,36.0,16.09,Sunny
+,WeatherUnderground,Tokyo,Japan,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Tokyo,Japan,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Tokyo,Japan,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Tokyo,Japan,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Tokyo,Japan,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Tokyo,Japan,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Tokyo,Japan,1775623585,18.89,18.89,20.0,9.66,Sunny
 ,WeatherUnderground,Toronto,Canada,1774874051,58.0,,65.0,3.22,Partly Cloudy
 ,WeatherUnderground,Toronto,Canada,1774874172,51.0,,79.0,14.48,Fair
 ,WeatherUnderground,Toronto,Canada,1774874354,54.0,,59.0,12.87,Cloudy
@@ -6037,3 +6240,10 @@ Date,SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidit
 ,WeatherUnderground,Toronto,Canada,1775596916,24.44,24.44,27.0,16.09,Sunny
 ,WeatherUnderground,Toronto,Canada,1775597013,53.0,52.0,66.0,6.44,Clear
 ,WeatherUnderground,Toronto,Canada,1775597145,28.89,33.89,75.0,14.48,Mostly Cloudy
+,WeatherUnderground,Toronto,Canada,1775623469,52.0,47.0,96.0,19.31,Fair
+,WeatherUnderground,Toronto,Canada,1775623599,34.0,27.0,46.0,14.48,Clear
+,WeatherUnderground,Toronto,Canada,1775623812,34.0,28.0,72.0,11.27,Cloudy
+,WeatherUnderground,Toronto,Canada,1775623693,34.0,24.0,53.0,24.14,Clear
+,WeatherUnderground,Toronto,Canada,1775623960,18.89,18.89,64.0,8.05,Mostly Cloudy
+,WeatherUnderground,Toronto,Canada,1775623456,47.0,47.0,84.0,3.22,Clear
+,WeatherUnderground,Toronto,Canada,1775623589,28.33,33.33,77.0,14.48,Partly Cloudy

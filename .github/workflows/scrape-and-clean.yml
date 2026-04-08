@@ -2,15 +2,6 @@ name: Weather Scrape and Process
 
 on:
   workflow_dispatch:
-    inputs:
-      run_extra_cleaning:
-        description: "Run processing/clean_data.py after scraping"
-        required: false
-        default: "false"
-        type: choice
-        options:
-          - "false"
-          - "true"
   schedule:
     - cron: "0 2 * * *"
 
@@ -44,17 +35,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run weather scraping pipeline
-        run: python main.py
+      - name: Run one scraping cycle
+        run: python -c "import main; main.run_once()"
 
-      - name: Run extra cleaning (optional)
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.run_extra_cleaning == 'true' }}
-        run: |
-          if [ -f "processing/clean_data.py" ]; then
-            python processing/clean_data.py
-          else
-            echo "processing/clean_data.py not found. Skipping extra cleaning."
-          fi
+      - name: Run cleaning and preprocessing
+        run: python processing/preprocess.py
 
       - name: Upload artifacts
         if: always()
@@ -75,6 +60,9 @@ jobs:
         run: |
           if [ -d "data" ]; then
             git add data/
+          fi
+          if [ -d "logs" ]; then
+            git add logs/
           fi
 
           if git diff --cached --quiet; then

@@ -19479,3 +19479,25 @@ TimeAndDate,Madrid,Spain,2026-04-09 04:47:25.536541+00:00,46.0,45.0,87.0,4.83,cl
 TimeAndDate,Rome,Italy,2026-04-09 04:47:27.633989+00:00,48.0,48.0,82.0,1.61,clear.
 TimeAndDate,Johannesburg,South Africa,2026-04-09 04:47:33.947685+00:00,55.0,55.0,88.0,4.83,clear.
 TimeAndDate,Seoul,South Korea,2026-04-09 04:47:42.283049+00:00,50.0,46.0,94.0,19.31,rain. cloudy.
+Open-Meteo,Beirut,Lebanon,2026-04-09 16:14:13.688955+00:00,17.4,15.0,71.0,21.1,partly cloudy
+Open-Meteo,New York,United States,2026-04-09 16:14:16.625049+00:00,8.3,6.2,64.0,13.7,clear sky
+Open-Meteo,Los Angeles,United States,2026-04-09 16:14:19.547050+00:00,18.4,19.6,82.0,3.9,overcast
+Open-Meteo,Toronto,Canada,2026-04-09 16:17:07.698462+00:00,15.8,10.8,36.0,24.5,overcast
+Open-Meteo,Mexico City,Mexico,2026-04-09 16:17:10.627623+00:00,19.6,19.6,48.0,8.1,mainly clear
+Open-Meteo,São Paulo,Brazil,2026-04-09 16:17:13.536775+00:00,25.8,28.1,67.0,10.1,partly cloudy
+Open-Meteo,London,United Kingdom,2026-04-09 16:20:06.017770+00:00,15.7,11.5,58.0,24.1,overcast
+Open-Meteo,Paris,France,2026-04-09 16:21:15.722798+00:00,25.9,24.4,36.0,9.6,overcast
+Open-Meteo,Madrid,Spain,2026-04-09 16:23:29.741591+00:00,25.4,22.3,20.0,7.3,mainly clear
+Open-Meteo,Rome,Italy,2026-04-09 16:23:32.659586+00:00,19.1,17.5,56.0,11.1,clear sky
+Open-Meteo,Cairo,Egypt,2026-04-09 16:23:35.579112+00:00,24.3,21.6,25.0,7.3,overcast
+Open-Meteo,Johannesburg,South Africa,2026-04-09 16:25:49.623653+00:00,20.4,20.0,50.0,2.6,overcast
+Open-Meteo,Mumbai,India,2026-04-09 16:28:03.606832+00:00,27.9,32.5,77.0,7.8,mainly clear
+Open-Meteo,Tokyo,Japan,2026-04-09 16:28:06.563223+00:00,14.8,14.8,91.0,7.2,overcast
+Open-Meteo,Seoul,South Korea,2026-04-09 16:28:09.497944+00:00,10.7,10.1,99.0,5.1,light drizzle
+Open-Meteo,Sydney,Australia,2026-04-09 16:30:24.610156+00:00,18.9,21.1,92.0,4.2,mainly clear
+Open-Meteo,Melbourne,Australia,2026-04-09 16:30:27.927949+00:00,18.0,17.3,70.0,10.7,overcast
+TimeAndDate,Beirut,Lebanon,2026-04-09 16:32:39.360614+00:00,59.0,55.0,54.0,43.45,partly sunny.
+TimeAndDate,New York,United States,2026-04-09 16:32:41.448178+00:00,48.0,45.0,50.0,9.66,sunny.
+TimeAndDate,London,United Kingdom,2026-04-09 16:32:56.098028+00:00,59.0,56.0,59.0,27.36,broken clouds.
+TimeAndDate,Berlin,Germany,2026-04-09 16:33:00.278921+00:00,54.0,51.0,26.0,14.48,passing clouds.
+TimeAndDate,Seoul,South Korea,2026-04-09 16:33:19.177455+00:00,54.0,50.0,100.0,16.09,light rain. overcast.

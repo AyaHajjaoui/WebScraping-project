@@ -19451,3 +19451,31 @@ Open-Meteo,Temasek,Singapore,2026-04-08 22:20:58.246428+00:00,26.5,32.9,92.0,2.2
 Open-Meteo,Sydney,Australia,2026-04-08 22:21:01.764004+00:00,16.9,19.0,98.0,1.5,fog
 Open-Meteo,Melbourne,Australia,2026-04-08 22:21:14.727988+00:00,17.4,15.8,69.0,15.1,partly cloudy
 Open-Meteo,Auckland,New Zealand,2026-04-08 22:21:50.609825+00:00,15.8,16.5,90.0,4.7,mainly clear
+Open-Meteo,Beirut,Lebanon,2026-04-09 04:32:25.116453+00:00,16.3,14.4,69.0,14.1,partly cloudy
+Open-Meteo,New York,United States,2026-04-09 04:32:28.143511+00:00,1.5,-1.8,82.0,6.4,clear sky
+Open-Meteo,Los Angeles,United States,2026-04-09 04:32:31.074802+00:00,17.5,18.1,82.0,5.1,partly cloudy
+Open-Meteo,Toronto,Canada,2026-04-09 04:35:19.206835+00:00,0.7,-2.7,76.0,6.0,clear sky
+Open-Meteo,Mexico City,Mexico,2026-04-09 04:35:22.121452+00:00,15.0,14.0,67.0,5.4,clear sky
+Open-Meteo,São Paulo,Brazil,2026-04-09 04:35:25.064433+00:00,21.0,22.9,87.0,9.4,partly cloudy
+Open-Meteo,London,United Kingdom,2026-04-09 04:38:13.220908+00:00,14.7,13.8,73.0,5.8,clear sky
+Open-Meteo,Paris,France,2026-04-09 04:38:16.154509+00:00,11.9,11.7,89.0,1.5,clear sky
+Open-Meteo,Berlin,Germany,2026-04-09 04:38:19.107116+00:00,1.5,-2.0,75.0,6.9,partly cloudy
+Open-Meteo,Rome,Italy,2026-04-09 04:40:33.589090+00:00,8.8,7.9,96.0,2.9,mainly clear
+Open-Meteo,Cairo,Egypt,2026-04-09 04:40:36.497819+00:00,15.2,14.0,58.0,3.3,mainly clear
+Open-Meteo,Nairobi,Kenya,2026-04-09 04:40:39.413891+00:00,16.4,17.2,93.0,6.5,overcast
+Open-Meteo,Johannesburg,South Africa,2026-04-09 04:41:48.636252+00:00,11.3,11.0,94.0,2.6,mainly clear
+Open-Meteo,Mumbai,India,2026-04-09 04:44:02.686802+00:00,28.0,33.0,73.0,5.8,partly cloudy
+Open-Meteo,Tokyo,Japan,2026-04-09 04:44:05.629603+00:00,18.7,17.5,59.0,12.6,partly cloudy
+Open-Meteo,Seoul,South Korea,2026-04-09 04:44:08.542112+00:00,8.2,6.1,92.0,8.9,moderate drizzle
+Open-Meteo,Sydney,Australia,2026-04-09 04:46:22.592270+00:00,31.0,31.2,33.0,4.7,clear sky
+Open-Meteo,Melbourne,Australia,2026-04-09 04:46:25.530506+00:00,23.3,22.7,68.0,21.4,slight rain showers
+Open-Meteo,Auckland,New Zealand,2026-04-09 04:46:28.453090+00:00,21.2,21.2,70.0,12.2,partly cloudy
+TimeAndDate,New York,United States,2026-04-09 04:47:02.952645+00:00,38.0,35.0,65.0,4.83,clear.
+TimeAndDate,Toronto,Canada,2026-04-09 04:47:10.926719+00:00,36.0,33.0,75.0,4.83,clear.
+TimeAndDate,London,United Kingdom,2026-04-09 04:47:19.305807+00:00,54.0,54.0,94.0,3.22,passing clouds.
+TimeAndDate,Paris,France,2026-04-09 04:47:21.381958+00:00,52.0,52.0,72.0,8.05,clear.
+TimeAndDate,Berlin,Germany,2026-04-09 04:47:23.462891+00:00,32.0,32.0,93.0,3.22,light fog.
+TimeAndDate,Madrid,Spain,2026-04-09 04:47:25.536541+00:00,46.0,45.0,87.0,4.83,clear.
+TimeAndDate,Rome,Italy,2026-04-09 04:47:27.633989+00:00,48.0,48.0,82.0,1.61,clear.
+TimeAndDate,Johannesburg,South Africa,2026-04-09 04:47:33.947685+00:00,55.0,55.0,88.0,4.83,clear.
+TimeAndDate,Seoul,South Korea,2026-04-09 04:47:42.283049+00:00,50.0,46.0,94.0,19.31,rain. cloudy.

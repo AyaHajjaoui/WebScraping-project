@@ -1,13 +1,13 @@
-# Run with: streamlit run dashboard.py
 
+# Run with: streamlit run dashboard.py
 import os
 
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, "data", "processed", "weather_data.csv")
+DATA_PATH = "data/processed/weather_data.csv"
 
 
 @st.cache_data(show_spinner=False)
@@ -19,12 +19,6 @@ def load_data(path: str) -> pd.DataFrame:
         return pd.read_csv(path)
     except Exception:
         return pd.DataFrame()
-
-
-def parse_datetime(series: pd.Series) -> pd.Series:
-    """Parse datetimes and normalize to timezone-naive UTC for safe comparisons."""
-    parsed = pd.to_datetime(series, errors="coerce", utc=True)
-    return parsed.dt.tz_localize(None)
 
 
 def comfort_score(temp, feels_like, humidity) -> float:
@@ -71,10 +65,10 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     data = df.copy()
 
     if "ScrapeDateTime" in data.columns:
-        data["ScrapeDateTime"] = parse_datetime(data["ScrapeDateTime"])
+        data["ScrapeDateTime"] = pd.to_datetime(data["ScrapeDateTime"], errors="coerce")
 
     if "Date" in data.columns:
-        data["Date"] = parse_datetime(data["Date"])
+        data["Date"] = pd.to_datetime(data["Date"], errors="coerce")
     elif "ScrapeDateTime" in data.columns:
         data["Date"] = data["ScrapeDateTime"].dt.floor("D")
 
@@ -151,6 +145,8 @@ def build_city_ranking(df: pd.DataFrame) -> pd.DataFrame:
     }
     if "WindSpeed_kmh" in df.columns:
         agg_map["WindSpeed_kmh"] = "mean"
+    if "Precipitation" in df.columns:
+        agg_map["Precipitation"] = "mean"
 
     agg_map = {k: v for k, v in agg_map.items() if k in df.columns}
     if not agg_map:
@@ -165,6 +161,7 @@ def build_city_ranking(df: pd.DataFrame) -> pd.DataFrame:
                 "FeelsLike_C": "Avg FeelsLike_C",
                 "Humidity_%": "Avg Humidity_%",
                 "WindSpeed_kmh": "Avg WindSpeed_kmh",
+                "Precipitation": "Avg Precipitation",
             }
         )
     )
@@ -181,6 +178,7 @@ def build_city_ranking(df: pd.DataFrame) -> pd.DataFrame:
         "Avg FeelsLike_C",
         "Avg Humidity_%",
         "Avg WindSpeed_kmh",
+        "Avg Precipitation",
         "Comfort Score",
     ]:
         if col in ranking.columns:
@@ -196,6 +194,7 @@ def build_city_ranking(df: pd.DataFrame) -> pd.DataFrame:
         "Avg FeelsLike_C",
         "Avg Humidity_%",
         "Avg WindSpeed_kmh",
+        "Avg Precipitation",
         "Comfort Score",
         "Travel Recommendation",
     ]
@@ -372,16 +371,153 @@ def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
     return tips
 
 
+def inject_styles() -> None:
+    st.markdown(
+        """
+        <style>
+            .stApp {
+                background:
+                    radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 30%),
+                    radial-gradient(circle at top right, rgba(168, 85, 247, 0.10), transparent 28%),
+                    linear-gradient(180deg, #f8fbff 0%, #f7f7ff 100%);
+            }
+            .block-container {
+                max-width: 1380px;
+                padding-top: 1.2rem;
+                padding-bottom: 2rem;
+            }
+            .hero-box {
+                background: rgba(255,255,255,0.82);
+                border: 1px solid rgba(148,163,184,0.16);
+                box-shadow: 0 18px 50px rgba(15, 23, 42, 0.07);
+                border-radius: 24px;
+                padding: 1.25rem 1.4rem;
+                margin-bottom: 1rem;
+                backdrop-filter: blur(8px);
+            }
+            .hero-title {
+                font-size: 2rem;
+                font-weight: 800;
+                color: #0f172a;
+                margin: 0;
+            }
+            .hero-sub {
+                margin-top: 0.4rem;
+                color: #475569;
+                font-size: 0.98rem;
+            }
+            .metric-card {
+                background: rgba(255,255,255,0.85);
+                border: 1px solid rgba(148,163,184,0.14);
+                box-shadow: 0 14px 36px rgba(15, 23, 42, 0.06);
+                border-radius: 20px;
+                padding: 1rem 1rem 0.9rem 1rem;
+                min-height: 100px;
+            }
+            .metric-label {
+                color: #64748b;
+                font-size: 0.9rem;
+                margin-bottom: 0.35rem;
+            }
+            .metric-value {
+                color: #0f172a;
+                font-size: 1.6rem;
+                font-weight: 800;
+                line-height: 1.1;
+            }
+            .metric-note {
+                color: #475569;
+                font-size: 0.87rem;
+                margin-top: 0.35rem;
+            }
+            .section-card {
+                background: rgba(255,255,255,0.82);
+                border: 1px solid rgba(148,163,184,0.14);
+                box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+                border-radius: 22px;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                backdrop-filter: blur(8px);
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def metric_card(title: str, value: str, note: str = "") -> None:
+    st.markdown(
+        f"""
+        <div class="metric-card">
+            <div class="metric-label">{title}</div>
+            <div class="metric-value">{value}</div>
+            <div class="metric-note">{note}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def build_radar_chart(ranking_df: pd.DataFrame, selected_city_names: list[str]):
+    metrics = [
+        col
+        for col in [
+            "Comfort Score",
+            "Avg Temperature_C",
+            "Avg FeelsLike_C",
+            "Avg Humidity_%",
+            "Avg WindSpeed_kmh",
+        ]
+        if col in ranking_df.columns
+    ]
+    if len(metrics) < 3:
+        return None
+
+    selected = ranking_df[ranking_df["City"].isin(selected_city_names)].copy()
+    if selected.empty:
+        return None
+
+    fig = go.Figure()
+    for _, row in selected.iterrows():
+        r = [float(row[m]) if pd.notna(row[m]) else 0 for m in metrics]
+        r += r[:1]
+        theta = metrics + [metrics[0]]
+        fig.add_trace(
+            go.Scatterpolar(
+                r=r,
+                theta=theta,
+                fill="toself",
+                name=row["City"],
+            )
+        )
+    fig.update_layout(
+        height=470,
+        title="Multi-metric city comparison",
+        polar=dict(radialaxis=dict(visible=True)),
+        margin=dict(l=40, r=40, t=60, b=30),
+    )
+    return fig
+
+
 st.set_page_config(
     page_title="Smart Weather Travel & Comfort Dashboard",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-st.title("Smart Weather Travel & Comfort Dashboard")
-st.caption(
-    "A practical city-comparison dashboard for comfort and travel planning using "
-    "multi-source scraped weather data."
+inject_styles()
+
+st.markdown(
+    """
+    <div class="hero-box">
+        <div class="hero-title">Smart Weather Travel & Comfort Dashboard</div>
+        <div class="hero-sub">
+            Same dashboard structure, but upgraded to feel more interactive and modern:
+            better comparisons, clickable exploration, richer visuals, and more planner-style controls.
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
 
 raw_df = load_data(DATA_PATH)
@@ -406,11 +542,15 @@ source_options = (
     else []
 )
 
-selected_cities = st.sidebar.multiselect("Cities", city_options, default=city_options)
+city_search = st.sidebar.text_input("Search city")
+filtered_city_options = [c for c in city_options if city_search.lower() in c.lower()] if city_search else city_options
+
+selected_cities = st.sidebar.multiselect("Cities", filtered_city_options, default=filtered_city_options)
 selected_sources = st.sidebar.multiselect("Sources", source_options, default=source_options)
 
 use_latest_only = st.sidebar.checkbox("Use latest record per city/source", value=False)
 min_comfort = st.sidebar.slider("Minimum comfort score", min_value=0, max_value=100, value=0)
+top_n = st.sidebar.slider("Top cities to highlight", min_value=3, max_value=max(3, min(20, len(city_options))), value=min(10, max(3, len(city_options))))
 
 sort_option = st.sidebar.selectbox(
     "Ranking sort",
@@ -442,9 +582,15 @@ if "Date" in filtered_df.columns and filtered_df["Date"].notna().any():
         max_value=max_date,
     )
 
-    if isinstance(date_range, (tuple, list)) and len(date_range) == 2:
-        start_date = pd.to_datetime(date_range[0])
-        end_date = pd.to_datetime(date_range[1])
+    if isinstance(date_range, tuple) and len(date_range) == 2:
+        date_series = filtered_df["Date"]
+        if getattr(date_series.dt, "tz", None) is not None:
+            start_date = pd.Timestamp(date_range[0]).tz_localize("UTC")
+            end_date = pd.Timestamp(date_range[1]).tz_localize("UTC") + pd.Timedelta(days=1) - pd.Timedelta(microseconds=1)
+        else:
+            start_date = pd.Timestamp(date_range[0])
+            end_date = pd.Timestamp(date_range[1]) + pd.Timedelta(days=1) - pd.Timedelta(microseconds=1)
+
         filtered_df = filtered_df[
             (filtered_df["Date"] >= start_date) & (filtered_df["Date"] <= end_date)
         ]
@@ -472,23 +618,28 @@ avg_comfort = ranking_df["Comfort Score"].mean() if "Comfort Score" in ranking_d
 city_count = ranking_df["City"].nunique() if "City" in ranking_df.columns else 0
 
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("Best city now", insights["best_city"])
-c2.metric("Worst city now", insights["worst_city"])
-c3.metric("Average comfort", f"{avg_comfort:.1f}" if pd.notna(avg_comfort) else "N/A")
-c4.metric("Cities in view", int(city_count))
-
-st.caption(f"Data freshness: {last_updated}")
+with c1:
+    metric_card("Best city now", insights["best_city"], "Highest comfort score")
+with c2:
+    metric_card("Worst city now", insights["worst_city"], "Lowest comfort score")
+with c3:
+    metric_card("Average comfort", f"{avg_comfort:.1f}" if pd.notna(avg_comfort) else "N/A", "Across filtered cities")
+with c4:
+    metric_card("Cities in view", str(int(city_count)), f"Freshness: {last_updated}")
 
 overview_tab, explorer_tab, source_tab, planner_tab = st.tabs(
     ["Overview", "City Explorer", "Source Quality", "Trip Planner"]
 )
 
 with overview_tab:
-    left, right = st.columns([1.2, 1])
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    left, right = st.columns([1.25, 1])
+
+    top_ranking = ranking_df.head(top_n)
 
     with left:
         st.subheader("City Ranking")
-        st.dataframe(ranking_df, width="stretch", hide_index=True)
+        st.dataframe(top_ranking, use_container_width=True, hide_index=True)
 
         csv_bytes = ranking_df.to_csv(index=False).encode("utf-8")
         st.download_button(
@@ -497,6 +648,24 @@ with overview_tab:
             file_name="city_ranking_filtered.csv",
             mime="text/csv",
         )
+
+        compare_metric = st.selectbox(
+            "Interactive ranking chart metric",
+            [c for c in ["Comfort Score", "Avg Temperature_C", "Avg FeelsLike_C", "Avg Humidity_%", "Avg WindSpeed_kmh", "Avg Precipitation"] if c in ranking_df.columns],
+            index=0,
+        )
+
+        fig_comfort = px.bar(
+            top_ranking.sort_values(compare_metric, ascending=False),
+            x="City",
+            y=compare_metric,
+            color="Travel Recommendation" if "Travel Recommendation" in top_ranking.columns else compare_metric,
+            title=f"{compare_metric} Across Cities",
+            hover_data=[c for c in ["Country", "Avg Temperature_C", "Avg FeelsLike_C", "Avg Humidity_%"] if c in top_ranking.columns],
+            text_auto=".1f",
+        )
+        fig_comfort.update_layout(xaxis_title="City", yaxis_title=compare_metric, height=440)
+        st.plotly_chart(fig_comfort, use_container_width=True)
 
     with right:
         st.subheader("Travel Insights")
@@ -520,35 +689,25 @@ with overview_tab:
                 names="Recommendation",
                 values="City Count",
                 title="Recommendation Mix",
-                hole=0.35,
+                hole=0.45,
             )
-            st.plotly_chart(fig_reco, width="stretch")
+            fig_reco.update_layout(height=380)
+            st.plotly_chart(fig_reco, use_container_width=True)
 
-    st.subheader("Comfort Score by City")
-    fig_comfort = px.bar(
-        ranking_df,
-        x="City",
-        y="Comfort Score",
-        color="Travel Recommendation" if "Travel Recommendation" in ranking_df.columns else "Comfort Score",
-        title="Comfort Ranking Across Cities",
-    )
-    fig_comfort.update_layout(xaxis_title="City", yaxis_title="Comfort Score")
-    st.plotly_chart(fig_comfort, width="stretch")
+        if len(top_ranking) >= 2:
+            radar_names = st.multiselect(
+                "Select cities for radar comparison",
+                options=ranking_df["City"].tolist(),
+                default=ranking_df["City"].head(min(3, len(ranking_df))).tolist(),
+            )
+            radar_fig = build_radar_chart(ranking_df, radar_names)
+            if radar_fig is not None:
+                st.plotly_chart(radar_fig, use_container_width=True)
 
-    if "Avg Humidity_%" in ranking_df.columns:
-        st.subheader("Average Humidity by City")
-        fig_humidity = px.bar(
-            ranking_df,
-            x="City",
-            y="Avg Humidity_%",
-            color="Avg Humidity_%",
-            color_continuous_scale="Blues",
-            title="Humidity Comparison",
-        )
-        fig_humidity.update_layout(xaxis_title="City", yaxis_title="Humidity (%)")
-        st.plotly_chart(fig_humidity, width="stretch")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 with explorer_tab:
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("City-Level Weather Explorer")
 
     default_city = ranking_df.iloc[0]["City"] if not ranking_df.empty else None
@@ -575,47 +734,63 @@ with explorer_tab:
         for tip in add_quick_trip_tips(city_rank.iloc[0]):
             st.markdown(f"- {tip}")
 
-    if all(c in city_df.columns for c in ["Temperature_C", "FeelsLike_C"]):
-        scatter = city_df.dropna(subset=["Temperature_C", "FeelsLike_C"])
-        if not scatter.empty:
-            fig_scatter = px.scatter(
-                scatter,
-                x="Temperature_C",
-                y="FeelsLike_C",
-                color="SourceWebsite" if "SourceWebsite" in scatter.columns else None,
-                title=f"{selected_city}: Temperature vs Feels-Like",
-                hover_data=[c for c in ["Date", "Condition", "Humidity_%"] if c in scatter.columns],
-            )
-            st.plotly_chart(fig_scatter, width="stretch")
+    trend_metric = st.selectbox(
+        "Choose city chart metric",
+        options=[c for c in ["Temperature_C", "FeelsLike_C", "Humidity_%", "WindSpeed_kmh", "Comfort Score"] if c in city_df.columns],
+        index=0,
+    )
 
-    if all(c in city_df.columns for c in ["Date", "Temperature_C"]):
-        trend = city_df.dropna(subset=["Date", "Temperature_C"]).copy()
+    if all(c in city_df.columns for c in ["Date", trend_metric]):
+        trend = city_df.dropna(subset=["Date", trend_metric]).copy()
         if not trend.empty:
-            trend = trend.groupby("Date", as_index=False)["Temperature_C"].mean()
+            trend = trend.groupby("Date", as_index=False)[trend_metric].mean()
             fig_trend = px.line(
                 trend,
                 x="Date",
-                y="Temperature_C",
+                y=trend_metric,
                 markers=True,
-                title=f"{selected_city}: Temperature Trend",
+                title=f"{selected_city}: {trend_metric} Trend",
             )
-            fig_trend.update_layout(xaxis_title="Date", yaxis_title="Temperature (C)")
-            st.plotly_chart(fig_trend, width="stretch")
+            fig_trend.update_layout(xaxis_title="Date", yaxis_title=trend_metric, hovermode="x unified", height=420)
+            st.plotly_chart(fig_trend, use_container_width=True)
 
-    if "Condition" in city_df.columns and city_df["Condition"].notna().any():
-        condition_counts = (
-            city_df["Condition"].fillna("Unknown").value_counts().reset_index()
-        )
-        condition_counts.columns = ["Condition", "Count"]
-        fig_condition = px.bar(
-            condition_counts,
-            x="Condition",
-            y="Count",
-            title=f"{selected_city}: Weather Condition Frequency",
-        )
-        st.plotly_chart(fig_condition, width="stretch")
+    col_a, col_b = st.columns(2)
+
+    with col_a:
+        if all(c in city_df.columns for c in ["Temperature_C", "FeelsLike_C"]):
+            scatter = city_df.dropna(subset=["Temperature_C", "FeelsLike_C"])
+            if not scatter.empty:
+                fig_scatter = px.scatter(
+                    scatter,
+                    x="Temperature_C",
+                    y="FeelsLike_C",
+                    color="SourceWebsite" if "SourceWebsite" in scatter.columns else None,
+                    size="Humidity_%" if "Humidity_%" in scatter.columns else None,
+                    title=f"{selected_city}: Temperature vs Feels-Like",
+                    hover_data=[c for c in ["Date", "Condition", "Humidity_%"] if c in scatter.columns],
+                )
+                fig_scatter.update_layout(height=430)
+                st.plotly_chart(fig_scatter, use_container_width=True)
+
+    with col_b:
+        if "Condition" in city_df.columns and city_df["Condition"].notna().any():
+            condition_counts = (
+                city_df["Condition"].fillna("Unknown").value_counts().reset_index()
+            )
+            condition_counts.columns = ["Condition", "Count"]
+            fig_condition = px.bar(
+                condition_counts,
+                x="Condition",
+                y="Count",
+                title=f"{selected_city}: Weather Condition Frequency",
+            )
+            fig_condition.update_layout(height=430)
+            st.plotly_chart(fig_condition, use_container_width=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 with source_tab:
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Multi-Source Reliability View")
 
     temp_by_source, humid_by_source, disagreement = build_source_summary(filtered_df)
@@ -630,8 +805,10 @@ with source_tab:
                 y="Avg Temperature_C",
                 color="SourceWebsite",
                 title="Average Temperature by Source",
+                text_auto=".1f",
             )
-            st.plotly_chart(fig_temp_source, width="stretch")
+            fig_temp_source.update_layout(height=400)
+            st.plotly_chart(fig_temp_source, use_container_width=True)
         else:
             st.info("Temperature comparison by source is unavailable.")
 
@@ -643,8 +820,10 @@ with source_tab:
                 y="Avg Humidity_%",
                 color="SourceWebsite",
                 title="Average Humidity by Source",
+                text_auto=".1f",
             )
-            st.plotly_chart(fig_hum_source, width="stretch")
+            fig_hum_source.update_layout(height=400)
+            st.plotly_chart(fig_hum_source, use_container_width=True)
         else:
             st.info("Humidity comparison by source is unavailable.")
 
@@ -653,23 +832,30 @@ with source_tab:
         st.info("Need City + SourceWebsite + Temperature_C to compute disagreement.")
     else:
         show_rows = min(20, len(disagreement))
+        threshold = st.slider("Minimum disagreement to display", 0.0, float(disagreement["Temp Disagreement (C)"].max()), 0.0, 0.1)
+        disagreement_filtered = disagreement[disagreement["Temp Disagreement (C)"] >= threshold]
+
         st.dataframe(
-            disagreement[["City", "Source Count", "Temp Disagreement (C)"]].head(show_rows),
-            width="stretch",
+            disagreement_filtered[["City", "Source Count", "Temp Disagreement (C)"]].head(show_rows),
+            use_container_width=True,
             hide_index=True,
         )
 
         fig_disagree = px.bar(
-            disagreement.head(show_rows),
+            disagreement_filtered.head(show_rows),
             x="City",
             y="Temp Disagreement (C)",
             color="Temp Disagreement (C)",
-            color_continuous_scale="Reds",
             title="Cities with Largest Temperature Disagreement Across Sources",
+            text_auto=".2f",
         )
-        st.plotly_chart(fig_disagree, width="stretch")
+        fig_disagree.update_layout(height=430)
+        st.plotly_chart(fig_disagree, use_container_width=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 with planner_tab:
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Travel Planner Assistant")
 
     target_label = st.selectbox(
@@ -685,18 +871,31 @@ with planner_tab:
     planner_df["_rank"] = planner_df["Travel Recommendation"].map(label_order)
     planner_df = planner_df[planner_df["_rank"] <= cutoff].drop(columns=["_rank"])
 
+    planner_sort = st.radio(
+        "Planner sorting mode",
+        options=["Best comfort", "Cooler weather", "Lower humidity"],
+        horizontal=True,
+    )
+
+    if planner_sort == "Best comfort" and "Comfort Score" in planner_df.columns:
+        planner_df = planner_df.sort_values("Comfort Score", ascending=False)
+    elif planner_sort == "Cooler weather" and "Avg Temperature_C" in planner_df.columns:
+        planner_df = planner_df.sort_values("Avg Temperature_C", ascending=True)
+    elif planner_sort == "Lower humidity" and "Avg Humidity_%" in planner_df.columns:
+        planner_df = planner_df.sort_values("Avg Humidity_%", ascending=True)
+
     if planner_df.empty:
         st.warning("No cities match your planner target with current filters.")
     else:
         st.write("Cities that satisfy your target:")
-        st.dataframe(planner_df, width="stretch", hide_index=True)
+        st.dataframe(planner_df, use_container_width=True, hide_index=True)
 
     st.subheader("Best Time of Day (if hourly data is available)")
     best_hour_df = best_hour_analysis(filtered_df)
     if best_hour_df.empty:
         st.info("Not enough timestamp richness to estimate best hour per city.")
     else:
-        st.dataframe(best_hour_df, width="stretch", hide_index=True)
+        st.dataframe(best_hour_df, use_container_width=True, hide_index=True)
 
     if all(c in filtered_df.columns for c in ["Date", "City", "Temperature_C"]):
         trend_df = (
@@ -712,5 +911,15 @@ with planner_tab:
                 color="City",
                 title="Temperature Trend Over Time (Filtered Cities)",
             )
-            fig_line.update_layout(xaxis_title="Date", yaxis_title="Avg Temperature (C)")
-            st.plotly_chart(fig_line, width="stretch")
+            fig_line.update_layout(xaxis_title="Date", yaxis_title="Avg Temperature (C)", hovermode="x unified", height=450)
+            st.plotly_chart(fig_line, use_container_width=True)
+
+    csv_bytes = planner_df.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        label="Download planner results",
+        data=csv_bytes,
+        file_name="weather_trip_planner.csv",
+        mime="text/csv",
+    )
+
+    st.markdown("</div>", unsafe_allow_html=True)

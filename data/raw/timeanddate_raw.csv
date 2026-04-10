@@ -3282,3 +3282,27 @@ TimeAndDate,Singapore,Singapore,2026-04-10T05:36:25.071705+00:00,90.0,100.0,63.0
 TimeAndDate,Sydney,Australia,2026-04-10T05:36:27.147727+00:00,84.0,83.0,40.0,24.14,Sunny.
 TimeAndDate,Melbourne,Australia,2026-04-10T05:36:29.237675+00:00,59.0,56.0,72.0,25.75,Light rain. Mostly cloudy.
 TimeAndDate,Auckland,New Zealand,2026-04-10T05:36:31.314159+00:00,70.0,70.0,78.0,12.87,Partly sunny.
+TimeAndDate,Beirut,Lebanon,2026-04-10T07:36:29.736819+00:00,55.0,50.0,77.0,32.19,Partly sunny.
+TimeAndDate,New York,United States,2026-04-10T07:36:31.948494+00:00,41.0,41.0,86.0,6.44,Passing clouds.
+TimeAndDate,Los Angeles,United States,2026-04-10T07:36:34.081624+00:00,62.0,62.0,83.0,8.05,Passing clouds.
+TimeAndDate,Chicago,United States,2026-04-10T07:36:36.168078+00:00,47.0,43.0,71.0,12.87,Light rain. Overcast.
+TimeAndDate,Toronto,Canada,2026-04-10T07:36:38.288755+00:00,41.0,36.0,57.0,12.87,Passing clouds.
+TimeAndDate,Mexico City,Mexico,2026-04-10T07:36:40.411607+00:00,59.0,60.0,63.0,4.83,Clear.
+TimeAndDate,Sao Paulo,Brazil,2026-04-10T07:36:42.493468+00:00,64.0,64.0,88.0,11.27,Passing clouds.
+TimeAndDate,Buenos Aires,Argentina,2026-04-10T07:36:44.630596+00:00,59.0,59.0,82.0,3.22,Passing clouds.
+TimeAndDate,London,United Kingdom,2026-04-10T07:36:46.762065+00:00,45.0,42.0,66.0,8.05,Sunny.
+TimeAndDate,Paris,France,2026-04-10T07:36:48.884994+00:00,46.0,44.0,71.0,9.66,Passing clouds.
+TimeAndDate,Berlin,Germany,2026-04-10T07:36:51.019077+00:00,37.0,34.0,60.0,8.05,Sunny.
+TimeAndDate,Madrid,Spain,2026-04-10T07:36:53.105614+00:00,61.0,61.0,45.0,4.83,Passing clouds.
+TimeAndDate,Rome,Italy,2026-04-10T07:36:55.289011+00:00,59.0,60.0,72.0,4.83,Passing clouds.
+TimeAndDate,Cairo,Egypt,2026-04-10T07:36:57.416299+00:00,68.0,68.0,38.0,8.05,Sunny.
+TimeAndDate,Nairobi,Kenya,2026-04-10T07:36:59.554991+00:00,68.0,68.0,69.0,24.14,Partly sunny.
+TimeAndDate,Johannesburg,South Africa,2026-04-10T07:37:01.691845+00:00,62.0,62.0,79.0,25.75,Scattered clouds.
+TimeAndDate,Dubai,United Arab Emirates,2026-04-10T07:37:03.821705+00:00,77.0,79.0,65.0,22.53,Partly sunny.
+TimeAndDate,Mumbai,India,2026-04-10T07:37:06.019874+00:00,89.0,93.0,52.0,6.44,Haze.
+TimeAndDate,Tokyo,Japan,2026-04-10T07:37:08.149323+00:00,64.0,64.0,100.0,19.31,Rain. Broken clouds.
+TimeAndDate,Seoul,South Korea,2026-04-10T07:37:10.272868+00:00,54.0,50.0,88.0,16.09,Partly sunny.
+TimeAndDate,Singapore,Singapore,2026-04-10T07:37:12.487439+00:00,91.0,103.0,59.0,8.05,Partly sunny.
+TimeAndDate,Sydney,Australia,2026-04-10T07:37:14.613501+00:00,82.0,83.0,48.0,22.53,Sunny.
+TimeAndDate,Melbourne,Australia,2026-04-10T07:37:16.749269+00:00,55.0,52.0,82.0,19.31,Sprinkles. Partly sunny.
+TimeAndDate,Auckland,New Zealand,2026-04-10T07:37:18.890630+00:00,66.0,66.0,88.0,11.27,Clear.

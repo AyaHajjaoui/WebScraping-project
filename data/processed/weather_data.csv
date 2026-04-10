@@ -19553,3 +19553,31 @@ TimeAndDate,Berlin,Germany,2026-04-09 21:58:57.603312+00:00,37.0,32.0,65.0,11.27
 TimeAndDate,Rome,Italy,2026-04-09 21:59:01.789507+00:00,57.0,57.0,77.0,4.83,clear.
 TimeAndDate,Seoul,South Korea,2026-04-09 21:59:16.390455+00:00,50.0,46.0,100.0,16.09,fog.
 TimeAndDate,Melbourne,Australia,2026-04-09 21:59:22.600306+00:00,55.0,54.0,82.0,9.66,sunny.
+Open-Meteo,Beirut,Lebanon,2026-04-10 01:47:41.050194+00:00,16.5,14.4,72.0,17.3,overcast
+Open-Meteo,New York,United States,2026-04-10 01:47:44.003156+00:00,4.8,2.0,87.0,7.9,clear sky
+Open-Meteo,Los Angeles,United States,2026-04-10 01:47:47.026075+00:00,19.9,20.2,80.0,12.6,overcast
+Open-Meteo,Toronto,Canada,2026-04-10 01:50:35.198391+00:00,8.8,5.1,61.0,12.6,partly cloudy
+Open-Meteo,Mexico City,Mexico,2026-04-10 01:50:38.106838+00:00,14.9,14.8,77.0,2.9,thunderstorm
+Open-Meteo,São Paulo,Brazil,2026-04-10 01:50:41.053645+00:00,19.4,20.5,82.0,7.7,partly cloudy
+Open-Meteo,London,United Kingdom,2026-04-10 01:53:29.419960+00:00,7.9,3.4,58.0,16.2,overcast
+Open-Meteo,Paris,France,2026-04-10 01:53:32.320748+00:00,10.4,7.4,73.0,13.4,overcast
+Open-Meteo,Berlin,Germany,2026-04-10 01:53:35.271871+00:00,2.5,-1.3,62.0,7.9,overcast
+Open-Meteo,Rome,Italy,2026-04-10 01:55:49.277792+00:00,9.6,8.8,92.0,2.3,mainly clear
+Open-Meteo,Cairo,Egypt,2026-04-10 01:55:52.182601+00:00,16.4,15.6,60.0,2.9,clear sky
+Open-Meteo,Nairobi,Kenya,2026-04-10 01:55:55.093340+00:00,16.1,16.7,92.0,7.1,overcast
+Open-Meteo,Dubai,United Arab Emirates,2026-04-10 01:58:09.171774+00:00,22.0,23.5,68.0,3.6,overcast
+Open-Meteo,Mumbai,India,2026-04-10 01:58:12.181490+00:00,27.7,32.2,77.0,8.4,mainly clear
+Open-Meteo,Tokyo,Japan,2026-04-10 01:58:15.069804+00:00,17.8,18.0,87.0,11.1,partly cloudy
+Open-Meteo,Seoul,South Korea,2026-04-10 01:59:24.308303+00:00,9.3,7.8,94.0,7.6,overcast
+Open-Meteo,Sydney,Australia,2026-04-10 02:01:38.280311+00:00,27.8,28.7,46.0,6.2,overcast
+Open-Meteo,Melbourne,Australia,2026-04-10 02:01:41.230075+00:00,18.8,14.1,38.0,23.7,partly cloudy
+Open-Meteo,Auckland,New Zealand,2026-04-10 02:01:44.130567+00:00,22.9,22.9,64.0,13.6,overcast
+TimeAndDate,Beirut,Lebanon,2026-04-10 02:02:16.665781+00:00,48.0,45.0,92.0,11.27,passing clouds.
+TimeAndDate,New York,United States,2026-04-10 02:02:18.755314+00:00,42.0,40.0,79.0,4.83,passing clouds.
+TimeAndDate,Toronto,Canada,2026-04-10 02:02:25.033644+00:00,50.0,44.0,58.0,27.36,passing clouds.
+TimeAndDate,London,United Kingdom,2026-04-10 02:02:33.403787+00:00,45.0,40.0,61.0,14.48,passing clouds.
+TimeAndDate,Paris,France,2026-04-10 02:02:35.487411+00:00,48.0,43.0,76.0,20.92,overcast.
+TimeAndDate,Berlin,Germany,2026-04-10 02:02:37.576583+00:00,30.0,23.0,80.0,11.27,clear.
+TimeAndDate,Rome,Italy,2026-04-10 02:02:41.761693+00:00,54.0,54.0,77.0,3.22,clear.
+TimeAndDate,Johannesburg,South Africa,2026-04-10 02:02:48.111826+00:00,57.0,54.0,88.0,20.92,clear.
+TimeAndDate,Seoul,South Korea,2026-04-10 02:02:56.472795+00:00,50.0,46.0,100.0,16.09,drizzle. fog.

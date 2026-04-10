@@ -7,7 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-DATA_PATH = "data/processed/weather_data.csv"
+DATA_PATH = "../data/processed/weather_data.csv"
 
 
 @st.cache_data(show_spinner=False)
@@ -376,68 +376,77 @@ def inject_styles() -> None:
         """
         <style>
             .stApp {
-                background:
-                    radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 30%),
-                    radial-gradient(circle at top right, rgba(168, 85, 247, 0.10), transparent 28%),
-                    linear-gradient(180deg, #f8fbff 0%, #f7f7ff 100%);
+                background-color: #F7F3EE;
             }
+
+            section[data-testid="stSidebar"] {
+                background-color: #EFE7DD;
+            }
+
             .block-container {
                 max-width: 1380px;
                 padding-top: 1.2rem;
                 padding-bottom: 2rem;
             }
+
             .hero-box {
-                background: rgba(255,255,255,0.82);
-                border: 1px solid rgba(148,163,184,0.16);
-                box-shadow: 0 18px 50px rgba(15, 23, 42, 0.07);
-                border-radius: 24px;
-                padding: 1.25rem 1.4rem;
+                background: #FFFFFF;
+                border-radius: 20px;
+                padding: 1.3rem;
                 margin-bottom: 1rem;
-                backdrop-filter: blur(8px);
+                border: 1px solid #E5DED3;
             }
+
             .hero-title {
                 font-size: 2rem;
                 font-weight: 800;
-                color: #0f172a;
+                color: #2E2E2E;
                 margin: 0;
             }
+
             .hero-sub {
                 margin-top: 0.4rem;
-                color: #475569;
-                font-size: 0.98rem;
+                color: #6B6B6B;
+                font-size: 0.95rem;
             }
+
             .metric-card {
-                background: rgba(255,255,255,0.85);
-                border: 1px solid rgba(148,163,184,0.14);
-                box-shadow: 0 14px 36px rgba(15, 23, 42, 0.06);
-                border-radius: 20px;
-                padding: 1rem 1rem 0.9rem 1rem;
+                background: #FFFFFF;
+                border: 1px solid #E5DED3;
+                border-radius: 16px;
+                padding: 1rem;
                 min-height: 100px;
             }
+
             .metric-label {
-                color: #64748b;
-                font-size: 0.9rem;
-                margin-bottom: 0.35rem;
+                color: #7A7A7A;
+                font-size: 0.85rem;
             }
+
             .metric-value {
-                color: #0f172a;
+                color: #2E2E2E;
                 font-size: 1.6rem;
                 font-weight: 800;
-                line-height: 1.1;
             }
-            .metric-note {
-                color: #475569;
-                font-size: 0.87rem;
-                margin-top: 0.35rem;
-            }
+
             .section-card {
-                background: rgba(255,255,255,0.82);
-                border: 1px solid rgba(148,163,184,0.14);
-                box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
-                border-radius: 22px;
+                background: #FFFFFF;
+                border: 1px solid #E5DED3;
+                border-radius: 18px;
                 padding: 1rem;
                 margin-bottom: 1rem;
-                backdrop-filter: blur(8px);
+            }
+
+            .stButton>button {
+                background-color: #C8A97E;
+                color: white;
+                border-radius: 8px;
+                border: none;
+            }
+
+            .stButton>button:hover {
+                background-color: #B8956A;
+                color: white;
             }
         </style>
         """,
@@ -563,6 +572,10 @@ sort_option = st.sidebar.selectbox(
     ],
     index=0,
 )
+st.sidebar.markdown("---")
+
+if st.sidebar.button(" Clear All Filters"):
+    st.rerun()
 
 filtered_df = weather_df.copy()
 

@@ -937,57 +937,143 @@ if weather_df.empty:
     st.error("Dataset is empty after cleaning. Please inspect your processed CSV.")
     st.stop()
 
-st.sidebar.header("Dashboard Filters")
-st.sidebar.markdown(
-    """
-    <div class="sidebar-card">
-        <div class="sidebar-title">Control Panel</div>
-        <div class="sidebar-copy">
-            Search for cities, narrow the data window, and compare only the parts of the dataset you care about.
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
 city_options = sorted(weather_df["City"].dropna().unique().tolist()) if "City" in weather_df.columns else []
+country_options = (
+    sorted(weather_df["Country"].dropna().unique().tolist())
+    if "Country" in weather_df.columns
+    else []
+)
 source_options = (
     sorted(weather_df["SourceWebsite"].dropna().unique().tolist())
     if "SourceWebsite" in weather_df.columns
     else []
 )
 
-city_search = st.sidebar.text_input("Search city", placeholder="Type a city name")
-visible_city_options = [
-    city for city in city_options if city_search.lower() in city.lower()
-] if city_search else city_options
-default_city_selection = visible_city_options if visible_city_options else city_options
+if "dashboard_filters_initialized" not in st.session_state:
+    st.session_state.dashboard_filters_initialized = True
+    st.session_state.country_filter = country_options
+    st.session_state.source_filter = source_options
+    st.session_state.city_scope = "All cities"
+    st.session_state.city_search = ""
+    st.session_state.city_filter = city_options
+    st.session_state.use_latest_only = False
+    st.session_state.min_comfort = 0
+    st.session_state.top_n = min(10, max(5, len(city_options))) if city_options else 5
+    st.session_state.sort_option = "Comfort Score (High to Low)"
 
-selected_cities = st.sidebar.multiselect("Cities", visible_city_options, default=default_city_selection)
-selected_sources = st.sidebar.multiselect("Sources", source_options, default=source_options)
-
-use_latest_only = st.sidebar.checkbox("Use latest record per city/source", value=False)
-min_comfort = st.sidebar.slider("Minimum comfort score", min_value=0, max_value=100, value=0)
-top_n = st.sidebar.slider(
-    "Top cities to display",
-    min_value=5,
-    max_value=max(5, min(25, len(city_options))) if city_options else 5,
-    value=min(10, max(5, len(city_options))) if city_options else 5,
+st.sidebar.header("Dashboard Filters")
+st.sidebar.markdown(
+    f"""
+    <div class="sidebar-card">
+        <div class="sidebar-title">Control Panel</div>
+        <div class="sidebar-copy">
+            {len(city_options)} cities, {len(source_options)} sources, and one clean place to narrow the dashboard.
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
 
-sort_option = st.sidebar.selectbox(
-    "Ranking sort",
-    [
-        "Comfort Score (High to Low)",
-        "Comfort Score (Low to High)",
-        "Temperature (High to Low)",
-        "Humidity (Low to High)",
-        "City (A-Z)",
-    ],
-    index=0,
-)
+if st.sidebar.button("Reset filters", use_container_width=True):
+    st.session_state.country_filter = country_options
+    st.session_state.source_filter = source_options
+    st.session_state.city_scope = "All cities"
+    st.session_state.city_search = ""
+    st.session_state.city_filter = city_options
+    st.session_state.use_latest_only = False
+    st.session_state.min_comfort = 0
+    st.session_state.top_n = min(10, max(5, len(city_options))) if city_options else 5
+    st.session_state.sort_option = "Comfort Score (High to Low)"
+    st.rerun()
+
+with st.sidebar.expander("Coverage", expanded=True):
+    selected_countries = st.multiselect(
+        "Countries",
+        country_options,
+        default=country_options,
+        key="country_filter",
+        help="Limit the dashboard to one or more countries.",
+    )
+    selected_sources = st.multiselect(
+        "Sources",
+        source_options,
+        default=source_options,
+        key="source_filter",
+        help="Compare only the weather providers you want to keep in view.",
+    )
+    use_latest_only = st.checkbox(
+        "Use latest record per city/source",
+        key="use_latest_only",
+        help="Good for a current snapshot instead of historical rows.",
+    )
+
+with st.sidebar.expander("Cities", expanded=True):
+    city_scope = st.radio(
+        "City selection",
+        ["All cities", "Choose cities"],
+        key="city_scope",
+        help="Keep all cities visible or manually pick a subset.",
+    )
+    city_search = st.text_input(
+        "Search city",
+        key="city_search",
+        placeholder="Type a city name",
+    )
+
+    city_pool_df = weather_df.copy()
+    if selected_countries and "Country" in city_pool_df.columns:
+        city_pool_df = city_pool_df[city_pool_df["Country"].isin(selected_countries)]
+    if selected_sources and "SourceWebsite" in city_pool_df.columns:
+        city_pool_df = city_pool_df[city_pool_df["SourceWebsite"].isin(selected_sources)]
+
+    filtered_city_options = (
+        sorted(city_pool_df["City"].dropna().unique().tolist()) if "City" in city_pool_df.columns else []
+    )
+    visible_city_options = [
+        city for city in filtered_city_options if city_search.lower() in city.lower()
+    ] if city_search else filtered_city_options
+
+    if city_scope == "Choose cities":
+        selected_cities = st.multiselect(
+            "Cities",
+            visible_city_options,
+            default=[city for city in st.session_state.city_filter if city in visible_city_options],
+            key="city_filter",
+            help="Search first, then choose only the cities you want to compare.",
+        )
+    else:
+        selected_cities = filtered_city_options
+        st.caption(f"Using all matching cities: {len(filtered_city_options)}")
+
+with st.sidebar.expander("Thresholds & ranking", expanded=True):
+    min_comfort = st.slider(
+        "Minimum comfort score",
+        min_value=0,
+        max_value=100,
+        key="min_comfort",
+    )
+    top_n = st.slider(
+        "Top cities to display",
+        min_value=5,
+        max_value=max(5, min(25, len(city_options))) if city_options else 5,
+        key="top_n",
+    )
+    sort_option = st.selectbox(
+        "Ranking sort",
+        [
+            "Comfort Score (High to Low)",
+            "Comfort Score (Low to High)",
+            "Temperature (High to Low)",
+            "Humidity (Low to High)",
+            "City (A-Z)",
+        ],
+        key="sort_option",
+    )
 
 filtered_df = weather_df.copy()
+
+if selected_countries and "Country" in filtered_df.columns:
+    filtered_df = filtered_df[filtered_df["Country"].isin(selected_countries)]
 
 if selected_cities:
     filtered_df = filtered_df[filtered_df["City"].isin(selected_cities)]
@@ -1011,11 +1097,6 @@ if "Date" in filtered_df.columns and filtered_df["Date"].notna().any():
         filtered_df = filtered_df[
             (filtered_df["Date"] >= start_date) & (filtered_df["Date"] <= end_date)
         ]
-col_clear = st.sidebar.columns(1)[0]
-with col_clear:
-    if st.button("Clear Filters", use_container_width=True):
-        st.session_state.clear()
-        st.rerun()
 
 if use_latest_only:
     filtered_df = filter_latest_per_city_source(filtered_df)

@@ -372,16 +372,379 @@ def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
     return tips
 
 
+def format_timestamp_label(value: str) -> str:
+    """Format dataset freshness into a compact readable label."""
+    try:
+        dt = pd.to_datetime(value)
+    except Exception:
+        return str(value)
+
+    if pd.isna(dt):
+        return "Unknown"
+    return dt.strftime("%d %b %Y, %H:%M")
+
+
+def build_score_band_summary(ranking_df: pd.DataFrame) -> pd.DataFrame:
+    """Bucket comfort scores into simple bands for overview distribution."""
+    if ranking_df.empty or "Comfort Score" not in ranking_df.columns:
+        return pd.DataFrame()
+
+    score_bands = pd.cut(
+        ranking_df["Comfort Score"],
+        bins=[0, 40, 60, 80, 100],
+        labels=["0-40", "40-60", "60-80", "80-100"],
+        include_lowest=True,
+    )
+    return (
+        score_bands.value_counts(sort=False)
+        .rename_axis("Score Band")
+        .reset_index(name="City Count")
+    )
+
+
+PALETTE = {
+    "paper": "#f8f5f1",
+    "panel": "#fbfaf8",
+    "sidebar": "#f1f0ef",
+    "border": "#e8dfd7",
+    "text": "#4c4a4a",
+    "muted": "#8e8883",
+    "accent": "#f05a5a",
+    "accent_soft": "#fde6e4",
+    "blue": "#48b5cc",
+    "teal": "#56c5c1",
+    "mint": "#95ccb2",
+    "yellow": "#f7de8a",
+    "stone": "#d9dfdf",
+}
+
+
+def inject_styles() -> None:
+    st.markdown(
+        f"""
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+            html, body, [class*="css"] {{
+                font-family: 'Manrope', sans-serif;
+            }}
+
+            .stApp {{
+                background:
+                    radial-gradient(circle at top left, rgba(255,255,255,0.95), transparent 32%),
+                    linear-gradient(180deg, {PALETTE["paper"]} 0%, #f6f2ee 100%);
+                color: {PALETTE["text"]};
+            }}
+
+            .block-container {{
+                max-width: 1420px;
+                padding-top: 1.35rem;
+                padding-bottom: 2.5rem;
+            }}
+
+            section[data-testid="stSidebar"] {{
+                background: linear-gradient(180deg, #f2f2f3 0%, {PALETTE["sidebar"]} 100%);
+                border-right: 1px solid rgba(0, 0, 0, 0.04);
+            }}
+
+            section[data-testid="stSidebar"] .block-container {{
+                padding-top: 1.2rem;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }}
+
+            h1, h2, h3, p, label, span, div {{
+                color: {PALETTE["text"]};
+            }}
+
+            .hero-shell {{
+                background: rgba(255, 252, 249, 0.78);
+                border: 1px solid {PALETTE["border"]};
+                border-radius: 28px;
+                padding: 1.5rem 1.7rem 1.35rem 1.7rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 18px 34px rgba(188, 180, 172, 0.12);
+            }}
+
+            .hero-kicker {{
+                display: inline-block;
+                border: 1px solid rgba(240, 90, 90, 0.35);
+                background: {PALETTE["accent_soft"]};
+                color: {PALETTE["accent"]};
+                border-radius: 999px;
+                padding: 0.28rem 0.72rem;
+                font-size: 0.8rem;
+                font-weight: 700;
+                letter-spacing: 0.01em;
+                margin-bottom: 0.9rem;
+            }}
+
+            .hero-title {{
+                font-size: 2.1rem;
+                line-height: 1.04;
+                font-weight: 800;
+                margin: 0;
+                color: #4a4949;
+            }}
+
+            .hero-sub {{
+                margin-top: 0.55rem;
+                font-size: 0.98rem;
+                color: {PALETTE["muted"]};
+                max-width: 900px;
+            }}
+
+            .pill-row {{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.8rem;
+                margin: 0.35rem 0 1rem 0;
+            }}
+
+            .pill {{
+                border: 1px solid rgba(240, 90, 90, 0.42);
+                color: {PALETTE["accent"]};
+                background: rgba(255, 248, 247, 0.92);
+                padding: 0.48rem 1rem;
+                border-radius: 999px;
+                font-size: 0.82rem;
+                font-weight: 600;
+            }}
+
+            .metric-tile {{
+                background: rgba(255, 251, 248, 0.9);
+                border: 1px solid {PALETTE["border"]};
+                border-radius: 22px;
+                padding: 1.2rem 1.25rem 1.1rem 1.25rem;
+                min-height: 132px;
+                box-shadow: 0 14px 24px rgba(188, 180, 172, 0.10);
+            }}
+
+            .metric-label {{
+                color: {PALETTE["muted"]};
+                font-size: 0.85rem;
+                margin-bottom: 0.35rem;
+            }}
+
+            .metric-value {{
+                color: #444241;
+                font-size: 1.7rem;
+                font-weight: 800;
+                line-height: 1.1;
+            }}
+
+            .metric-note {{
+                color: {PALETTE["muted"]};
+                font-size: 0.82rem;
+                margin-top: 0.35rem;
+            }}
+
+            .sidebar-card {{
+                background: rgba(255, 252, 249, 0.86);
+                border: 1px solid {PALETTE["border"]};
+                border-radius: 18px;
+                padding: 0.9rem 0.95rem;
+                margin: 0.35rem 0 1rem 0;
+            }}
+
+            .sidebar-title {{
+                font-size: 0.86rem;
+                font-weight: 800;
+                color: #504d4c;
+                margin-bottom: 0.35rem;
+            }}
+
+            .sidebar-copy {{
+                font-size: 0.82rem;
+                color: {PALETTE["muted"]};
+                line-height: 1.45;
+            }}
+
+            .panel {{
+                background: rgba(255, 252, 249, 0.76);
+                border: 1px solid {PALETTE["border"]};
+                border-radius: 26px;
+                padding: 1rem 1rem 0.7rem 1rem;
+                box-shadow: 0 16px 28px rgba(188, 180, 172, 0.10);
+                margin-bottom: 1rem;
+            }}
+
+            .panel-title {{
+                font-size: 1.15rem;
+                font-weight: 700;
+                margin-bottom: 0.15rem;
+                color: #4d4a49;
+            }}
+
+            .panel-copy {{
+                color: {PALETTE["muted"]};
+                font-size: 0.9rem;
+                margin-bottom: 0.75rem;
+            }}
+
+            [data-testid="stTabs"] [data-baseweb="tab-list"] {{
+                gap: 0.8rem;
+                margin-top: 0.7rem;
+                margin-bottom: 1.2rem;
+            }}
+
+            [data-testid="stTabs"] [data-baseweb="tab"] {{
+                background: rgba(255, 250, 247, 0.92);
+                border: 1px solid {PALETTE["border"]};
+                border-radius: 999px;
+                padding: 0.62rem 1.15rem;
+                color: {PALETTE["muted"]};
+            }}
+
+            [data-testid="stTabs"] [aria-selected="true"] {{
+                border-color: rgba(240, 90, 90, 0.45) !important;
+                color: {PALETTE["accent"]} !important;
+                background: {PALETTE["accent_soft"]} !important;
+            }}
+
+            .stSelectbox div[data-baseweb="select"] > div,
+            .stMultiSelect div[data-baseweb="select"] > div,
+            .stDateInput > div > div,
+            .stTextInput > div > div > input {{
+                background: rgba(255,255,255,0.92);
+                border-radius: 14px;
+                border: 1px solid {PALETTE["border"]};
+            }}
+
+            .stSlider [data-baseweb="slider"] > div > div > div {{
+                background: {PALETTE["accent"]};
+            }}
+
+            .stDownloadButton button,
+            .stButton button {{
+                background: {PALETTE["accent_soft"]};
+                color: {PALETTE["accent"]};
+                border: 1px solid rgba(240, 90, 90, 0.35);
+                border-radius: 999px;
+                font-weight: 700;
+            }}
+
+            div[data-testid="stDataFrame"] {{
+                border: 1px solid {PALETTE["border"]};
+                border-radius: 18px;
+                overflow: hidden;
+            }}
+
+            div[data-testid="stMetric"] {{
+                background: rgba(255, 251, 248, 0.86);
+                border: 1px solid {PALETTE["border"]};
+                border-radius: 18px;
+                padding: 0.8rem 0.9rem;
+            }}
+
+            .active-filter-bar {{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+                margin: 0 0 1.5rem 0;
+            }}
+
+            .active-filter {{
+                background: rgba(255,255,255,0.78);
+                border: 1px solid {PALETTE["border"]};
+                border-radius: 999px;
+                color: {PALETTE["muted"]};
+                font-size: 0.8rem;
+                padding: 0.45rem 0.9rem;
+            }}
+
+            div[data-testid="stHorizontalBlock"] {{
+                gap: 1.35rem;
+            }}
+
+            div[data-testid="stTabs"] {{
+                margin-top: 0.9rem;
+            }}
+
+            .stMarkdown ul {{
+                padding-left: 1.2rem;
+            }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def metric_tile(title: str, value: str, note: str = "") -> None:
+    st.markdown(
+        f"""
+        <div class="metric-tile">
+            <div class="metric-label">{title}</div>
+            <div class="metric-value">{value}</div>
+            <div class="metric-note">{note}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def panel_start(title: str, copy: str = "") -> None:
+    st.markdown(
+        f"""
+        <div class="panel">
+            <div class="panel-title">{title}</div>
+            <div class="panel-copy">{copy}</div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def panel_end() -> None:
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+def style_figure(fig, *, height: int | None = None):
+    fig.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(255,255,255,0.55)",
+        font=dict(family="Manrope, sans-serif", color=PALETTE["text"]),
+        title_font=dict(size=20, color=PALETTE["text"]),
+        legend_title_text="",
+        hoverlabel=dict(bgcolor="#fffaf6", font_color=PALETTE["text"]),
+        margin=dict(l=22, r=22, t=60, b=24),
+        xaxis=dict(
+            showgrid=False,
+            zeroline=False,
+            linecolor=PALETTE["border"],
+            tickfont=dict(color=PALETTE["muted"]),
+        ),
+        yaxis=dict(
+            showgrid=True,
+            gridcolor="rgba(232, 223, 215, 0.65)",
+            zeroline=False,
+            tickfont=dict(color=PALETTE["muted"]),
+        ),
+    )
+    if height is not None:
+        fig.update_layout(height=height)
+    return fig
+
+
 st.set_page_config(
     page_title="Smart Weather Travel & Comfort Dashboard",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-st.title("Smart Weather Travel & Comfort Dashboard")
-st.caption(
-    "A practical city-comparison dashboard for comfort and travel planning using "
-    "multi-source scraped weather data."
+inject_styles()
+
+st.markdown(
+    """
+    <div class="hero-shell">
+        <div class="hero-kicker">Weather Intelligence</div>
+        <div class="hero-title">Smart Weather Travel & Comfort Dashboard</div>
+        <div class="hero-sub">
+            A softer editorial dashboard theme inspired by the reference layout:
+            pale navigation, coral filter accents, airy panels, and cleaner analytics surfaces.
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
 
 raw_df = load_data(DATA_PATH)
@@ -398,6 +761,17 @@ if weather_df.empty:
     st.stop()
 
 st.sidebar.header("Dashboard Filters")
+st.sidebar.markdown(
+    """
+    <div class="sidebar-card">
+        <div class="sidebar-title">Control Panel</div>
+        <div class="sidebar-copy">
+            Search for cities, narrow the data window, and compare only the parts of the dataset you care about.
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 city_options = sorted(weather_df["City"].dropna().unique().tolist()) if "City" in weather_df.columns else []
 source_options = (
@@ -406,11 +780,23 @@ source_options = (
     else []
 )
 
-selected_cities = st.sidebar.multiselect("Cities", city_options, default=city_options)
+city_search = st.sidebar.text_input("Search city", placeholder="Type a city name")
+visible_city_options = [
+    city for city in city_options if city_search.lower() in city.lower()
+] if city_search else city_options
+default_city_selection = visible_city_options if visible_city_options else city_options
+
+selected_cities = st.sidebar.multiselect("Cities", visible_city_options, default=default_city_selection)
 selected_sources = st.sidebar.multiselect("Sources", source_options, default=source_options)
 
 use_latest_only = st.sidebar.checkbox("Use latest record per city/source", value=False)
 min_comfort = st.sidebar.slider("Minimum comfort score", min_value=0, max_value=100, value=0)
+top_n = st.sidebar.slider(
+    "Top cities to display",
+    min_value=5,
+    max_value=max(5, min(25, len(city_options))) if city_options else 5,
+    value=min(10, max(5, len(city_options))) if city_options else 5,
+)
 
 sort_option = st.sidebar.selectbox(
     "Ranking sort",
@@ -470,25 +856,65 @@ if ranking_df.empty:
 
 avg_comfort = ranking_df["Comfort Score"].mean() if "Comfort Score" in ranking_df.columns else float("nan")
 city_count = ranking_df["City"].nunique() if "City" in ranking_df.columns else 0
+last_updated_label = format_timestamp_label(last_updated)
+top_city_options = ranking_df["City"].head(min(top_n, len(ranking_df))).tolist()
+compare_default = top_city_options[: min(3, len(top_city_options))]
 
-c1, c2, c3, c4 = st.columns(4)
-c1.metric("Best city now", insights["best_city"])
-c2.metric("Worst city now", insights["worst_city"])
-c3.metric("Average comfort", f"{avg_comfort:.1f}" if pd.notna(avg_comfort) else "N/A")
-c4.metric("Cities in view", int(city_count))
+rec_labels = []
+if "Travel Recommendation" in ranking_df.columns:
+    rec_counts = ranking_df["Travel Recommendation"].value_counts()
+    for label in ["Ideal", "Good", "Moderate", "Avoid"]:
+        if label in rec_counts:
+            rec_labels.append(f'<span class="pill">{label} {int(rec_counts[label])}</span>')
+if rec_labels:
+    st.markdown(f'<div class="pill-row">{"".join(rec_labels)}</div>', unsafe_allow_html=True)
 
-st.caption(f"Data freshness: {last_updated}")
+active_filters = [
+    f'<span class="active-filter">{city_count} cities in view</span>',
+    f'<span class="active-filter">{len(selected_sources)} sources</span>',
+    f'<span class="active-filter">Comfort >= {min_comfort}</span>',
+    f'<span class="active-filter">Updated {last_updated_label}</span>',
+]
+if use_latest_only:
+    active_filters.append('<span class="active-filter">Latest records only</span>')
+st.markdown(f'<div class="active-filter-bar">{"".join(active_filters)}</div>', unsafe_allow_html=True)
+
+c1, c2, c3, c4 = st.columns(4, gap="large")
+with c1:
+    metric_tile("Best city now", insights["best_city"], "Highest comfort score")
+with c2:
+    metric_tile("Worst city now", insights["worst_city"], "Lowest comfort score")
+with c3:
+    metric_tile("Average comfort", f"{avg_comfort:.1f}" if pd.notna(avg_comfort) else "N/A", "Across filtered cities")
+with c4:
+    metric_tile("Cities in view", str(int(city_count)), f"Freshness: {last_updated_label}")
 
 overview_tab, explorer_tab, source_tab, planner_tab = st.tabs(
     ["Overview", "City Explorer", "Source Quality", "Trip Planner"]
 )
 
 with overview_tab:
+    panel_start("Overview", "A softer, lighter canvas for ranking, recommendation mix, and city-level comparison.")
+    chart_controls_col, compare_controls_col = st.columns([1.1, 1.3])
+    with chart_controls_col:
+        selected_metric = st.selectbox(
+            "Primary ranking metric",
+            [c for c in ["Comfort Score", "Avg Temperature_C", "Avg FeelsLike_C", "Avg Humidity_%", "Avg WindSpeed_kmh"] if c in ranking_df.columns],
+            index=0,
+        )
+    with compare_controls_col:
+        compare_cities = st.multiselect(
+            "Compare cities",
+            options=ranking_df["City"].tolist(),
+            default=compare_default,
+        )
+
     left, right = st.columns([1.2, 1])
 
     with left:
         st.subheader("City Ranking")
-        st.dataframe(ranking_df, width="stretch", hide_index=True)
+        ranking_preview = ranking_df.head(top_n)
+        st.dataframe(ranking_preview, use_container_width=True, hide_index=True)
 
         csv_bytes = ranking_df.to_csv(index=False).encode("utf-8")
         st.download_button(
@@ -521,34 +947,65 @@ with overview_tab:
                 values="City Count",
                 title="Recommendation Mix",
                 hole=0.35,
+                color="Recommendation",
+                color_discrete_map={
+                    "Ideal": PALETTE["mint"],
+                    "Good": PALETTE["blue"],
+                    "Moderate": PALETTE["yellow"],
+                    "Avoid": PALETTE["accent"],
+                    "Unknown": PALETTE["stone"],
+                },
             )
-            st.plotly_chart(fig_reco, width="stretch")
+            style_figure(fig_reco, height=420)
+            st.plotly_chart(fig_reco, use_container_width=True)
 
-    st.subheader("Comfort Score by City")
+    st.subheader(f"{selected_metric} by City")
     fig_comfort = px.bar(
-        ranking_df,
+        ranking_df.head(top_n).sort_values(selected_metric, ascending=False),
         x="City",
-        y="Comfort Score",
+        y=selected_metric,
         color="Travel Recommendation" if "Travel Recommendation" in ranking_df.columns else "Comfort Score",
-        title="Comfort Ranking Across Cities",
+        title=f"{selected_metric} Across Cities",
+        color_discrete_map={
+            "Ideal": PALETTE["mint"],
+            "Good": PALETTE["blue"],
+            "Moderate": PALETTE["yellow"],
+            "Avoid": PALETTE["accent"],
+            "Unknown": PALETTE["stone"],
+        },
+        text_auto=".1f",
     )
-    fig_comfort.update_layout(xaxis_title="City", yaxis_title="Comfort Score")
-    st.plotly_chart(fig_comfort, width="stretch")
+    fig_comfort.update_layout(xaxis_title="City", yaxis_title=selected_metric)
+    style_figure(fig_comfort, height=430)
+    st.plotly_chart(fig_comfort, use_container_width=True)
 
-    if "Avg Humidity_%" in ranking_df.columns:
-        st.subheader("Average Humidity by City")
-        fig_humidity = px.bar(
-            ranking_df,
-            x="City",
-            y="Avg Humidity_%",
-            color="Avg Humidity_%",
-            color_continuous_scale="Blues",
-            title="Humidity Comparison",
-        )
-        fig_humidity.update_layout(xaxis_title="City", yaxis_title="Humidity (%)")
-        st.plotly_chart(fig_humidity, width="stretch")
+    lower_left, lower_right = st.columns([1.1, 1])
+    with lower_left:
+        if compare_cities:
+            compare_df = ranking_df[ranking_df["City"].isin(compare_cities)]
+            if not compare_df.empty:
+                st.subheader("Selected City Comparison")
+                st.dataframe(compare_df, use_container_width=True, hide_index=True)
+    with lower_right:
+        score_band_df = build_score_band_summary(ranking_df)
+        if not score_band_df.empty:
+            st.subheader("Comfort Score Distribution")
+            fig_band = px.area(
+                score_band_df,
+                x="Score Band",
+                y="City Count",
+                title="How many cities fall into each comfort band",
+            )
+            fig_band.update_traces(
+                line=dict(color=PALETTE["teal"], width=2),
+                fillcolor="rgba(86, 197, 193, 0.28)",
+            )
+            style_figure(fig_band, height=320)
+            st.plotly_chart(fig_band, use_container_width=True)
+    panel_end()
 
 with explorer_tab:
+    panel_start("City Explorer", "Inspect one city at a time with the lighter dashboard theme carried through each chart.")
     st.subheader("City-Level Weather Explorer")
 
     default_city = ranking_df.iloc[0]["City"] if not ranking_df.empty else None
@@ -575,32 +1032,70 @@ with explorer_tab:
         for tip in add_quick_trip_tips(city_rank.iloc[0]):
             st.markdown(f"- {tip}")
 
-    if all(c in city_df.columns for c in ["Temperature_C", "FeelsLike_C"]):
-        scatter = city_df.dropna(subset=["Temperature_C", "FeelsLike_C"])
-        if not scatter.empty:
-            fig_scatter = px.scatter(
-                scatter,
-                x="Temperature_C",
-                y="FeelsLike_C",
-                color="SourceWebsite" if "SourceWebsite" in scatter.columns else None,
-                title=f"{selected_city}: Temperature vs Feels-Like",
-                hover_data=[c for c in ["Date", "Condition", "Humidity_%"] if c in scatter.columns],
-            )
-            st.plotly_chart(fig_scatter, width="stretch")
+    explorer_metric = st.selectbox(
+        "Explorer trend metric",
+        options=[c for c in ["Temperature_C", "FeelsLike_C", "Humidity_%", "WindSpeed_kmh", "Comfort Score"] if c in city_df.columns],
+        index=0,
+    )
 
-    if all(c in city_df.columns for c in ["Date", "Temperature_C"]):
-        trend = city_df.dropna(subset=["Date", "Temperature_C"]).copy()
-        if not trend.empty:
-            trend = trend.groupby("Date", as_index=False)["Temperature_C"].mean()
-            fig_trend = px.line(
-                trend,
+    exp_left, exp_right = st.columns(2)
+
+    with exp_left:
+        if all(c in city_df.columns for c in ["Date", explorer_metric]):
+            trend = city_df.dropna(subset=["Date", explorer_metric]).copy()
+            if not trend.empty:
+                trend = trend.groupby("Date", as_index=False)[explorer_metric].mean()
+                fig_trend = px.line(
+                    trend,
+                    x="Date",
+                    y=explorer_metric,
+                    markers=True,
+                    title=f"{selected_city}: {explorer_metric} Trend",
+                )
+                fig_trend.update_layout(xaxis_title="Date", yaxis_title=explorer_metric)
+                fig_trend.update_traces(line=dict(color=PALETTE["blue"], width=3))
+                style_figure(fig_trend, height=410)
+                st.plotly_chart(fig_trend, use_container_width=True)
+
+    with exp_right:
+        if all(c in city_df.columns for c in ["Temperature_C", "FeelsLike_C"]):
+            scatter = city_df.dropna(subset=["Temperature_C", "FeelsLike_C"])
+            if not scatter.empty:
+                fig_scatter = px.scatter(
+                    scatter,
+                    x="Temperature_C",
+                    y="FeelsLike_C",
+                    color="SourceWebsite" if "SourceWebsite" in scatter.columns else None,
+                    size="Humidity_%" if "Humidity_%" in scatter.columns else None,
+                    title=f"{selected_city}: Temperature vs Feels-Like",
+                    hover_data=[c for c in ["Date", "Condition", "Humidity_%"] if c in scatter.columns],
+                    color_discrete_sequence=[
+                        PALETTE["blue"],
+                        PALETTE["teal"],
+                        PALETTE["accent"],
+                        PALETTE["mint"],
+                    ],
+                )
+                style_figure(fig_scatter, height=410)
+                st.plotly_chart(fig_scatter, use_container_width=True)
+
+    if all(c in city_df.columns for c in ["Date", "Temperature_C", "SourceWebsite"]):
+        source_split = (
+            city_df.dropna(subset=["Date", "Temperature_C"])
+            .groupby(["Date", "SourceWebsite"], as_index=False)["Temperature_C"]
+            .mean()
+        )
+        if not source_split.empty:
+            fig_sources = px.line(
+                source_split,
                 x="Date",
                 y="Temperature_C",
-                markers=True,
-                title=f"{selected_city}: Temperature Trend",
+                color="SourceWebsite",
+                title=f"{selected_city}: Temperature by Source",
+                color_discrete_sequence=[PALETTE["blue"], PALETTE["teal"], PALETTE["accent"]],
             )
-            fig_trend.update_layout(xaxis_title="Date", yaxis_title="Temperature (C)")
-            st.plotly_chart(fig_trend, width="stretch")
+            style_figure(fig_sources, height=360)
+            st.plotly_chart(fig_sources, use_container_width=True)
 
     if "Condition" in city_df.columns and city_df["Condition"].notna().any():
         condition_counts = (
@@ -612,10 +1107,22 @@ with explorer_tab:
             x="Condition",
             y="Count",
             title=f"{selected_city}: Weather Condition Frequency",
+            color="Condition",
+            color_discrete_sequence=[
+                PALETTE["mint"],
+                PALETTE["blue"],
+                PALETTE["yellow"],
+                PALETTE["accent"],
+                PALETTE["stone"],
+                PALETTE["teal"],
+            ],
         )
-        st.plotly_chart(fig_condition, width="stretch")
+        style_figure(fig_condition, height=410)
+        st.plotly_chart(fig_condition, use_container_width=True)
+    panel_end()
 
 with source_tab:
+    panel_start("Source Quality", "Compare how each source behaves using the same muted palette and softer panels.")
     st.subheader("Multi-Source Reliability View")
 
     temp_by_source, humid_by_source, disagreement = build_source_summary(filtered_df)
@@ -630,8 +1137,10 @@ with source_tab:
                 y="Avg Temperature_C",
                 color="SourceWebsite",
                 title="Average Temperature by Source",
+                color_discrete_sequence=[PALETTE["blue"], PALETTE["teal"], PALETTE["mint"]],
             )
-            st.plotly_chart(fig_temp_source, width="stretch")
+            style_figure(fig_temp_source, height=400)
+            st.plotly_chart(fig_temp_source, use_container_width=True)
         else:
             st.info("Temperature comparison by source is unavailable.")
 
@@ -643,8 +1152,10 @@ with source_tab:
                 y="Avg Humidity_%",
                 color="SourceWebsite",
                 title="Average Humidity by Source",
+                color_discrete_sequence=[PALETTE["yellow"], PALETTE["mint"], PALETTE["stone"]],
             )
-            st.plotly_chart(fig_hum_source, width="stretch")
+            style_figure(fig_hum_source, height=400)
+            st.plotly_chart(fig_hum_source, use_container_width=True)
         else:
             st.info("Humidity comparison by source is unavailable.")
 
@@ -653,9 +1164,18 @@ with source_tab:
         st.info("Need City + SourceWebsite + Temperature_C to compute disagreement.")
     else:
         show_rows = min(20, len(disagreement))
+        max_disagreement = float(disagreement["Temp Disagreement (C)"].max())
+        threshold = st.slider(
+            "Minimum disagreement to display",
+            min_value=0.0,
+            max_value=max_disagreement,
+            value=0.0,
+            step=0.1,
+        )
+        disagreement = disagreement[disagreement["Temp Disagreement (C)"] >= threshold]
         st.dataframe(
             disagreement[["City", "Source Count", "Temp Disagreement (C)"]].head(show_rows),
-            width="stretch",
+            use_container_width=True,
             hide_index=True,
         )
 
@@ -664,12 +1184,15 @@ with source_tab:
             x="City",
             y="Temp Disagreement (C)",
             color="Temp Disagreement (C)",
-            color_continuous_scale="Reds",
+            color_continuous_scale=[PALETTE["accent_soft"], PALETTE["accent"]],
             title="Cities with Largest Temperature Disagreement Across Sources",
         )
-        st.plotly_chart(fig_disagree, width="stretch")
+        style_figure(fig_disagree, height=420)
+        st.plotly_chart(fig_disagree, use_container_width=True)
+    panel_end()
 
 with planner_tab:
+    panel_start("Trip Planner", "Keep the planning workflow intact, but present it in the lighter report-style dashboard treatment.")
     st.subheader("Travel Planner Assistant")
 
     target_label = st.selectbox(
@@ -685,18 +1208,30 @@ with planner_tab:
     planner_df["_rank"] = planner_df["Travel Recommendation"].map(label_order)
     planner_df = planner_df[planner_df["_rank"] <= cutoff].drop(columns=["_rank"])
 
+    planner_sort = st.radio(
+        "Planner sort mode",
+        options=["Best comfort", "Cooler weather", "Lower humidity"],
+        horizontal=True,
+    )
+    if planner_sort == "Best comfort" and "Comfort Score" in planner_df.columns:
+        planner_df = planner_df.sort_values("Comfort Score", ascending=False)
+    elif planner_sort == "Cooler weather" and "Avg Temperature_C" in planner_df.columns:
+        planner_df = planner_df.sort_values("Avg Temperature_C", ascending=True)
+    elif planner_sort == "Lower humidity" and "Avg Humidity_%" in planner_df.columns:
+        planner_df = planner_df.sort_values("Avg Humidity_%", ascending=True)
+
     if planner_df.empty:
         st.warning("No cities match your planner target with current filters.")
     else:
         st.write("Cities that satisfy your target:")
-        st.dataframe(planner_df, width="stretch", hide_index=True)
+        st.dataframe(planner_df, use_container_width=True, hide_index=True)
 
     st.subheader("Best Time of Day (if hourly data is available)")
     best_hour_df = best_hour_analysis(filtered_df)
     if best_hour_df.empty:
         st.info("Not enough timestamp richness to estimate best hour per city.")
     else:
-        st.dataframe(best_hour_df, width="stretch", hide_index=True)
+        st.dataframe(best_hour_df, use_container_width=True, hide_index=True)
 
     if all(c in filtered_df.columns for c in ["Date", "City", "Temperature_C"]):
         trend_df = (
@@ -711,6 +1246,23 @@ with planner_tab:
                 y="Temperature_C",
                 color="City",
                 title="Temperature Trend Over Time (Filtered Cities)",
+                color_discrete_sequence=[
+                    PALETTE["accent"],
+                    PALETTE["blue"],
+                    PALETTE["teal"],
+                    PALETTE["mint"],
+                    PALETTE["yellow"],
+                    PALETTE["stone"],
+                ],
             )
             fig_line.update_layout(xaxis_title="Date", yaxis_title="Avg Temperature (C)")
-            st.plotly_chart(fig_line, width="stretch")
+            style_figure(fig_line, height=440)
+            st.plotly_chart(fig_line, use_container_width=True)
+    planner_csv = planner_df.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        label="Download planner results",
+        data=planner_csv,
+        file_name="planner_results.csv",
+        mime="text/csv",
+    )
+    panel_end()

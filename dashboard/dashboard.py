@@ -1322,12 +1322,11 @@ with source_tab:
     st.subheader("Multi-Source Reliability View")
 
     temp_by_source, humid_by_source, disagreement = build_source_summary(filtered_df)
+    st.divider()
 
-st.divider()
+    s1, s2 = st.columns(2)
 
-s1, s2 = st.columns(2)
-
-with s1:
+    with s1:
         if not temp_by_source.empty:
             fig_temp_source = px.bar(
                 temp_by_source,

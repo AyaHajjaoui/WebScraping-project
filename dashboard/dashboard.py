@@ -1,10 +1,16 @@
-# Run with: streamlit run dashboard.py
-
 import os
-
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+
+
+COLORS = {
+    "Ideal": "#86efac",      # pastel green
+    "Good": "#93c5fd",       # pastel blue
+    "Moderate": "#fef3c7",   # pastel yellow
+    "Avoid": "#fca5a5",      # pastel red
+    "Unknown": "#d1d5db"     # pastel gray
+}
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE_DIR, "data", "processed", "weather_data.csv")
@@ -731,6 +737,177 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# 🎨 Custom Theme (matches your screenshot style)
+st.markdown("""
+<style>
+/* Main background */
+.stApp {
+    background-color: #f8fafc;
+    color: #000000;
+}
+
+/* Text colors */
+body, p, h1, h2, h3, h4, h5, h6, span, div {
+    color: #000000 !important;
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #f1f5f9;
+}
+
+/* Buttons */
+.stButton > button {
+    background-color: #fca5a5;
+    color: #000000;
+    border-radius: 10px;
+    border: none;
+}
+.stButton > button:hover {
+    background-color: #fb7185;
+}
+
+/* Clear filters button - full width */
+section[data-testid="stSidebar"] .stButton {
+    width: 100%;
+}
+section[data-testid="stSidebar"] .stButton > button {
+    width: 100%;
+}
+
+/* Sliders - light red */
+.stSlider > div[data-baseweb="slider"] > div {
+    color: #fca5a5;
+}
+.stSlider [data-baseweb="slider"] {
+    background-color: #fecaca !important;
+}
+
+/* Tabs - light red */
+.stTabs [data-baseweb="tab"] {
+    color: #000000;
+    transition: all 0.3s ease;
+}
+.stTabs [aria-selected="true"] {
+    color: #000000 !important;
+    border-bottom: 2px solid #fca5a5;
+}
+.stTabs [data-baseweb="tab"]:hover {
+    color: #000000;
+    background-color: #f0f9ff;
+    border-radius: 8px;
+}
+
+/* Input boxes - light grey background */
+.stTextInput > div > div > input,
+.stNumberInput > div > div > input,
+.stSelectbox > div > div > div,
+.stSelectbox input,
+.stRadio > div > label > input,
+.stRadio > div > label > span {
+    background-color: #f3f4f6 !important;
+    color: #000000 !important;
+}
+
+/* Radio buttons - light grey */
+.stRadio > div {
+    background-color: transparent !important;
+}
+.stRadio > div > label {
+    background-color: #f3f4f6 !important;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    color: #000000 !important;
+}
+
+/* Dataframe - light backgrounds */
+[data-testid="stDataFrame"] {
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #f5f9fc !important;
+}
+[data-testid="stDataFrame"] table {
+    background-color: #ffffff !important;
+}
+[data-testid="stDataFrame"] tr {
+    background-color: #ffffff !important;
+}
+[data-testid="stDataFrame"] th {
+    background-color: #ecf0f5 !important;
+    color: #000000 !important;
+}
+[data-testid="stDataFrame"] td {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+}
+
+/* Download button */
+.stDownloadButton > button {
+    background-color: #f0f9ff !important;
+    color: #000000 !important;
+    border: 1px solid #dbeafe !important;
+}
+
+/* Metric cards */
+[data-testid="metric-container"] {
+    background: white;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Expander - light red */
+.streamlit-expanderHeader {
+    background-color: #fecaca !important;
+}
+.streamlit-expanderHeader:hover {
+    background-color: #fca5a5 !important;
+}
+
+/* Subheader hover - light red */
+h2, h3 {
+    transition: color 0.3s ease;
+}
+h2:hover, h3:hover {
+    color: #fca5a5 !important;
+}
+
+/* Plotly graphs - light background and black text */
+.plotly {
+    background-color: #ffffff !important;
+}
+.plotly-graph {
+    background-color: #ffffff !important;
+}
+[data-testid="plotly.modebar"] {
+    background-color: #f8fafc !important;
+}
+
+/* Black text in all SVG text elements */
+svg text {
+    fill: #000000 !important;
+    color: #000000 !important;
+}
+
+/* Spacing between sections */
+.stDivider {
+    margin: 32px 0 !important;
+}
+
+/* Add spacing to subheaders */
+h2, h3 {
+    margin-top: 32px !important;
+    margin-bottom: 20px !important;
+}
+
+/* Spacing for markdown content */
+.stMarkdown {
+    margin: 12px 0 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 inject_styles()
 
 st.markdown(
@@ -812,10 +989,10 @@ sort_option = st.sidebar.selectbox(
 
 filtered_df = weather_df.copy()
 
-if selected_cities and "City" in filtered_df.columns:
+if selected_cities:
     filtered_df = filtered_df[filtered_df["City"].isin(selected_cities)]
 
-if selected_sources and "SourceWebsite" in filtered_df.columns:
+if selected_sources:
     filtered_df = filtered_df[filtered_df["SourceWebsite"].isin(selected_sources)]
 
 if "Date" in filtered_df.columns and filtered_df["Date"].notna().any():
@@ -834,6 +1011,11 @@ if "Date" in filtered_df.columns and filtered_df["Date"].notna().any():
         filtered_df = filtered_df[
             (filtered_df["Date"] >= start_date) & (filtered_df["Date"] <= end_date)
         ]
+col_clear = st.sidebar.columns(1)[0]
+with col_clear:
+    if st.button("Clear Filters", use_container_width=True):
+        st.session_state.clear()
+        st.rerun()
 
 if use_latest_only:
     filtered_df = filter_latest_per_city_source(filtered_df)
@@ -889,8 +1071,8 @@ with c3:
 with c4:
     metric_tile("Cities in view", str(int(city_count)), f"Freshness: {last_updated_label}")
 
-overview_tab, explorer_tab, source_tab, planner_tab = st.tabs(
-    ["Overview", "City Explorer", "Source Quality", "Trip Planner"]
+overview_tab, explorer_tab, source_tab, planner_tab, all_cities_tab = st.tabs(
+    ["Overview", "City Explorer", "Source Quality", "Trip Planner", "All Cities"]
 )
 
 with overview_tab:
@@ -916,25 +1098,32 @@ with overview_tab:
         ranking_preview = ranking_df.head(top_n)
         st.dataframe(ranking_preview, use_container_width=True, hide_index=True)
 
-        csv_bytes = ranking_df.to_csv(index=False).encode("utf-8")
-        st.download_button(
-            label="Download current ranking as CSV",
-            data=csv_bytes,
-            file_name="city_ranking_filtered.csv",
-            mime="text/csv",
-        )
+    st.markdown("<div style='margin-top: 16px;'></div>", unsafe_allow_html=True)
+    csv_bytes = ranking_df.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        label="Download current ranking as CSV",
+        data=csv_bytes,
+        file_name="city_ranking_filtered.csv",
+        mime="text/csv",
+        use_container_width=False
+    )
 
-    with right:
-        st.subheader("Travel Insights")
-        st.markdown(f"- Best city for outdoor comfort: **{insights['best_city']}**")
-        st.markdown(f"- City with highest humidity: **{insights['most_humid_city']}**")
-        st.markdown(
-            f"- City with highest feels-like temperature: **{insights['hottest_feels_like_city']}**"
-        )
-        st.markdown(f"- Cities good for travel today: **{insights['good_cities']}**")
-        st.markdown(f"- Cities to avoid today: **{insights['avoid_cities']}**")
+    st.markdown("<div style='margin-top: 32px;'></div>", unsafe_allow_html=True)
+    st.divider()
+    st.markdown("<div style='margin-top: 32px;'></div>", unsafe_allow_html=True)
 
-        if "Travel Recommendation" in ranking_df.columns:
+    st.subheader("Travel Insights")
+    st.markdown(f"- Best city for outdoor comfort: **{insights['best_city']}**")
+    st.markdown(f"- City with highest humidity: **{insights['most_humid_city']}**")
+    st.markdown(
+        f"- City with highest feels-like temperature: **{insights['hottest_feels_like_city']}**"
+    )
+    st.markdown(f"- Cities good for travel today: **{insights['good_cities']}**")
+    st.markdown(f"- Cities to avoid today: **{insights['avoid_cities']}**")
+
+    st.markdown("<div style='margin-top: 32px;'></div>", unsafe_allow_html=True)
+
+    if "Travel Recommendation" in ranking_df.columns:
             rec_counts = (
                 ranking_df["Travel Recommendation"]
                 .value_counts()
@@ -1003,6 +1192,8 @@ with overview_tab:
             style_figure(fig_band, height=320)
             st.plotly_chart(fig_band, use_container_width=True)
     panel_end()
+
+    st.divider()
 
 with explorer_tab:
     panel_start("City Explorer", "Inspect one city at a time with the lighter dashboard theme carried through each chart.")
@@ -1097,6 +1288,9 @@ with explorer_tab:
             style_figure(fig_sources, height=360)
             st.plotly_chart(fig_sources, use_container_width=True)
 
+    st.divider()
+
+    st.subheader("Weather Conditions Frequency")
     if "Condition" in city_df.columns and city_df["Condition"].notna().any():
         condition_counts = (
             city_df["Condition"].fillna("Unknown").value_counts().reset_index()
@@ -1121,15 +1315,19 @@ with explorer_tab:
         st.plotly_chart(fig_condition, use_container_width=True)
     panel_end()
 
+    st.divider()
+
 with source_tab:
     panel_start("Source Quality", "Compare how each source behaves using the same muted palette and softer panels.")
     st.subheader("Multi-Source Reliability View")
 
     temp_by_source, humid_by_source, disagreement = build_source_summary(filtered_df)
 
-    s1, s2 = st.columns(2)
+st.divider()
 
-    with s1:
+s1, s2 = st.columns(2)
+
+with s1:
         if not temp_by_source.empty:
             fig_temp_source = px.bar(
                 temp_by_source,
@@ -1158,6 +1356,8 @@ with source_tab:
             st.plotly_chart(fig_hum_source, use_container_width=True)
         else:
             st.info("Humidity comparison by source is unavailable.")
+
+    st.divider()
 
     st.subheader("Source Disagreement by City")
     if disagreement.empty:
@@ -1190,6 +1390,8 @@ with source_tab:
         style_figure(fig_disagree, height=420)
         st.plotly_chart(fig_disagree, use_container_width=True)
     panel_end()
+
+    st.divider()
 
 with planner_tab:
     panel_start("Trip Planner", "Keep the planning workflow intact, but present it in the lighter report-style dashboard treatment.")
@@ -1233,6 +1435,9 @@ with planner_tab:
     else:
         st.dataframe(best_hour_df, use_container_width=True, hide_index=True)
 
+    st.divider()
+
+    st.subheader("Temperature Trend Over Time")
     if all(c in filtered_df.columns for c in ["Date", "City", "Temperature_C"]):
         trend_df = (
             filtered_df.dropna(subset=["Date", "Temperature_C"])

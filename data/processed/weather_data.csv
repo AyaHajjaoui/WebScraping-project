@@ -19896,3 +19896,29 @@ TimeAndDate,Paris,France,2026-04-11 09:49:13.899400+00:00,57.0,56.0,77.0,11.27,p
 TimeAndDate,Berlin,Germany,2026-04-11 09:49:15.979746+00:00,52.0,51.0,47.0,4.83,sunny.
 TimeAndDate,Seoul,South Korea,2026-04-11 09:49:34.800580+00:00,55.0,54.0,77.0,11.27,clear.
 TimeAndDate,Melbourne,Australia,2026-04-11 09:49:41.187004+00:00,52.0,46.0,77.0,27.36,partly cloudy.
+Open-Meteo,Beirut,Lebanon,2026-04-11 12:38:15.027765+00:00,18.2,16.7,73.0,17.3,overcast
+Open-Meteo,New York,United States,2026-04-11 12:38:18.289779+00:00,12.2,7.3,57.0,23.2,clear sky
+Open-Meteo,Los Angeles,United States,2026-04-11 12:38:21.592306+00:00,13.7,13.8,87.0,2.5,clear sky
+Open-Meteo,Toronto,Canada,2026-04-11 12:41:10.574651+00:00,1.9,-2.2,77.0,11.5,clear sky
+Open-Meteo,Mexico City,Mexico,2026-04-11 12:41:13.816844+00:00,13.0,12.9,87.0,2.3,partly cloudy
+Open-Meteo,Buenos Aires,Argentina,2026-04-11 12:43:28.532565+00:00,17.8,17.9,80.0,8.9,mainly clear
+Open-Meteo,London,United Kingdom,2026-04-11 12:43:31.782011+00:00,12.4,7.1,34.0,19.4,overcast
+Open-Meteo,Paris,France,2026-04-11 12:43:35.115898+00:00,14.2,11.3,67.0,17.0,slight rain showers
+Open-Meteo,Madrid,Spain,2026-04-11 12:45:49.927448+00:00,21.1,19.4,34.0,2.6,overcast
+Open-Meteo,Cairo,Egypt,2026-04-11 12:48:04.659394+00:00,26.2,24.8,28.0,10.0,mainly clear
+Open-Meteo,Nairobi,Kenya,2026-04-11 12:48:07.936042+00:00,25.0,23.9,44.0,13.0,overcast
+Open-Meteo,Dubai,United Arab Emirates,2026-04-11 12:50:22.708651+00:00,24.5,25.3,65.0,13.4,overcast
+Open-Meteo,Mumbai,India,2026-04-11 12:50:25.980776+00:00,29.0,32.8,72.0,13.0,clear sky
+Open-Meteo,Seoul,South Korea,2026-04-11 12:52:40.712522+00:00,7.2,5.7,93.0,3.7,overcast
+Open-Meteo,Temasek,Singapore,2026-04-11 12:52:44.030687+00:00,28.0,33.5,80.0,5.1,overcast
+Open-Meteo,Melbourne,Australia,2026-04-11 12:54:59.403891+00:00,11.7,9.1,72.0,12.4,partly cloudy
+Open-Meteo,Auckland,New Zealand,2026-04-11 12:55:02.723578+00:00,19.7,19.2,92.0,24.5,moderate rain
+TimeAndDate,New York,United States,2026-04-11 12:55:37.300499+00:00,51.0,49.0,59.0,9.66,sunny.
+TimeAndDate,Chicago,United States,2026-04-11 12:55:41.559442+00:00,40.0,37.0,83.0,8.05,passing clouds.
+TimeAndDate,Toronto,Canada,2026-04-11 12:55:43.698542+00:00,36.0,28.0,70.0,16.09,sunny.
+TimeAndDate,Mexico City,Mexico,2026-04-11 12:55:45.829920+00:00,57.0,56.0,82.0,9.66,mostly cloudy.
+TimeAndDate,London,United Kingdom,2026-04-11 12:55:52.160326+00:00,54.0,49.0,44.0,28.97,passing clouds.
+TimeAndDate,Paris,France,2026-04-11 12:55:54.297205+00:00,57.0,55.0,82.0,12.87,broken clouds.
+TimeAndDate,Berlin,Germany,2026-04-11 12:55:56.421173+00:00,55.0,53.0,36.0,12.87,passing clouds.
+TimeAndDate,Seoul,South Korea,2026-04-11 12:56:15.590913+00:00,45.0,41.0,100.0,9.66,fog.
+TimeAndDate,Melbourne,Australia,2026-04-11 12:56:22.069037+00:00,52.0,49.0,72.0,12.87,overcast.

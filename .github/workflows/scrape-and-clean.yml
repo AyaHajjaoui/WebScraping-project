@@ -74,4 +74,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: update scraped weather data (run ${{ github.run_id }})" || echo "No changes to commit"
+          git pull --rebase origin ${{ github.ref_name }}
           git push origin HEAD:${{ github.ref_name }}

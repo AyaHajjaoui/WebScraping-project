@@ -1,4 +1,6 @@
 import os
+import re
+import importlib.util
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -14,6 +16,8 @@ COLORS = {
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE_DIR, "data", "processed", "weather_data.csv")
+SUMMARY_REPORT_PATH = os.path.join(BASE_DIR, "data", "processed", "summary_report.csv")
+CONDITION_ANALYSIS_PATH = os.path.join(BASE_DIR, "data", "processed", "condition_analysis.csv")
 
 
 @st.cache_data(show_spinner=False)
@@ -25,6 +29,22 @@ def load_data(path: str) -> pd.DataFrame:
         return pd.read_csv(path)
     except Exception:
         return pd.DataFrame()
+
+
+@st.cache_resource(show_spinner=False)
+def load_analysis_module(module_name: str, relative_path: str):
+    """Load a local analysis module by file path."""
+    module_path = os.path.join(BASE_DIR, relative_path)
+    if not os.path.exists(module_path):
+        return None
+
+    spec = importlib.util.spec_from_file_location(module_name, module_path)
+    if spec is None or spec.loader is None:
+        return None
+
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def parse_datetime(series: pd.Series) -> pd.Series:
@@ -378,6 +398,193 @@ def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
     return tips
 
 
+def parse_trip_request(request: str) -> dict:
+    """Extract simple travel preferences from a free-text request."""
+    text = (request or "").strip().lower()
+    prefs = {
+        "target_temp": 22.0,
+        "humidity_pref": "balanced",
+        "wind_pref": "balanced",
+        "strict_recommendation": False,
+        "keywords": [],
+    }
+
+    if not text:
+        return prefs
+
+    if any(word in text for word in ["cool", "cooler", "cold", "chilly", "fresh"]):
+        prefs["target_temp"] = 16.0
+        prefs["keywords"].append("cool weather")
+    elif any(word in text for word in ["warm", "hot", "summer", "beach", "sunny"]):
+        prefs["target_temp"] = 28.0
+        prefs["keywords"].append("warm weather")
+
+    if any(word in text for word in ["dry", "not humid", "low humidity", "desert"]):
+        prefs["humidity_pref"] = "dry"
+        prefs["keywords"].append("lower humidity")
+    elif any(word in text for word in ["humid", "tropical"]):
+        prefs["humidity_pref"] = "humid"
+        prefs["keywords"].append("humid atmosphere")
+
+    if any(word in text for word in ["calm", "not windy", "low wind", "quiet"]):
+        prefs["wind_pref"] = "calm"
+        prefs["keywords"].append("calmer wind")
+    elif any(word in text for word in ["windy", "breeze", "breezy"]):
+        prefs["wind_pref"] = "windy"
+        prefs["keywords"].append("more breeze")
+
+    if any(word in text for word in ["best", "ideal", "perfect", "top", "excellent"]):
+        prefs["strict_recommendation"] = True
+
+    temp_match = re.search(r"(\d{1,2})\s*(?:c|°|degrees?)", text)
+    if temp_match:
+        prefs["target_temp"] = float(temp_match.group(1))
+        prefs["keywords"].append(f"around {int(prefs['target_temp'])}C")
+
+    return prefs
+
+
+def build_ai_recommendations(ranking_df: pd.DataFrame, best_hour_df: pd.DataFrame, request: str, top_k: int = 3) -> pd.DataFrame:
+    """Generate an AI-style ranked shortlist from a natural-language travel request."""
+    if ranking_df.empty:
+        return pd.DataFrame()
+
+    prefs = parse_trip_request(request)
+    rec_df = ranking_df.copy()
+
+    if prefs["strict_recommendation"] and "Travel Recommendation" in rec_df.columns:
+        rec_df = rec_df[rec_df["Travel Recommendation"].isin(["Ideal", "Good"])]
+        if rec_df.empty:
+            rec_df = ranking_df.copy()
+
+    rec_df["AI Match Score"] = rec_df["Comfort Score"].fillna(0).astype(float)
+
+    if "Avg Temperature_C" in rec_df.columns:
+        rec_df["AI Match Score"] -= (rec_df["Avg Temperature_C"] - prefs["target_temp"]).abs() * 1.6
+
+    if "Avg Humidity_%" in rec_df.columns:
+        if prefs["humidity_pref"] == "dry":
+            rec_df["AI Match Score"] -= rec_df["Avg Humidity_%"].fillna(50) * 0.12
+        elif prefs["humidity_pref"] == "humid":
+            rec_df["AI Match Score"] -= (rec_df["Avg Humidity_%"].fillna(50) - 70).abs() * 0.08
+        else:
+            rec_df["AI Match Score"] -= (rec_df["Avg Humidity_%"].fillna(50) - 50).abs() * 0.05
+
+    if "Avg WindSpeed_kmh" in rec_df.columns:
+        if prefs["wind_pref"] == "calm":
+            rec_df["AI Match Score"] -= rec_df["Avg WindSpeed_kmh"].fillna(0) * 0.25
+        elif prefs["wind_pref"] == "windy":
+            rec_df["AI Match Score"] -= (rec_df["Avg WindSpeed_kmh"].fillna(0) - 22).abs() * 0.12
+        else:
+            rec_df["AI Match Score"] -= (rec_df["Avg WindSpeed_kmh"].fillna(0) - 14).abs() * 0.06
+
+    if not best_hour_df.empty and "City" in best_hour_df.columns:
+        rec_df = rec_df.merge(best_hour_df[["City", "Best Hour", "Avg Comfort Score"]], on="City", how="left")
+
+    rec_df["AI Match Score"] = rec_df["AI Match Score"].round(1)
+    rec_df = rec_df.sort_values(["AI Match Score", "Comfort Score"], ascending=[False, False]).head(top_k).copy()
+
+    reasons = []
+    for _, row in rec_df.iterrows():
+        parts = []
+        if pd.notna(row.get("Avg Temperature_C")):
+            parts.append(f"{row['Avg Temperature_C']:.1f}C average temperature")
+        if pd.notna(row.get("Avg Humidity_%")):
+            parts.append(f"{row['Avg Humidity_%']:.1f}% humidity")
+        if pd.notna(row.get("Comfort Score")):
+            parts.append(f"comfort score {row['Comfort Score']:.1f}")
+        if pd.notna(row.get("Best Hour")):
+            parts.append(f"best hour around {int(row['Best Hour']):02d}:00")
+        reasons.append("; ".join(parts))
+
+    rec_df["Why it matches"] = reasons
+    return rec_df
+
+
+def build_ai_summary(request: str, rec_df: pd.DataFrame) -> str:
+    """Create a concise recommendation narrative."""
+    prefs = parse_trip_request(request)
+    pref_bits = prefs["keywords"] if prefs["keywords"] else ["balanced weather"]
+
+    if rec_df.empty:
+        return f"I couldn't find a strong match for {', '.join(pref_bits)} in the current filtered data."
+
+    city_list = ", ".join(rec_df["City"].tolist())
+    return f"Based on your request for {', '.join(pref_bits)}, the strongest matches right now are {city_list}."
+
+
+@st.cache_data(show_spinner=False)
+def load_summary_report(path: str = SUMMARY_REPORT_PATH) -> pd.DataFrame:
+    """Load saved summary report from processed outputs."""
+    return load_data(path)
+
+
+@st.cache_data(show_spinner=False)
+def load_condition_analysis(path: str = CONDITION_ANALYSIS_PATH) -> pd.DataFrame:
+    """Load saved normalized-condition analysis output."""
+    return load_data(path)
+
+
+@st.cache_data(show_spinner=False)
+def run_ml_analysis_dashboard(data_path: str = DATA_PATH) -> tuple[pd.DataFrame, str, pd.DataFrame]:
+    """Run ML analysis module and return model comparison, best model, and top feature importances."""
+    ml_module = load_analysis_module("analysis_ml_dashboard", os.path.join("analysis", "ml_analysis.py"))
+    if ml_module is None:
+        return pd.DataFrame(), "Unavailable", pd.DataFrame()
+
+    df = ml_module.load_data(data_path)
+    X, y = ml_module.prepare_features(df)
+    if len(X) < 10:
+        return pd.DataFrame(), "Not enough data", pd.DataFrame()
+
+    X_train, X_test, y_train, y_test = ml_module.train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+    results_df, best_model_name, best_pipeline = ml_module.train_and_evaluate_models(
+        X_train, X_test, y_train, y_test
+    )
+    results_df = results_df.copy().round(4)
+
+    importance_df = pd.DataFrame()
+    model = best_pipeline.named_steps["model"]
+    preprocessor = best_pipeline.named_steps["preprocessor"]
+    if hasattr(model, "feature_importances_"):
+        feature_names = preprocessor.get_feature_names_out()
+        importance_df = (
+            pd.DataFrame({"Feature": feature_names, "Importance": model.feature_importances_})
+            .sort_values("Importance", ascending=False)
+            .head(12)
+            .reset_index(drop=True)
+        )
+        importance_df["Importance"] = importance_df["Importance"].round(4)
+
+    return results_df, str(best_model_name), importance_df
+
+
+def build_eda_snapshot(weather_df: pd.DataFrame, ranking_df: pd.DataFrame) -> pd.DataFrame:
+    """Create compact EDA metrics for dashboard display."""
+    if weather_df.empty:
+        return pd.DataFrame()
+
+    rows = [
+        {"Metric": "Total weather rows", "Value": len(weather_df)},
+        {"Metric": "Cities covered", "Value": int(weather_df["City"].nunique()) if "City" in weather_df.columns else 0},
+        {"Metric": "Countries covered", "Value": int(weather_df["Country"].nunique()) if "Country" in weather_df.columns else 0},
+        {"Metric": "Sources covered", "Value": int(weather_df["SourceWebsite"].nunique()) if "SourceWebsite" in weather_df.columns else 0},
+    ]
+
+    if "Temperature_C" in weather_df.columns:
+        rows.append({"Metric": "Average temperature (C)", "Value": round(pd.to_numeric(weather_df["Temperature_C"], errors="coerce").mean(), 2)})
+    if "Humidity_%" in weather_df.columns:
+        rows.append({"Metric": "Average humidity (%)", "Value": round(pd.to_numeric(weather_df["Humidity_%"], errors="coerce").mean(), 2)})
+    if "Comfort Score" in weather_df.columns:
+        rows.append({"Metric": "Average comfort score", "Value": round(pd.to_numeric(weather_df["Comfort Score"], errors="coerce").mean(), 2)})
+    if not ranking_df.empty and "Travel Recommendation" in ranking_df.columns:
+        rows.append({"Metric": "Ideal or Good cities", "Value": int(ranking_df["Travel Recommendation"].isin(["Ideal", "Good"]).sum())})
+
+    return pd.DataFrame(rows)
+
+
 def format_timestamp_label(value: str) -> str:
     """Format dataset freshness into a compact readable label."""
     try:
@@ -406,6 +613,181 @@ def build_score_band_summary(ranking_df: pd.DataFrame) -> pd.DataFrame:
         .rename_axis("Score Band")
         .reset_index(name="City Count")
     )
+
+
+def build_source_health_summary(df: pd.DataFrame) -> pd.DataFrame:
+    """Summarize source coverage, freshness, and average conditions."""
+    if df.empty or "SourceWebsite" not in df.columns:
+        return pd.DataFrame()
+
+    source_summary = df.groupby("SourceWebsite", as_index=False).agg(
+        Records=("SourceWebsite", "size"),
+        Cities=("City", pd.Series.nunique),
+    )
+
+    if "Country" in df.columns:
+        country_counts = (
+            df.groupby("SourceWebsite")["Country"]
+            .nunique()
+            .rename("Countries")
+            .reset_index()
+        )
+        source_summary = source_summary.merge(country_counts, on="SourceWebsite", how="left")
+
+    if "ScrapeDateTime" in df.columns:
+        latest_scrape = (
+            df.groupby("SourceWebsite")["ScrapeDateTime"]
+            .max()
+            .rename("Latest Update")
+            .reset_index()
+        )
+        latest_scrape["Latest Update"] = pd.to_datetime(latest_scrape["Latest Update"], errors="coerce").dt.strftime("%d %b %Y, %H:%M")
+        source_summary = source_summary.merge(latest_scrape, on="SourceWebsite", how="left")
+
+    for metric in ["Temperature_C", "Humidity_%", "WindSpeed_kmh", "Comfort Score"]:
+        if metric in df.columns:
+            metric_summary = (
+                df.groupby("SourceWebsite")[metric]
+                .mean()
+                .round(1)
+                .rename(
+                    {
+                        "Temperature_C": "Avg Temp (C)",
+                        "Humidity_%": "Avg Humidity (%)",
+                        "WindSpeed_kmh": "Avg Wind (km/h)",
+                        "Comfort Score": "Avg Comfort",
+                    }[metric]
+                )
+                .reset_index()
+            )
+            source_summary = source_summary.merge(metric_summary, on="SourceWebsite", how="left")
+
+    missing_condition = (
+        df.groupby("SourceWebsite")["Condition"].apply(lambda s: s.isna().mean() * 100)
+        .round(1)
+        .rename("Condition Missing (%)")
+        .reset_index()
+        if "Condition" in df.columns
+        else pd.DataFrame()
+    )
+    if not missing_condition.empty:
+        source_summary = source_summary.merge(missing_condition, on="SourceWebsite", how="left")
+
+    return source_summary.sort_values(["Cities", "Records"], ascending=[False, False])
+
+
+def build_country_summary(ranking_df: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate average comfort and city counts by country."""
+    if ranking_df.empty or "Country" not in ranking_df.columns:
+        return pd.DataFrame()
+
+    country_summary = (
+        ranking_df.dropna(subset=["Country"])
+        .groupby("Country", as_index=False)
+        .agg(
+            Cities=("City", "nunique"),
+            Avg_Comfort=("Comfort Score", "mean"),
+            Avg_Temp=("Avg Temperature_C", "mean"),
+        )
+        .rename(
+            columns={
+                "Avg_Comfort": "Avg Comfort Score",
+                "Avg_Temp": "Avg Temperature (C)",
+            }
+        )
+    )
+    for col in ["Avg Comfort Score", "Avg Temperature (C)"]:
+        if col in country_summary.columns:
+            country_summary[col] = country_summary[col].round(1)
+    return country_summary.sort_values(["Avg Comfort Score", "Cities"], ascending=[False, False])
+
+
+def build_all_cities_table(filtered_df: pd.DataFrame, ranking_df: pd.DataFrame) -> pd.DataFrame:
+    """Create an operational all-cities table with freshness and source coverage."""
+    if ranking_df.empty:
+        return pd.DataFrame()
+
+    details = ranking_df.copy()
+
+    if "City" in filtered_df.columns:
+        row_counts = (
+            filtered_df.groupby("City")
+            .size()
+            .rename("Records")
+            .reset_index()
+        )
+        details = details.merge(row_counts, on="City", how="left")
+
+    if "SourceWebsite" in filtered_df.columns:
+        source_counts = (
+            filtered_df.groupby("City")["SourceWebsite"]
+            .nunique()
+            .rename("Source Count")
+            .reset_index()
+        )
+        details = details.merge(source_counts, on="City", how="left")
+
+    if "ScrapeDateTime" in filtered_df.columns:
+        freshness = (
+            filtered_df.groupby("City")["ScrapeDateTime"]
+            .max()
+            .rename("Last Updated")
+            .reset_index()
+        )
+        details = details.merge(freshness, on="City", how="left")
+        details["Last Updated"] = pd.to_datetime(details["Last Updated"], errors="coerce").dt.strftime("%d %b %Y, %H:%M")
+
+    return details
+
+
+def build_source_coverage_matrix(df: pd.DataFrame) -> pd.DataFrame:
+    """Pivot city/source coverage counts for a compact reliability matrix."""
+    if df.empty or not all(c in df.columns for c in ["City", "SourceWebsite"]):
+        return pd.DataFrame()
+
+    coverage = (
+        df.groupby(["City", "SourceWebsite"])
+        .size()
+        .rename("Rows")
+        .reset_index()
+        .pivot(index="City", columns="SourceWebsite", values="Rows")
+        .fillna(0)
+        .astype(int)
+        .reset_index()
+    )
+    return coverage
+
+
+def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> list[str]:
+    """Generate practical dashboard alerts from filtered data."""
+    alerts: list[str] = []
+    if ranking_df.empty:
+        return alerts
+
+    if "Travel Recommendation" in ranking_df.columns:
+        avoid_count = int((ranking_df["Travel Recommendation"] == "Avoid").sum())
+        if avoid_count:
+            alerts.append(f"{avoid_count} cities are currently classified as Avoid.")
+
+    if "Avg Humidity_%" in ranking_df.columns:
+        sticky = ranking_df[ranking_df["Avg Humidity_%"] >= 80]["City"].head(5).tolist()
+        if sticky:
+            alerts.append(f"Very humid conditions in: {', '.join(sticky)}.")
+
+    if "Avg Temperature_C" in ranking_df.columns:
+        hot = ranking_df[ranking_df["Avg Temperature_C"] >= 32]["City"].head(5).tolist()
+        if hot:
+            alerts.append(f"High heat detected in: {', '.join(hot)}.")
+
+    if not disagreement_df.empty and "Temp Disagreement (C)" in disagreement_df.columns:
+        volatile = disagreement_df[disagreement_df["Temp Disagreement (C)"] >= 5]["City"].head(5).tolist()
+        if volatile:
+            alerts.append(f"Large source disagreement for: {', '.join(volatile)}.")
+
+    if not alerts:
+        alerts.append("No major weather or source-quality alert stands out in the current filtered view.")
+
+    return alerts
 
 
 PALETTE = {
@@ -585,27 +967,27 @@ def inject_styles() -> None:
             .panel-copy {{
                 color: {PALETTE["muted"]};
                 font-size: 0.9rem;
-                margin-bottom: 0.75rem;
+                margin-bottom: 0.35rem;
             }}
 
             [data-testid="stTabs"] [data-baseweb="tab-list"] {{
                 gap: 0.8rem;
                 margin-top: 0.7rem;
-                margin-bottom: 1.2rem;
+                margin-bottom: 0.55rem;
             }}
 
             [data-testid="stTabs"] [data-baseweb="tab"] {{
-                background: rgba(255, 250, 247, 0.92);
-                border: 1px solid {PALETTE["border"]};
-                border-radius: 999px;
+                background: transparent;
+                border: none;
+                border-radius: 0;
                 padding: 0.62rem 1.15rem;
                 color: {PALETTE["muted"]};
             }}
 
             [data-testid="stTabs"] [aria-selected="true"] {{
-                border-color: rgba(240, 90, 90, 0.45) !important;
+                border-bottom: 2px solid rgba(240, 90, 90, 0.7) !important;
                 color: {PALETTE["accent"]} !important;
-                background: {PALETTE["accent_soft"]} !important;
+                background: transparent !important;
             }}
 
             .stSelectbox div[data-baseweb="select"] > div,
@@ -657,6 +1039,21 @@ def inject_styles() -> None:
                 color: {PALETTE["muted"]};
                 font-size: 0.8rem;
                 padding: 0.45rem 0.9rem;
+            }}
+
+            .alert-card {{
+                background: rgba(255, 247, 244, 0.95);
+                border: 1px solid rgba(240, 90, 90, 0.2);
+                border-left: 4px solid {PALETTE["accent"]};
+                border-radius: 18px;
+                padding: 0.9rem 1rem;
+                margin-bottom: 0.85rem;
+            }}
+
+            .section-note {{
+                color: {PALETTE["muted"]};
+                font-size: 0.88rem;
+                margin-bottom: 0.4rem;
             }}
 
             div[data-testid="stHorizontalBlock"] {{
@@ -780,22 +1177,25 @@ section[data-testid="stSidebar"] .stButton > button {
     color: #fca5a5;
 }
 .stSlider [data-baseweb="slider"] {
-    background-color: #fecaca !important;
+    background-color: transparent !important;
 }
 
 /* Tabs - light red */
 .stTabs [data-baseweb="tab"] {
     color: #000000;
     transition: all 0.3s ease;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
 }
 .stTabs [aria-selected="true"] {
     color: #000000 !important;
     border-bottom: 2px solid #fca5a5;
+    background-color: transparent !important;
 }
 .stTabs [data-baseweb="tab"]:hover {
     color: #000000;
-    background-color: #f0f9ff;
-    border-radius: 8px;
+    background-color: transparent;
 }
 
 /* Input boxes - light grey background */
@@ -898,7 +1298,7 @@ svg text {
 /* Add spacing to subheaders */
 h2, h3 {
     margin-top: 32px !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 8px !important;
 }
 
 /* Spacing for markdown content */
@@ -916,8 +1316,8 @@ st.markdown(
         <div class="hero-kicker">Weather Intelligence</div>
         <div class="hero-title">Smart Weather Travel & Comfort Dashboard</div>
         <div class="hero-sub">
-            A softer editorial dashboard theme inspired by the reference layout:
-            pale navigation, coral filter accents, airy panels, and cleaner analytics surfaces.
+            A working dashboard for our scraping project: evaluate travel comfort, compare weather sources,
+            inspect city-level behavior, and make decisions from the processed dataset instead of raw tables.
         </div>
     </div>
     """,
@@ -948,6 +1348,7 @@ source_options = (
     if "SourceWebsite" in weather_df.columns
     else []
 )
+default_top_n = max(5, min(25, len(city_options))) if city_options else 5
 
 if "dashboard_filters_initialized" not in st.session_state:
     st.session_state.dashboard_filters_initialized = True
@@ -958,33 +1359,10 @@ if "dashboard_filters_initialized" not in st.session_state:
     st.session_state.city_filter = city_options
     st.session_state.use_latest_only = False
     st.session_state.min_comfort = 0
-    st.session_state.top_n = min(10, max(5, len(city_options))) if city_options else 5
+    st.session_state.top_n = default_top_n
     st.session_state.sort_option = "Comfort Score (High to Low)"
 
 st.sidebar.header("Dashboard Filters")
-st.sidebar.markdown(
-    f"""
-    <div class="sidebar-card">
-        <div class="sidebar-title">Control Panel</div>
-        <div class="sidebar-copy">
-            {len(city_options)} cities, {len(source_options)} sources, and one clean place to narrow the dashboard.
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-if st.sidebar.button("Reset filters", use_container_width=True):
-    st.session_state.country_filter = country_options
-    st.session_state.source_filter = source_options
-    st.session_state.city_scope = "All cities"
-    st.session_state.city_search = ""
-    st.session_state.city_filter = city_options
-    st.session_state.use_latest_only = False
-    st.session_state.min_comfort = 0
-    st.session_state.top_n = min(10, max(5, len(city_options))) if city_options else 5
-    st.session_state.sort_option = "Comfort Score (High to Low)"
-    st.rerun()
 
 with st.sidebar.expander("Coverage", expanded=True):
     selected_countries = st.multiselect(
@@ -1055,7 +1433,7 @@ with st.sidebar.expander("Thresholds & ranking", expanded=True):
     top_n = st.slider(
         "Top cities to display",
         min_value=5,
-        max_value=max(5, min(25, len(city_options))) if city_options else 5,
+        max_value=default_top_n,
         key="top_n",
     )
     sort_option = st.selectbox(
@@ -1069,6 +1447,18 @@ with st.sidebar.expander("Thresholds & ranking", expanded=True):
         ],
         key="sort_option",
     )
+
+if st.sidebar.button("Reset filters", use_container_width=True):
+    st.session_state.country_filter = country_options
+    st.session_state.source_filter = source_options
+    st.session_state.city_scope = "All cities"
+    st.session_state.city_search = ""
+    st.session_state.city_filter = city_options
+    st.session_state.use_latest_only = False
+    st.session_state.min_comfort = 0
+    st.session_state.top_n = default_top_n
+    st.session_state.sort_option = "Comfort Score (High to Low)"
+    st.rerun()
 
 filtered_df = weather_df.copy()
 
@@ -1112,6 +1502,17 @@ ranking_df = build_city_ranking(filtered_df)
 ranking_df = apply_sort(ranking_df, sort_option)
 insights = get_high_level_insights(ranking_df)
 last_updated = get_data_freshness(filtered_df)
+snapshot_df = filter_latest_per_city_source(filtered_df)
+snapshot_ranking_df = build_city_ranking(snapshot_df)
+source_health_df = build_source_health_summary(filtered_df)
+country_summary_df = build_country_summary(ranking_df)
+temp_by_source, humid_by_source, disagreement = build_source_summary(filtered_df)
+alerts = build_alerts(ranking_df, disagreement)
+all_cities_table = build_all_cities_table(filtered_df, ranking_df)
+summary_report_df = load_summary_report()
+condition_analysis_df = load_condition_analysis()
+ml_results_df, ml_best_model, ml_importance_df = run_ml_analysis_dashboard()
+eda_snapshot_df = build_eda_snapshot(filtered_df, ranking_df)
 
 if ranking_df.empty:
     st.warning("Not enough data to build city ranking.")
@@ -1119,22 +1520,17 @@ if ranking_df.empty:
 
 avg_comfort = ranking_df["Comfort Score"].mean() if "Comfort Score" in ranking_df.columns else float("nan")
 city_count = ranking_df["City"].nunique() if "City" in ranking_df.columns else 0
+record_count = len(filtered_df)
+snapshot_city_count = snapshot_ranking_df["City"].nunique() if "City" in snapshot_ranking_df.columns and not snapshot_ranking_df.empty else 0
+country_count = ranking_df["Country"].nunique() if "Country" in ranking_df.columns else 0
 last_updated_label = format_timestamp_label(last_updated)
 top_city_options = ranking_df["City"].head(min(top_n, len(ranking_df))).tolist()
 compare_default = top_city_options[: min(3, len(top_city_options))]
 
-rec_labels = []
-if "Travel Recommendation" in ranking_df.columns:
-    rec_counts = ranking_df["Travel Recommendation"].value_counts()
-    for label in ["Ideal", "Good", "Moderate", "Avoid"]:
-        if label in rec_counts:
-            rec_labels.append(f'<span class="pill">{label} {int(rec_counts[label])}</span>')
-if rec_labels:
-    st.markdown(f'<div class="pill-row">{"".join(rec_labels)}</div>', unsafe_allow_html=True)
-
 active_filters = [
     f'<span class="active-filter">{city_count} cities in view</span>',
     f'<span class="active-filter">{len(selected_sources)} sources</span>',
+    f'<span class="active-filter">{record_count} records</span>',
     f'<span class="active-filter">Comfort >= {min_comfort}</span>',
     f'<span class="active-filter">Updated {last_updated_label}</span>',
 ]
@@ -1146,18 +1542,22 @@ c1, c2, c3, c4 = st.columns(4, gap="large")
 with c1:
     metric_tile("Best city now", insights["best_city"], "Highest comfort score")
 with c2:
-    metric_tile("Worst city now", insights["worst_city"], "Lowest comfort score")
+    metric_tile("Current snapshot", str(int(snapshot_city_count)), "Cities with latest-source view")
 with c3:
     metric_tile("Average comfort", f"{avg_comfort:.1f}" if pd.notna(avg_comfort) else "N/A", "Across filtered cities")
 with c4:
-    metric_tile("Cities in view", str(int(city_count)), f"Freshness: {last_updated_label}")
+    metric_tile("Coverage", f"{int(city_count)} cities / {int(country_count)} countries", f"Freshness: {last_updated_label}")
 
-overview_tab, explorer_tab, source_tab, planner_tab, all_cities_tab = st.tabs(
-    ["Overview", "City Explorer", "Source Quality", "Trip Planner", "All Cities"]
+overview_tab, explorer_tab, source_tab, planner_tab, ai_tab, analytics_tab, all_cities_tab = st.tabs(
+    ["Overview", "City Explorer", "Source Quality", "Trip Planner", "AI Recommender", "Insights Center", "All Cities"]
 )
 
 with overview_tab:
-    panel_start("Overview", "A softer, lighter canvas for ranking, recommendation mix, and city-level comparison.")
+    panel_start("Overview", "Use this view as the project command center for current rankings, alerts, and country-level summaries.")
+    st.markdown('<div class="section-note">Operational alerts from the current filtered dataset</div>', unsafe_allow_html=True)
+    for alert in alerts:
+        st.markdown(f'<div class="alert-card">{alert}</div>', unsafe_allow_html=True)
+
     chart_controls_col, compare_controls_col = st.columns([1.1, 1.3])
     with chart_controls_col:
         selected_metric = st.selectbox(
@@ -1179,32 +1579,54 @@ with overview_tab:
         ranking_preview = ranking_df.head(top_n)
         st.dataframe(ranking_preview, use_container_width=True, hide_index=True)
 
-    st.markdown("<div style='margin-top: 16px;'></div>", unsafe_allow_html=True)
-    csv_bytes = ranking_df.to_csv(index=False).encode("utf-8")
-    st.download_button(
-        label="Download current ranking as CSV",
-        data=csv_bytes,
-        file_name="city_ranking_filtered.csv",
-        mime="text/csv",
-        use_container_width=False
-    )
+    with right:
+        st.subheader("Travel Insights")
+        st.markdown(
+            "\n".join(
+                [
+                    f"- Best city for outdoor comfort: **{insights['best_city']}**",
+                    f"- Lowest-comfort city right now: **{insights['worst_city']}**",
+                    f"- City with highest humidity: **{insights['most_humid_city']}**",
+                    f"- City with highest feels-like temperature: **{insights['hottest_feels_like_city']}**",
+                    f"- Good travel options: **{insights['good_cities']}**",
+                    f"- Cities to avoid: **{insights['avoid_cities']}**",
+                ]
+            )
+        )
+        csv_bytes = ranking_df.to_csv(index=False).encode("utf-8")
+        st.download_button(
+            label="Download current ranking as CSV",
+            data=csv_bytes,
+            file_name="city_ranking_filtered.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
 
-    st.markdown("<div style='margin-top: 32px;'></div>", unsafe_allow_html=True)
     st.divider()
-    st.markdown("<div style='margin-top: 32px;'></div>", unsafe_allow_html=True)
+    viz_left, viz_right = st.columns([1.15, 1])
+    with viz_left:
+        st.subheader(f"{selected_metric} by City")
+        fig_comfort = px.bar(
+            ranking_df.head(top_n).sort_values(selected_metric, ascending=False),
+            x="City",
+            y=selected_metric,
+            color="Travel Recommendation" if "Travel Recommendation" in ranking_df.columns else "Comfort Score",
+            title=f"{selected_metric} Across Cities",
+            color_discrete_map={
+                "Ideal": PALETTE["mint"],
+                "Good": PALETTE["blue"],
+                "Moderate": PALETTE["yellow"],
+                "Avoid": PALETTE["accent"],
+                "Unknown": PALETTE["stone"],
+            },
+            text_auto=".1f",
+        )
+        fig_comfort.update_layout(xaxis_title="City", yaxis_title=selected_metric)
+        style_figure(fig_comfort, height=430)
+        st.plotly_chart(fig_comfort, use_container_width=True)
 
-    st.subheader("Travel Insights")
-    st.markdown(f"- Best city for outdoor comfort: **{insights['best_city']}**")
-    st.markdown(f"- City with highest humidity: **{insights['most_humid_city']}**")
-    st.markdown(
-        f"- City with highest feels-like temperature: **{insights['hottest_feels_like_city']}**"
-    )
-    st.markdown(f"- Cities good for travel today: **{insights['good_cities']}**")
-    st.markdown(f"- Cities to avoid today: **{insights['avoid_cities']}**")
-
-    st.markdown("<div style='margin-top: 32px;'></div>", unsafe_allow_html=True)
-
-    if "Travel Recommendation" in ranking_df.columns:
+    with viz_right:
+        if "Travel Recommendation" in ranking_df.columns:
             rec_counts = (
                 ranking_df["Travel Recommendation"]
                 .value_counts()
@@ -1226,36 +1648,19 @@ with overview_tab:
                     "Unknown": PALETTE["stone"],
                 },
             )
-            style_figure(fig_reco, height=420)
+            style_figure(fig_reco, height=430)
             st.plotly_chart(fig_reco, use_container_width=True)
 
-    st.subheader(f"{selected_metric} by City")
-    fig_comfort = px.bar(
-        ranking_df.head(top_n).sort_values(selected_metric, ascending=False),
-        x="City",
-        y=selected_metric,
-        color="Travel Recommendation" if "Travel Recommendation" in ranking_df.columns else "Comfort Score",
-        title=f"{selected_metric} Across Cities",
-        color_discrete_map={
-            "Ideal": PALETTE["mint"],
-            "Good": PALETTE["blue"],
-            "Moderate": PALETTE["yellow"],
-            "Avoid": PALETTE["accent"],
-            "Unknown": PALETTE["stone"],
-        },
-        text_auto=".1f",
-    )
-    fig_comfort.update_layout(xaxis_title="City", yaxis_title=selected_metric)
-    style_figure(fig_comfort, height=430)
-    st.plotly_chart(fig_comfort, use_container_width=True)
-
-    lower_left, lower_right = st.columns([1.1, 1])
+    lower_left, lower_right = st.columns([1.05, 1])
     with lower_left:
         if compare_cities:
             compare_df = ranking_df[ranking_df["City"].isin(compare_cities)]
             if not compare_df.empty:
                 st.subheader("Selected City Comparison")
                 st.dataframe(compare_df, use_container_width=True, hide_index=True)
+        if not country_summary_df.empty:
+            st.subheader("Country Comfort Summary")
+            st.dataframe(country_summary_df.head(10), use_container_width=True, hide_index=True)
     with lower_right:
         score_band_df = build_score_band_summary(ranking_df)
         if not score_band_df.empty:
@@ -1272,12 +1677,23 @@ with overview_tab:
             )
             style_figure(fig_band, height=320)
             st.plotly_chart(fig_band, use_container_width=True)
+        if not country_summary_df.empty:
+            fig_country = px.bar(
+                country_summary_df.head(10),
+                x="Country",
+                y="Avg Comfort Score",
+                color="Cities",
+                title="Top Countries by Average Comfort",
+                color_continuous_scale=[PALETTE["accent_soft"], PALETTE["teal"]],
+            )
+            style_figure(fig_country, height=320)
+            st.plotly_chart(fig_country, use_container_width=True)
     panel_end()
 
     st.divider()
 
 with explorer_tab:
-    panel_start("City Explorer", "Inspect one city at a time with the lighter dashboard theme carried through each chart.")
+    panel_start("City Explorer", "Inspect one city deeply, compare sources, and review the latest raw observations behind its ranking.")
     st.subheader("City-Level Weather Explorer")
 
     default_city = ranking_df.iloc[0]["City"] if not ranking_df.empty else None
@@ -1289,6 +1705,7 @@ with explorer_tab:
 
     city_df = filtered_df[filtered_df["City"] == selected_city].copy()
     city_rank = ranking_df[ranking_df["City"] == selected_city]
+    city_latest_df = snapshot_df[snapshot_df["City"] == selected_city].copy()
 
     if not city_rank.empty:
         r1, r2, r3, r4 = st.columns(4)
@@ -1303,6 +1720,8 @@ with explorer_tab:
         st.markdown("**Quick packing tips**")
         for tip in add_quick_trip_tips(city_rank.iloc[0]):
             st.markdown(f"- {tip}")
+        if not city_latest_df.empty and "SourceWebsite" in city_latest_df.columns:
+            st.caption(f"Latest snapshot includes {city_latest_df['SourceWebsite'].nunique()} sources for {selected_city}.")
 
     explorer_metric = st.selectbox(
         "Explorer trend metric",
@@ -1394,16 +1813,31 @@ with explorer_tab:
         )
         style_figure(fig_condition, height=410)
         st.plotly_chart(fig_condition, use_container_width=True)
+
+    if not city_latest_df.empty:
+        st.subheader("Latest Source Snapshot")
+        latest_cols = [
+            c for c in [
+                "SourceWebsite",
+                "ScrapeDateTime",
+                "Temperature_C",
+                "FeelsLike_C",
+                "Humidity_%",
+                "WindSpeed_kmh",
+                "Condition",
+                "Comfort Score",
+            ] if c in city_latest_df.columns
+        ]
+        st.dataframe(city_latest_df[latest_cols], use_container_width=True, hide_index=True)
     panel_end()
 
     st.divider()
 
 with source_tab:
-    panel_start("Source Quality", "Compare how each source behaves using the same muted palette and softer panels.")
+    panel_start("Source Quality", "Audit how each source behaves, where coverage is weak, and which cities show disagreement across providers.")
     st.subheader("Multi-Source Reliability View")
-
-    temp_by_source, humid_by_source, disagreement = build_source_summary(filtered_df)
-    st.divider()
+    if not source_health_df.empty:
+        st.dataframe(source_health_df, use_container_width=True, hide_index=True)
 
     s1, s2 = st.columns(2)
 
@@ -1469,12 +1903,17 @@ with source_tab:
         )
         style_figure(fig_disagree, height=420)
         st.plotly_chart(fig_disagree, use_container_width=True)
+
+    coverage_matrix = build_source_coverage_matrix(filtered_df)
+    if not coverage_matrix.empty:
+        st.subheader("City-by-Source Coverage Matrix")
+        st.dataframe(coverage_matrix, use_container_width=True, hide_index=True)
     panel_end()
 
     st.divider()
 
 with planner_tab:
-    panel_start("Trip Planner", "Keep the planning workflow intact, but present it in the lighter report-style dashboard treatment.")
+    panel_start("Trip Planner", "Build a practical shortlist by recommendation, temperature comfort, humidity, and best known hour.")
     st.subheader("Travel Planner Assistant")
 
     target_label = st.selectbox(
@@ -1489,6 +1928,29 @@ with planner_tab:
     planner_df = ranking_df.copy()
     planner_df["_rank"] = planner_df["Travel Recommendation"].map(label_order)
     planner_df = planner_df[planner_df["_rank"] <= cutoff].drop(columns=["_rank"])
+
+    pref_col1, pref_col2 = st.columns(2)
+    with pref_col1:
+        max_temp = st.slider(
+            "Maximum average temperature (C)",
+            min_value=0.0,
+            max_value=45.0,
+            value=35.0,
+            step=0.5,
+        )
+    with pref_col2:
+        max_humidity = st.slider(
+            "Maximum average humidity (%)",
+            min_value=0.0,
+            max_value=100.0,
+            value=80.0,
+            step=1.0,
+        )
+
+    if "Avg Temperature_C" in planner_df.columns:
+        planner_df = planner_df[planner_df["Avg Temperature_C"] <= max_temp]
+    if "Avg Humidity_%" in planner_df.columns:
+        planner_df = planner_df[planner_df["Avg Humidity_%"] <= max_humidity]
 
     planner_sort = st.radio(
         "Planner sort mode",
@@ -1513,7 +1975,10 @@ with planner_tab:
     if best_hour_df.empty:
         st.info("Not enough timestamp richness to estimate best hour per city.")
     else:
-        st.dataframe(best_hour_df, use_container_width=True, hide_index=True)
+        planner_hour_df = best_hour_df
+        if not planner_df.empty and "City" in planner_df.columns:
+            planner_hour_df = planner_hour_df[planner_hour_df["City"].isin(planner_df["City"])]
+        st.dataframe(planner_hour_df, use_container_width=True, hide_index=True)
 
     st.divider()
 
@@ -1550,4 +2015,239 @@ with planner_tab:
         file_name="planner_results.csv",
         mime="text/csv",
     )
+    panel_end()
+
+with ai_tab:
+    panel_start("AI Recommender", "Describe your ideal trip weather and get an AI-style shortlist of matching cities from the current data.")
+    st.subheader("Natural-Language Travel Recommender")
+
+    best_hour_df = best_hour_analysis(filtered_df)
+    ai_request = st.text_area(
+        "Describe the kind of trip weather you want",
+        value="I want a cool, dry city with good comfort for walking outside.",
+        height=100,
+        key="ai_trip_request",
+        placeholder="Example: I want a warm beach city with low wind and good comfort.",
+    )
+
+    ai_rec_df = build_ai_recommendations(ranking_df, best_hour_df, ai_request, top_k=5)
+    st.markdown(build_ai_summary(ai_request, ai_rec_df))
+
+    if ai_rec_df.empty:
+        st.info("No AI recommendation could be generated from the current data and filters.")
+    else:
+        top_pick = ai_rec_df.iloc[0]
+        st.markdown(
+            f"**Top pick:** {top_pick['City']} with AI match score **{top_pick['AI Match Score']:.1f}** "
+            f"and recommendation **{top_pick['Travel Recommendation']}**."
+        )
+        ai_display_cols = [
+            c for c in [
+                "City",
+                "Country",
+                "Travel Recommendation",
+                "AI Match Score",
+                "Comfort Score",
+                "Avg Temperature_C",
+                "Avg Humidity_%",
+                "Avg WindSpeed_kmh",
+                "Best Hour",
+                "Why it matches",
+            ] if c in ai_rec_df.columns
+        ]
+        st.dataframe(ai_rec_df[ai_display_cols], use_container_width=True, hide_index=True)
+
+        ai_csv = ai_rec_df.to_csv(index=False).encode("utf-8")
+        st.download_button(
+            label="Download AI recommendations as CSV",
+            data=ai_csv,
+            file_name="ai_recommendations.csv",
+            mime="text/csv",
+        )
+    panel_end()
+
+with analytics_tab:
+    panel_start("Insights Center", "Use these views to understand the data, check forecast-prediction quality, and review how weather descriptions are written.")
+    eda_subtab, ml_subtab, nlp_subtab = st.tabs(["Data Overview", "Prediction Quality", "Weather Language"])
+
+    with eda_subtab:
+        st.subheader("Data Overview")
+        if not eda_snapshot_df.empty:
+            st.dataframe(eda_snapshot_df, use_container_width=True, hide_index=True)
+
+        if not summary_report_df.empty:
+            st.subheader("Saved Data Summary")
+            st.dataframe(summary_report_df, use_container_width=True, hide_index=True)
+
+        eda_left, eda_right = st.columns(2)
+        with eda_left:
+            if "Country" in ranking_df.columns and "Comfort Score" in ranking_df.columns and not country_summary_df.empty:
+                fig_country_eda = px.bar(
+                    country_summary_df.head(12),
+                    x="Country",
+                    y="Avg Comfort Score",
+                    title="Average Comfort Score by Country",
+                    color="Cities",
+                    color_continuous_scale=[PALETTE["accent_soft"], PALETTE["teal"]],
+                )
+                style_figure(fig_country_eda, height=380)
+                st.plotly_chart(fig_country_eda, use_container_width=True)
+        with eda_right:
+            if "SourceWebsite" in filtered_df.columns:
+                source_volume = (
+                    filtered_df["SourceWebsite"]
+                    .value_counts()
+                    .rename_axis("SourceWebsite")
+                    .reset_index(name="Rows")
+                )
+                fig_source_volume = px.pie(
+                    source_volume,
+                    names="SourceWebsite",
+                    values="Rows",
+                    title="Row Distribution by Source",
+                    hole=0.35,
+                    color_discrete_sequence=[PALETTE["blue"], PALETTE["teal"], PALETTE["accent"], PALETTE["mint"]],
+                )
+                style_figure(fig_source_volume, height=380)
+                st.plotly_chart(fig_source_volume, use_container_width=True)
+
+    with ml_subtab:
+        st.subheader("Prediction Quality")
+        if ml_results_df.empty:
+            st.info("Prediction results are unavailable or there is not enough data to train the models.")
+        else:
+            st.markdown(f"**Best prediction model:** {ml_best_model}")
+            st.dataframe(ml_results_df, use_container_width=True, hide_index=True)
+
+            fig_ml = px.bar(
+                ml_results_df,
+                x="Model",
+                y="RMSE",
+                color="Model",
+                title="Model RMSE Comparison",
+                color_discrete_sequence=[PALETTE["blue"], PALETTE["teal"], PALETTE["accent"]],
+                text_auto=".3f",
+            )
+            style_figure(fig_ml, height=360)
+            st.plotly_chart(fig_ml, use_container_width=True)
+
+            if not ml_importance_df.empty:
+                st.subheader("What Influences the Prediction Most")
+                st.dataframe(ml_importance_df, use_container_width=True, hide_index=True)
+                fig_imp = px.bar(
+                    ml_importance_df.head(10).sort_values("Importance", ascending=True),
+                    x="Importance",
+                    y="Feature",
+                    orientation="h",
+                    title="Most Important Inputs in the Best Prediction Model",
+                    color="Importance",
+                    color_continuous_scale=[PALETTE["accent_soft"], PALETTE["accent"]],
+                )
+                style_figure(fig_imp, height=420)
+                st.plotly_chart(fig_imp, use_container_width=True)
+
+    with nlp_subtab:
+        st.subheader("Weather Language")
+        if condition_analysis_df.empty:
+            st.info("Weather-language analysis output is not available.")
+        else:
+            nlp_df = condition_analysis_df.copy()
+            if selected_cities and "City" in nlp_df.columns:
+                nlp_df = nlp_df[nlp_df["City"].isin(selected_cities)]
+            if selected_sources and "SourceWebsite" in nlp_df.columns:
+                nlp_df = nlp_df[nlp_df["SourceWebsite"].isin(selected_sources)]
+
+            normalized_counts = (
+                nlp_df["NormalizedCondition"]
+                .fillna("unknown")
+                .value_counts()
+                .rename_axis("NormalizedCondition")
+                .reset_index(name="Count")
+            )
+            source_condition_counts = (
+                nlp_df.groupby(["SourceWebsite", "NormalizedCondition"])
+                .size()
+                .reset_index(name="Count")
+            ) if all(c in nlp_df.columns for c in ["SourceWebsite", "NormalizedCondition"]) else pd.DataFrame()
+
+            nlp_left, nlp_right = st.columns(2)
+            with nlp_left:
+                if not normalized_counts.empty:
+                    fig_nlp = px.bar(
+                        normalized_counts,
+                        x="NormalizedCondition",
+                        y="Count",
+                        color="NormalizedCondition",
+                        title="Normalized Weather Conditions",
+                        color_discrete_sequence=[PALETTE["mint"], PALETTE["blue"], PALETTE["yellow"], PALETTE["accent"], PALETTE["teal"], PALETTE["stone"]],
+                    )
+                    style_figure(fig_nlp, height=360)
+                    st.plotly_chart(fig_nlp, use_container_width=True)
+            with nlp_right:
+                if not source_condition_counts.empty:
+                    fig_source_nlp = px.bar(
+                        source_condition_counts,
+                        x="SourceWebsite",
+                        y="Count",
+                        color="NormalizedCondition",
+                        title="How Each Source Describes Conditions",
+                        barmode="stack",
+                        color_discrete_sequence=[PALETTE["mint"], PALETTE["blue"], PALETTE["yellow"], PALETTE["accent"], PALETTE["teal"], PALETTE["stone"]],
+                    )
+                    style_figure(fig_source_nlp, height=360)
+                    st.plotly_chart(fig_source_nlp, use_container_width=True)
+
+            top_raw_conditions = (
+                nlp_df["CleanCondition"]
+                .fillna("unknown")
+                .value_counts()
+                .head(15)
+                .rename_axis("CleanCondition")
+                .reset_index(name="Count")
+            ) if "CleanCondition" in nlp_df.columns else pd.DataFrame()
+            if not top_raw_conditions.empty:
+                st.subheader("Top Raw Condition Phrases")
+                st.dataframe(top_raw_conditions, use_container_width=True, hide_index=True)
+    panel_end()
+
+with all_cities_tab:
+    panel_start("All Cities", "Use this table as the operational dataset view: search, slice, and export city-level results with freshness and source coverage.")
+    st.subheader("All Filtered Cities")
+
+    all_cities_df = all_cities_table.copy()
+    search_col, filter_col1, filter_col2 = st.columns([1.2, 1, 1])
+    with search_col:
+        city_query = st.text_input("Search cities", placeholder="Type a city name", key="all_cities_search")
+    with filter_col1:
+        recommendation_filter = st.multiselect(
+            "Recommendation filter",
+            options=sorted(ranking_df["Travel Recommendation"].dropna().unique().tolist()) if "Travel Recommendation" in ranking_df.columns else [],
+        )
+    with filter_col2:
+        country_filter_quick = st.multiselect(
+            "Country filter",
+            options=sorted(ranking_df["Country"].dropna().unique().tolist()) if "Country" in ranking_df.columns else [],
+        )
+
+    if city_query and "City" in all_cities_df.columns:
+        all_cities_df = all_cities_df[
+            all_cities_df["City"].astype(str).str.contains(city_query, case=False, na=False)
+        ]
+    if recommendation_filter and "Travel Recommendation" in all_cities_df.columns:
+        all_cities_df = all_cities_df[all_cities_df["Travel Recommendation"].isin(recommendation_filter)]
+    if country_filter_quick and "Country" in all_cities_df.columns:
+        all_cities_df = all_cities_df[all_cities_df["Country"].isin(country_filter_quick)]
+
+    if all_cities_df.empty:
+        st.info("No cities match the current filters/search.")
+    else:
+        st.dataframe(all_cities_df, use_container_width=True, hide_index=True)
+        all_cities_csv = all_cities_df.to_csv(index=False).encode("utf-8")
+        st.download_button(
+            label="Download all filtered cities as CSV",
+            data=all_cities_csv,
+            file_name="all_filtered_cities.csv",
+            mime="text/csv",
+        )
+
     panel_end()

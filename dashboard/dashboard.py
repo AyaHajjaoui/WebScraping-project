@@ -4,6 +4,8 @@ import importlib.util
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import random
+import pandas as pd
 
 
 COLORS = {
@@ -374,26 +376,68 @@ def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
     temp = city_row.get("Avg Temperature_C")
     humid = city_row.get("Avg Humidity_%")
     wind = city_row.get("Avg WindSpeed_kmh")
+    rain = city_row.get("Avg Precipitation_mm") if "Avg Precipitation_mm" in city_row else None
+    aqi = city_row.get("Avg AQI") if "Avg AQI" in city_row else None
 
+
+# Temperature-based advice
     if pd.notna(temp):
-        if temp >= 30:
-            tips.append("Pack light clothes and stay hydrated.")
-        elif temp <= 10:
-            tips.append("Bring warm layers for cold conditions.")
+        if temp >= 38:
+            tips.append("Extreme heat expected — avoid outdoor activity during peak hours (12–4 PM).")
+            tips.append("Use high SPF sunscreen and wear UV-protective clothing.")
+        elif temp >= 30:
+            tips.append("Hot weather — pack light, breathable cotton/linen clothes.")
+            tips.append("Stay hydrated and carry a reusable water bottle.")
+        elif temp >= 20:
+            tips.append("Warm and comfortable — light layers are ideal.")
+        elif temp >= 10:
+            tips.append("Cool weather — bring a light jacket or hoodie.")
+        elif temp >= 0:
+            tips.append("Cold conditions — wear warm layers and insulated outerwear.")
         else:
-            tips.append("Mild weather expected, light layers are enough.")
+            tips.append("Freezing temperatures — heavy winter clothing, gloves, and thermal layers required.")
 
+#  Humidity-based advice
     if pd.notna(humid):
-        if humid >= 75:
-            tips.append("High humidity likely, choose breathable clothes.")
+        if humid >= 85:
+            tips.append("Very high humidity — expect sticky conditions and reduced comfort.")
+            tips.append("Choose ultra-breathable fabrics and avoid heavy meals.")
+        elif humid >= 70:
+            tips.append("High humidity — breathable clothes recommended.")
         elif humid <= 30:
-            tips.append("Dry air expected, keep water and moisturizer handy.")
+            tips.append("Dry air — stay hydrated and consider moisturizer for skin protection.")
+            tips.append("Dry throat possible — carry water or lozenges.")
 
-    if pd.notna(wind) and wind >= 25:
-        tips.append("It may feel windy outdoors, carry a windproof jacket.")
+#  Wind-based advice
+    if pd.notna(wind):
+        if wind >= 40:
+            tips.append("Strong winds expected — avoid loose items and wear wind-resistant jacket.")
+        elif wind >= 25:
+            tips.append("Windy conditions — carry a light windbreaker.")
+        elif wind >= 15:
+            tips.append("Light breeze — comfortable outdoor conditions.")
 
-    if not tips:
-        tips.append("No specific packing risk detected from current averages.")
+#  Rain / weather risk layer (if you have precipitation data)
+        if "rain" in globals() and pd.notna(rain):
+            if rain >= 80:
+                tips.append("Heavy rain expected — waterproof jacket and umbrella required.")
+            elif rain >= 40:
+                tips.append("Possible rain — carry an umbrella or light raincoat.")
+            elif rain > 0:
+                tips.append("Light rain possible — be prepared for brief showers.")
+
+# Air quality (if available)
+        if "aqi" in globals() and pd.notna(aqi):
+            if aqi >= 150:
+                tips.append("Unhealthy air quality — limit outdoor activity and consider a mask.")
+            elif aqi >= 100:
+                tips.append("Moderate pollution — sensitive individuals should reduce exposure.")
+            elif aqi >= 50:
+                tips.append("Acceptable air quality — generally safe for outdoor activities.")
+
+# fallback
+        if not tips:
+            tips.append("Weather is stable — no special packing precautions needed.")
 
     return tips
 
@@ -757,37 +801,61 @@ def build_source_coverage_matrix(df: pd.DataFrame) -> pd.DataFrame:
     )
     return coverage
 
-
 def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> list[str]:
-    """Generate practical dashboard alerts from filtered data."""
-    alerts: list[str] = []
-    if ranking_df.empty:
-        return alerts
+    """Generate randomized but meaningful dashboard alerts."""
 
+    if ranking_df.empty:
+        return ["No data available for alerts."]
+
+    pool = []
+
+    # 🌡️ Temperature alerts
+    if "Avg Temperature_C" in ranking_df.columns:
+        hot_cities = ranking_df[ranking_df["Avg Temperature_C"] >= 32]["City"].dropna().head(5).tolist()
+        if hot_cities:
+            city_list = ", ".join(hot_cities)
+            pool.append(f"High heat detected in: {city_list}.")
+            pool.append(f"Rising temperatures affecting {len(hot_cities)} cities.")
+            pool.append(f"Hot weather conditions reported in multiple locations.")
+            pool.append(f"Extreme warmth expected in: {city_list}.")
+
+    # 💧 Humidity alerts
+    if "Avg Humidity_%" in ranking_df.columns:
+        humid_cities = ranking_df[ranking_df["Avg Humidity_%"] >= 80]["City"].dropna().head(5).tolist()
+        if humid_cities:
+            city_list = ", ".join(humid_cities)
+            pool.append(f"Very humid conditions in: {city_list}.")
+            pool.append(f"Sticky air conditions affecting {len(humid_cities)} cities.")
+            pool.append(f"High moisture levels detected across regions.")
+
+    # ⚠️ Travel risk alerts
     if "Travel Recommendation" in ranking_df.columns:
         avoid_count = int((ranking_df["Travel Recommendation"] == "Avoid").sum())
-        if avoid_count:
-            alerts.append(f"{avoid_count} cities are currently classified as Avoid.")
+        if avoid_count > 0:
+            pool.append(f"{avoid_count} cities are currently classified as 'Avoid'.")
+            pool.append(f"Travel warnings active in {avoid_count} destinations.")
+            pool.append(f"Several regions flagged as unsafe for travel.")
 
-    if "Avg Humidity_%" in ranking_df.columns:
-        sticky = ranking_df[ranking_df["Avg Humidity_%"] >= 80]["City"].head(5).tolist()
-        if sticky:
-            alerts.append(f"Very humid conditions in: {', '.join(sticky)}.")
+    if (
+        not disagreement_df.empty
+        and "Temp Disagreement (C)" in disagreement_df.columns
+    ):
+        volatile = disagreement_df[
+            disagreement_df["Temp Disagreement (C)"] >= 5
+        ]["City"].dropna().head(5).tolist()
 
-    if "Avg Temperature_C" in ranking_df.columns:
-        hot = ranking_df[ranking_df["Avg Temperature_C"] >= 32]["City"].head(5).tolist()
-        if hot:
-            alerts.append(f"High heat detected in: {', '.join(hot)}.")
-
-    if not disagreement_df.empty and "Temp Disagreement (C)" in disagreement_df.columns:
-        volatile = disagreement_df[disagreement_df["Temp Disagreement (C)"] >= 5]["City"].head(5).tolist()
         if volatile:
-            alerts.append(f"Large source disagreement for: {', '.join(volatile)}.")
+            city_list = ", ".join(volatile)
+            pool.append(f"Conflicting temperature data in: {city_list}.")
+            pool.append(f"Source disagreement detected across {len(volatile)} cities.")
+            pool.append(f"Inconsistent readings found in multiple sources.")
 
-    if not alerts:
-        alerts.append("No major weather or source-quality alert stands out in the current filtered view.")
+    # fallback safety net
+    if not pool:
+        return ["No major weather or data issues detected in the current view."]
 
-    return alerts
+    # random selection (max 3 alerts)
+    return random.sample(pool, k=min(3, len(pool)))
 
 
 PALETTE = {
@@ -815,6 +883,8 @@ def inject_styles() -> None:
 
             html, body, [class*="css"] {{
                 font-family: 'Manrope', sans-serif;
+                background-color: white !important;
+                color: black !important;
             }}
 
             .stApp {{
@@ -901,12 +971,22 @@ def inject_styles() -> None:
 
             .metric-tile {{
                 background: rgba(255, 251, 248, 0.9);
-                border: 1px solid {PALETTE["border"]};
+                border: 1px solid var(--border); /* adjust if needed */
                 border-radius: 22px;
-                padding: 1.2rem 1.25rem 1.1rem 1.25rem;
+                padding: 1.2rem 1.25rem 1.1rem;
+                
                 min-height: 132px;
+                height: 132px;          /* 🔥 forces uniform height */
+                
                 box-shadow: 0 14px 24px rgba(188, 180, 172, 0.10);
-            }}
+
+                display: flex;          /* 🔥 enables centering */
+                flex-direction: column;
+                justify-content: center; /* vertical centering */
+                align-items: center;     /* horizontal centering */
+
+                text-align: center;      /* fixes multi-line text alignment */
+                        }}
 
             .metric-label {{
                 color: {PALETTE["muted"]};
@@ -1030,15 +1110,16 @@ def inject_styles() -> None:
                 flex-wrap: wrap;
                 gap: 0.75rem;
                 margin: 0 0 1.5rem 0;
+                justify-content: center;
             }}
 
             .active-filter {{
                 background: rgba(255,255,255,0.78);
-                border: 1px solid {PALETTE["border"]};
+                 border: 1px solid var(--border);
                 border-radius: 999px;
                 color: {PALETTE["muted"]};
                 font-size: 0.8rem;
-                padding: 0.45rem 0.9rem;
+                padding: 0.6rem 1.2rem;
             }}
 
             .alert-card {{
@@ -1067,10 +1148,16 @@ def inject_styles() -> None:
             .stMarkdown ul {{
                 padding-left: 1.2rem;
             }}
+
+            .select-wrapper {{
+                position: relative;
+                top: -20px;  
+            }}
         </style>
         """,
         unsafe_allow_html=True,
     )
+    
 
 
 def metric_tile(title: str, value: str, note: str = "") -> None:
@@ -1134,7 +1221,6 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# 🎨 Custom Theme (matches your screenshot style)
 st.markdown("""
 <style>
 /* Main background */
@@ -1155,7 +1241,7 @@ section[data-testid="stSidebar"] {
 
 /* Buttons */
 .stButton > button {
-    background-color: #fca5a5;
+    background-color: #fda4af;
     color: #000000;
     border-radius: 10px;
     border: none;
@@ -1289,8 +1375,35 @@ svg text {
     fill: #000000 !important;
     color: #000000 !important;
 }
+            
+.travel-insights {
+    display: block;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;     
+    text-align: center !important;     
+    gap: 14px;               
+    padding-top: 10px;
+    line-height: 1.9;
+}
+            
+.travel-insights span {
+    display: block;
+    text-align: center;
+}
 
-/* Spacing between sections */
+.travel-item {
+    font-size: 0.95rem;
+    color: #111827;
+    display: block;
+    padding: 2px 0;
+}
+
+.travel-item b {
+    color: #111827;
+    font-weight: 600;
+}
+
 .stDivider {
     margin: 32px 0 !important;
 }
@@ -1352,11 +1465,11 @@ default_top_n = max(5, min(25, len(city_options))) if city_options else 5
 
 if "dashboard_filters_initialized" not in st.session_state:
     st.session_state.dashboard_filters_initialized = True
-    st.session_state.country_filter = country_options
-    st.session_state.source_filter = source_options
+    st.session_state.country_filter =[]
+    st.session_state.source_filter = []
     st.session_state.city_scope = "All cities"
     st.session_state.city_search = ""
-    st.session_state.city_filter = city_options
+    st.session_state.city_filter = []
     st.session_state.use_latest_only = False
     st.session_state.min_comfort = 0
     st.session_state.top_n = default_top_n
@@ -1364,7 +1477,7 @@ if "dashboard_filters_initialized" not in st.session_state:
 
 st.sidebar.header("Dashboard Filters")
 
-with st.sidebar.expander("Coverage", expanded=True):
+with st.sidebar.expander("Coverage", expanded=False):
     selected_countries = st.multiselect(
         "Countries",
         country_options,
@@ -1383,45 +1496,44 @@ with st.sidebar.expander("Coverage", expanded=True):
         help="Good for a current snapshot instead of historical rows.",
     )
 
-with st.sidebar.expander("Cities", expanded=True):
+with st.sidebar.expander("Cities", expanded=False):
     city_scope = st.radio(
         "City selection",
         ["All cities", "Choose cities"],
         key="city_scope",
         help="Keep all cities visible or manually pick a subset.",
     )
-    city_search = st.text_input(
-        "Search city",
-        key="city_search",
-        placeholder="Type a city name",
-    )
 
     city_pool_df = weather_df.copy()
+
     if selected_countries and "Country" in city_pool_df.columns:
         city_pool_df = city_pool_df[city_pool_df["Country"].isin(selected_countries)]
+
     if selected_sources and "SourceWebsite" in city_pool_df.columns:
         city_pool_df = city_pool_df[city_pool_df["SourceWebsite"].isin(selected_sources)]
 
     filtered_city_options = (
-        sorted(city_pool_df["City"].dropna().unique().tolist()) if "City" in city_pool_df.columns else []
+        sorted(city_pool_df["City"].dropna().unique().tolist())
+        if "City" in city_pool_df.columns
+        else []
     )
-    visible_city_options = [
-        city for city in filtered_city_options if city_search.lower() in city.lower()
-    ] if city_search else filtered_city_options
 
     if city_scope == "Choose cities":
         selected_cities = st.multiselect(
             "Cities",
-            visible_city_options,
-            default=[city for city in st.session_state.city_filter if city in visible_city_options],
+            filtered_city_options,
+            default=[
+                city for city in st.session_state.city_filter
+                if city in filtered_city_options
+            ],
             key="city_filter",
-            help="Search first, then choose only the cities you want to compare.",
+            help="Select cities to compare.",
         )
     else:
         selected_cities = filtered_city_options
         st.caption(f"Using all matching cities: {len(filtered_city_options)}")
 
-with st.sidebar.expander("Thresholds & ranking", expanded=True):
+with st.sidebar.expander("Thresholds & ranking", expanded=False):
     min_comfort = st.slider(
         "Minimum comfort score",
         min_value=0,
@@ -1469,22 +1581,6 @@ if selected_cities:
 if selected_sources:
     filtered_df = filtered_df[filtered_df["SourceWebsite"].isin(selected_sources)]
 
-if "Date" in filtered_df.columns and filtered_df["Date"].notna().any():
-    min_date = filtered_df["Date"].min().date()
-    max_date = filtered_df["Date"].max().date()
-    date_range = st.sidebar.date_input(
-        "Date range",
-        value=(min_date, max_date),
-        min_value=min_date,
-        max_value=max_date,
-    )
-
-    if isinstance(date_range, (tuple, list)) and len(date_range) == 2:
-        start_date = pd.to_datetime(date_range[0])
-        end_date = pd.to_datetime(date_range[1])
-        filtered_df = filtered_df[
-            (filtered_df["Date"] >= start_date) & (filtered_df["Date"] <= end_date)
-        ]
 
 if use_latest_only:
     filtered_df = filter_latest_per_city_source(filtered_df)
@@ -1544,7 +1640,7 @@ with c2:
 with c3:
     metric_tile("Average comfort", f"{avg_comfort:.1f}" if pd.notna(avg_comfort) else "N/A", "Across filtered cities")
 with c4:
-    metric_tile("Coverage", f"{int(city_count)} cities / {int(country_count)} countries", f"Freshness: {last_updated_label}")
+    metric_tile("Coverage", f"{int(city_count)} cities - {int(country_count)} countries", f"Freshness: {last_updated_label}")
 
 overview_tab, explorer_tab, source_tab, planner_tab, ai_tab, analytics_tab, all_cities_tab = st.tabs(
     ["Overview", "City Explorer", "Source Quality", "Trip Planner", "AI Recommender", "Insights Center", "All Cities"]
@@ -1556,20 +1652,6 @@ with overview_tab:
     for alert in alerts:
         st.markdown(f'<div class="alert-card">{alert}</div>', unsafe_allow_html=True)
 
-    chart_controls_col, compare_controls_col = st.columns([1.1, 1.3])
-    with chart_controls_col:
-        selected_metric = st.selectbox(
-            "Primary ranking metric",
-            [c for c in ["Comfort Score", "Avg Temperature_C", "Avg FeelsLike_C", "Avg Humidity_%", "Avg WindSpeed_kmh"] if c in ranking_df.columns],
-            index=0,
-        )
-    with compare_controls_col:
-        compare_cities = st.multiselect(
-            "Compare cities",
-            options=ranking_df["City"].tolist(),
-            default=compare_default,
-        )
-
     left, right = st.columns([1.2, 1])
 
     with left:
@@ -1579,17 +1661,21 @@ with overview_tab:
 
     with right:
         st.subheader("Travel Insights")
+
         st.markdown(
-            "\n".join(
-                [
-                    f"- Best city for outdoor comfort: **{insights['best_city']}**",
-                    f"- Lowest-comfort city right now: **{insights['worst_city']}**",
-                    f"- City with highest humidity: **{insights['most_humid_city']}**",
-                    f"- City with highest feels-like temperature: **{insights['hottest_feels_like_city']}**",
-                    f"- Good travel options: **{insights['good_cities']}**",
-                    f"- Cities to avoid: **{insights['avoid_cities']}**",
-                ]
-            )
+            f"""
+            <p class="travel-insights">
+
+            <span class="travel-item">• Best city for outdoor comfort: <b>{insights['best_city']}</b></span><br>
+            <span class="travel-item">• Lowest-comfort city right now: <b>{insights['worst_city']}</b></span><br>
+            <span class="travel-item">• City with highest humidity: <b>{insights['most_humid_city']}</b></span><br>
+            <span class="travel-item">• City with highest feels-like temperature: <b>{insights['hottest_feels_like_city']}</b></span><br>
+            <span class="travel-item">• Good travel options: <b>{insights['good_cities']}</b></span><br>
+            <span class="travel-item">• Cities to avoid: <b>{insights['avoid_cities']}</b></span>
+
+            </p>
+            """,
+            unsafe_allow_html=True
         )
         csv_bytes = ranking_df.to_csv(index=False).encode("utf-8")
         st.download_button(
@@ -1601,9 +1687,30 @@ with overview_tab:
         )
 
     st.divider()
+    chart_controls_col = st.columns([1.1, 1.3])
+
+    with chart_controls_col[0]:
+        st.write("")
+
+    _, mid, _ = st.columns([1, 2, 1])
+
+    with mid:
+        st.markdown('<div class="select-wrapper">', unsafe_allow_html=True)
+
+        selected_metric = st.selectbox(
+            "Primary ranking metric",
+            [c for c in ["Comfort Score", "Avg Temperature_C", "Avg FeelsLike_C",
+                        "Avg Humidity_%", "Avg WindSpeed_kmh"]
+            if c in ranking_df.columns],
+            index=0,
+        )
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
     viz_left, viz_right = st.columns([1.15, 1])
+    CHART_HEIGHT = 450
+
     with viz_left:
-        st.subheader(f"{selected_metric} by City")
         fig_comfort = px.bar(
             ranking_df.head(top_n).sort_values(selected_metric, ascending=False),
             x="City",
@@ -1619,18 +1726,26 @@ with overview_tab:
             },
             text_auto=".1f",
         )
-        fig_comfort.update_layout(xaxis_title="City", yaxis_title=selected_metric)
-        style_figure(fig_comfort, height=430)
+
+        fig_comfort.update_layout(
+            xaxis_title="City",
+            yaxis_title=selected_metric,
+            height=CHART_HEIGHT
+        )
+
+        style_figure(fig_comfort, height=CHART_HEIGHT)
         st.plotly_chart(fig_comfort, use_container_width=True)
 
     with viz_right:
         if "Travel Recommendation" in ranking_df.columns:
+
             rec_counts = (
                 ranking_df["Travel Recommendation"]
                 .value_counts()
                 .rename_axis("Recommendation")
                 .reset_index(name="City Count")
             )
+
             fig_reco = px.pie(
                 rec_counts,
                 names="Recommendation",
@@ -1646,49 +1761,87 @@ with overview_tab:
                     "Unknown": PALETTE["stone"],
                 },
             )
-            style_figure(fig_reco, height=430)
-            st.plotly_chart(fig_reco, use_container_width=True)
 
-    lower_left, lower_right = st.columns([1.05, 1])
-    with lower_left:
-        if compare_cities:
-            compare_df = ranking_df[ranking_df["City"].isin(compare_cities)]
-            if not compare_df.empty:
-                st.subheader("Selected City Comparison")
-                st.dataframe(compare_df, use_container_width=True, hide_index=True)
+            fig_reco.update_layout(height=CHART_HEIGHT)
+
+            style_figure(fig_reco, height=CHART_HEIGHT)
+            st.plotly_chart(fig_reco, use_container_width=True)
+    st.divider()
+
+
+    compare_cities = st.multiselect(
+        "Compare cities",
+        options=ranking_df["City"].tolist(),
+        default=compare_default,
+    )
+
+    top_left, top_right = st.columns([1.05, 1])
+
+    with top_left:
         if not country_summary_df.empty:
             st.subheader("Country Comfort Summary")
-            st.dataframe(country_summary_df.head(10), use_container_width=True, hide_index=True)
-    with lower_right:
+
+            st.dataframe(
+                country_summary_df.head(10),
+                use_container_width=True,
+                hide_index=True
+            )
+
+    with top_right:
+        st.subheader("Selected City Comparison")
+
+        if compare_cities:
+            compare_df = ranking_df[ranking_df["City"].isin(compare_cities)]
+
+            st.dataframe(
+                compare_df,
+                use_container_width=True,
+                hide_index=True
+            )
+        else:
+            st.info("Select cities to compare")
+
+    st.divider()
+
+    bottom_left, bottom_right = st.columns([1, 1])
+
+    with bottom_left:
         score_band_df = build_score_band_summary(ranking_df)
+
         if not score_band_df.empty:
             st.subheader("Comfort Score Distribution")
+
             fig_band = px.area(
                 score_band_df,
                 x="Score Band",
                 y="City Count",
-                title="How many cities fall into each comfort band",
+                title="Comfort score distribution across cities",
             )
+
             fig_band.update_traces(
                 line=dict(color=PALETTE["teal"], width=2),
                 fillcolor="rgba(86, 197, 193, 0.28)",
             )
-            style_figure(fig_band, height=320)
+
+            style_figure(fig_band, height=350)
             st.plotly_chart(fig_band, use_container_width=True)
+
+    with bottom_right:
         if not country_summary_df.empty:
+            st.subheader("City Distribution by Comfort Band")
+
             fig_country = px.bar(
                 country_summary_df.head(10),
                 x="Country",
                 y="Avg Comfort Score",
                 color="Cities",
-                title="Top Countries by Average Comfort",
+                title="How many cities fall into each comfort band",
                 color_continuous_scale=[PALETTE["accent_soft"], PALETTE["teal"]],
             )
-            style_figure(fig_country, height=320)
+
+            style_figure(fig_country, height=350)
             st.plotly_chart(fig_country, use_container_width=True)
     panel_end()
-
-    st.divider()
 
 with explorer_tab:
     panel_start("City Explorer", "Inspect one city deeply, compare sources, and review the latest raw observations behind its ranking.")
@@ -1718,8 +1871,7 @@ with explorer_tab:
         st.markdown("**Quick packing tips**")
         for tip in add_quick_trip_tips(city_rank.iloc[0]):
             st.markdown(f"- {tip}")
-        if not city_latest_df.empty and "SourceWebsite" in city_latest_df.columns:
-            st.caption(f"Latest snapshot includes {city_latest_df['SourceWebsite'].nunique()} sources for {selected_city}.")
+        
 
     explorer_metric = st.selectbox(
         "Explorer trend metric",
@@ -1817,7 +1969,6 @@ with explorer_tab:
         latest_cols = [
             c for c in [
                 "SourceWebsite",
-                "ScrapeDateTime",
                 "Temperature_C",
                 "FeelsLike_C",
                 "Humidity_%",
@@ -1877,6 +2028,10 @@ with source_tab:
     else:
         show_rows = min(20, len(disagreement))
         max_disagreement = float(disagreement["Temp Disagreement (C)"].max())
+
+    if max_disagreement == 0.0:
+        threshold = 0.0
+    else:
         threshold = st.slider(
             "Minimum disagreement to display",
             min_value=0.0,

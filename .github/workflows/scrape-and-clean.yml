@@ -76,10 +76,6 @@ jobs:
             git add data/
           fi
 
-          if [ -d "logs" ]; then
-            git add logs/
-          fi
-
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else

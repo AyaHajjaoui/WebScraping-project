@@ -1368,14 +1368,12 @@ with st.sidebar.expander("Coverage", expanded=True):
     selected_countries = st.multiselect(
         "Countries",
         country_options,
-        default=country_options,
         key="country_filter",
         help="Limit the dashboard to one or more countries.",
     )
     selected_sources = st.multiselect(
         "Sources",
         source_options,
-        default=source_options,
         key="source_filter",
         help="Compare only the weather providers you want to keep in view.",
     )

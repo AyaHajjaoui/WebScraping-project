@@ -7122,3 +7122,170 @@ WeatherUnderground,Auckland,New Zealand,1776097495,18.89,18.89,63.0,27.36,Mostly
 WeatherUnderground,Auckland,New Zealand,1776097421,26.11,28.89,72.0,17.7,Cloudy
 WeatherUnderground,Auckland,New Zealand,1776097330,53.0,53.0,60.0,4.83,Mostly Cloudy
 WeatherUnderground,Auckland,New Zealand,1776097773,58.0,57.0,98.0,11.27,Fair
+WeatherUnderground,Beirut,Lebanon,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Beirut,Lebanon,1776107674,23.89,23.89,51.0,19.31,Cloudy
+WeatherUnderground,Beirut,Lebanon,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Beirut,Lebanon,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Beirut,Lebanon,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Beirut,Lebanon,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Beirut,Lebanon,1776107794,17.22,17.22,54.0,8.05,Fair
+WeatherUnderground,New York,United States,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,New York,United States,1776107674,23.89,23.89,51.0,19.31,Cloudy
+WeatherUnderground,New York,United States,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,New York,United States,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,New York,United States,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,New York,United States,1776107712,22.78,22.78,55.0,20.92,Cloudy
+WeatherUnderground,Los Angeles,United States,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Los Angeles,United States,1776107674,23.89,23.89,51.0,19.31,Cloudy
+WeatherUnderground,Los Angeles,United States,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Los Angeles,United States,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Los Angeles,United States,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Los Angeles,United States,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Los Angeles,United States,1776108242,18.89,18.89,47.0,4.83,Fair
+WeatherUnderground,Chicago,United States,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Chicago,United States,1776107674,23.89,23.89,51.0,19.31,Cloudy
+WeatherUnderground,Chicago,United States,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Chicago,United States,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Chicago,United States,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Chicago,United States,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Chicago,United States,1776107728,23.89,23.89,63.0,17.7,Mostly Cloudy
+WeatherUnderground,Toronto,Canada,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Toronto,Canada,1776107674,23.89,23.89,51.0,19.31,Cloudy
+WeatherUnderground,Toronto,Canada,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Toronto,Canada,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Toronto,Canada,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Toronto,Canada,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Toronto,Canada,1776107912,28.33,32.78,77.0,11.27,Cloudy
+WeatherUnderground,Mexico City,Mexico,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Mexico City,Mexico,1776107674,23.89,23.89,51.0,19.31,Cloudy
+WeatherUnderground,Mexico City,Mexico,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Mexico City,Mexico,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Mexico City,Mexico,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Mexico City,Mexico,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Mexico City,Mexico,1776107912,28.33,32.78,77.0,11.27,Cloudy
+WeatherUnderground,Sao Paulo,Brazil,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Sao Paulo,Brazil,1776107674,23.89,23.89,51.0,19.31,Cloudy
+WeatherUnderground,Sao Paulo,Brazil,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Sao Paulo,Brazil,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Sao Paulo,Brazil,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Sao Paulo,Brazil,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Sao Paulo,Brazil,1776108014,26.67,27.78,49.0,9.66,Fair
+WeatherUnderground,Buenos Aires,Argentina,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Buenos Aires,Argentina,1776107674,23.89,23.89,51.0,19.31,Cloudy
+WeatherUnderground,Buenos Aires,Argentina,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Buenos Aires,Argentina,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Buenos Aires,Argentina,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Buenos Aires,Argentina,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Buenos Aires,Argentina,1776108196,23.89,23.89,56.0,20.92,Fair
+WeatherUnderground,London,United Kingdom,1776107552,18.33,18.33,54.0,11.27,Fair
+WeatherUnderground,London,United Kingdom,1776107674,23.89,23.89,51.0,19.31,Cloudy
+WeatherUnderground,London,United Kingdom,1776107585,23.33,23.33,67.0,19.31,Mostly Cloudy
+WeatherUnderground,London,United Kingdom,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,London,United Kingdom,1776107637,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,London,United Kingdom,1776107547,51.0,49.0,64.0,8.05,Fair
+WeatherUnderground,Paris,France,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Paris,France,1776107674,23.89,23.89,51.0,19.31,Cloudy
+WeatherUnderground,Paris,France,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Paris,France,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Paris,France,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Paris,France,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Paris,France,1776107755,51.0,50.0,73.0,6.44,Clear
+WeatherUnderground,Berlin,Germany,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Berlin,Germany,1776108275,23.33,23.33,51.0,19.31,Cloudy
+WeatherUnderground,Berlin,Germany,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Berlin,Germany,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Berlin,Germany,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Berlin,Germany,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Berlin,Germany,1776107918,55.0,51.0,46.0,19.31,Mostly Cloudy
+WeatherUnderground,Madrid,Spain,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Madrid,Spain,1776108275,23.33,23.33,51.0,19.31,Cloudy
+WeatherUnderground,Madrid,Spain,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Madrid,Spain,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Madrid,Spain,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Madrid,Spain,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Madrid,Spain,1776107752,53.0,52.0,40.0,8.05,Fair
+WeatherUnderground,Rome,Italy,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Rome,Italy,1776108275,23.33,23.33,51.0,19.31,Cloudy
+WeatherUnderground,Rome,Italy,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Rome,Italy,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Rome,Italy,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Rome,Italy,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Rome,Italy,1776108233,17.22,16.67,77.0,16.09,Partly Cloudy
+WeatherUnderground,Cairo,Egypt,1776108153,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Cairo,Egypt,1776108275,23.33,23.33,51.0,19.31,Cloudy
+WeatherUnderground,Cairo,Egypt,1776108186,23.33,23.33,68.0,19.31,Cloudy
+WeatherUnderground,Cairo,Egypt,1776107712,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Cairo,Egypt,1776108238,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Cairo,Egypt,1776108147,51.0,50.0,64.0,6.44,Clear
+WeatherUnderground,Cairo,Egypt,1776107824,21.67,21.67,49.0,24.14,Fair
+WeatherUnderground,Nairobi,Kenya,1776108256,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Nairobi,Kenya,1776108216,23.89,23.89,50.0,19.31,Cloudy
+WeatherUnderground,Nairobi,Kenya,1776108049,23.33,23.33,68.0,19.31,Mostly Cloudy
+WeatherUnderground,Nairobi,Kenya,1776107727,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Nairobi,Kenya,1776108062,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Nairobi,Kenya,1776108003,51.0,49.0,64.0,8.05,Fair
+WeatherUnderground,Nairobi,Kenya,1776107770,17.78,17.78,87.0,17.7,Partly Cloudy
+WeatherUnderground,Nairobi,Kenya,1776107884,18.33,17.78,88.0,17.7,Partly Cloudy
+WeatherUnderground,Johannesburg,South Africa,1776108256,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Johannesburg,South Africa,1776108216,23.89,23.89,50.0,19.31,Cloudy
+WeatherUnderground,Johannesburg,South Africa,1776108049,23.33,23.33,68.0,19.31,Mostly Cloudy
+WeatherUnderground,Johannesburg,South Africa,1776107727,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Johannesburg,South Africa,1776108062,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Johannesburg,South Africa,1776108003,51.0,49.0,64.0,8.05,Fair
+WeatherUnderground,Johannesburg,South Africa,1776107715,53.0,51.0,98.0,9.66,Light Rain Shower
+WeatherUnderground,Dubai,United Arab Emirates,1776108256,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Dubai,United Arab Emirates,1776108216,23.89,23.89,50.0,19.31,Cloudy
+WeatherUnderground,Dubai,United Arab Emirates,1776108049,23.33,23.33,68.0,19.31,Mostly Cloudy
+WeatherUnderground,Dubai,United Arab Emirates,1776107727,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Dubai,United Arab Emirates,1776108062,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Dubai,United Arab Emirates,1776108003,51.0,49.0,64.0,8.05,Fair
+WeatherUnderground,Dubai,United Arab Emirates,1776107943,25.0,25.0,73.0,12.87,Partly Cloudy
+WeatherUnderground,Mumbai,India,1776108256,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Mumbai,India,1776108216,23.89,23.89,50.0,19.31,Cloudy
+WeatherUnderground,Mumbai,India,1776108049,23.33,23.33,68.0,19.31,Mostly Cloudy
+WeatherUnderground,Mumbai,India,1776107727,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Mumbai,India,1776108062,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Mumbai,India,1776108003,51.0,49.0,64.0,8.05,Fair
+WeatherUnderground,Mumbai,India,1776108151,28.33,32.78,78.0,8.05,Haze
+WeatherUnderground,Tokyo,Japan,1776108256,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Tokyo,Japan,1776108216,23.89,23.89,50.0,19.31,Cloudy
+WeatherUnderground,Tokyo,Japan,1776108049,23.33,23.33,68.0,19.31,Mostly Cloudy
+WeatherUnderground,Tokyo,Japan,1776107727,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Tokyo,Japan,1776108062,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Tokyo,Japan,1776108003,51.0,49.0,64.0,8.05,Fair
+WeatherUnderground,Tokyo,Japan,1776108281,16.67,16.67,76.0,3.22,Partly Cloudy
+WeatherUnderground,Seoul,South Korea,1776108256,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Seoul,South Korea,1776108216,23.89,23.89,50.0,19.31,Cloudy
+WeatherUnderground,Seoul,South Korea,1776108049,23.33,23.33,68.0,19.31,Mostly Cloudy
+WeatherUnderground,Seoul,South Korea,1776107727,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Seoul,South Korea,1776108062,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Seoul,South Korea,1776108003,51.0,49.0,64.0,8.05,Fair
+WeatherUnderground,Seoul,South Korea,1776107808,55.0,55.0,63.0,3.22,Partly Cloudy
+WeatherUnderground,Singapore,Singapore,1776108256,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Singapore,Singapore,1776108216,23.89,23.89,50.0,19.31,Cloudy
+WeatherUnderground,Singapore,Singapore,1776108049,23.33,23.33,68.0,19.31,Mostly Cloudy
+WeatherUnderground,Singapore,Singapore,1776107727,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Singapore,Singapore,1776108062,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Singapore,Singapore,1776108003,51.0,49.0,64.0,8.05,Fair
+WeatherUnderground,Singapore,Singapore,1776108078,29.44,36.11,82.0,8.05,Mostly Cloudy
+WeatherUnderground,Sydney,Australia,1776108256,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Sydney,Australia,1776108216,23.89,23.89,50.0,19.31,Cloudy
+WeatherUnderground,Sydney,Australia,1776108049,23.33,23.33,68.0,19.31,Mostly Cloudy
+WeatherUnderground,Sydney,Australia,1776107727,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Sydney,Australia,1776108062,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Sydney,Australia,1776108003,51.0,49.0,64.0,8.05,Fair
+WeatherUnderground,Sydney,Australia,1776108193,58.0,56.0,65.0,12.87,Clear
+WeatherUnderground,Melbourne,Australia,1776108256,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Melbourne,Australia,1776108216,23.89,23.89,50.0,19.31,Cloudy
+WeatherUnderground,Melbourne,Australia,1776108049,23.33,23.33,68.0,19.31,Mostly Cloudy
+WeatherUnderground,Melbourne,Australia,1776107727,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Melbourne,Australia,1776108062,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Melbourne,Australia,1776108003,51.0,49.0,64.0,8.05,Fair
+WeatherUnderground,Melbourne,Australia,1776108030,56.0,56.0,97.0,4.83,Cloudy
+WeatherUnderground,Auckland,New Zealand,1776108256,18.33,18.33,53.0,11.27,Fair
+WeatherUnderground,Auckland,New Zealand,1776108215,23.89,23.89,50.0,19.31,Cloudy
+WeatherUnderground,Auckland,New Zealand,1776108049,23.33,23.33,68.0,19.31,Mostly Cloudy
+WeatherUnderground,Auckland,New Zealand,1776107727,20.56,20.56,57.0,25.75,Partly Cloudy
+WeatherUnderground,Auckland,New Zealand,1776108062,27.22,29.44,68.0,20.92,Cloudy
+WeatherUnderground,Auckland,New Zealand,1776108003,51.0,49.0,64.0,8.05,Fair
+WeatherUnderground,Auckland,New Zealand,1776108096,58.0,58.0,99.0,4.83,Fair

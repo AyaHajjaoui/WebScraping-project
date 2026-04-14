@@ -20300,3 +20300,27 @@ TimeAndDate,Berlin,Germany,2026-04-14 02:06:27.186374+00:00,52.0,49.0,50.0,14.48
 TimeAndDate,Madrid,Spain,2026-04-14 02:06:29.272541+00:00,43.0,39.0,81.0,11.27,clear.
 TimeAndDate,Rome,Italy,2026-04-14 02:06:31.413170+00:00,59.0,56.0,88.0,24.14,light rain. overcast.
 TimeAndDate,Johannesburg,South Africa,2026-04-14 02:06:37.758543+00:00,54.0,50.0,97.0,17.7,fog.
+Open-Meteo,Beirut,Lebanon,2026-04-14 05:16:25.587473+00:00,17.2,16.0,53.0,3.6,clear sky
+Open-Meteo,New York,United States,2026-04-14 05:16:28.771174+00:00,18.8,18.3,65.0,8.1,clear sky
+Open-Meteo,Chicago,United States,2026-04-14 05:18:43.298698+00:00,20.8,18.8,69.0,25.1,overcast
+Open-Meteo,Toronto,Canada,2026-04-14 05:18:46.465307+00:00,11.8,10.9,91.0,7.5,overcast
+Open-Meteo,São Paulo,Brazil,2026-04-14 05:21:00.997798+00:00,18.7,21.2,94.0,1.8,partly cloudy
+Open-Meteo,Buenos Aires,Argentina,2026-04-14 05:21:04.186428+00:00,19.0,20.4,88.0,7.3,overcast
+Open-Meteo,Paris,France,2026-04-14 05:23:18.775340+00:00,4.8,3.3,100.0,1.9,fog
+Open-Meteo,Berlin,Germany,2026-04-14 05:23:21.967887+00:00,9.6,6.8,54.0,6.0,overcast
+Open-Meteo,Rome,Italy,2026-04-14 05:25:04.339820+00:00,15.7,15.4,83.0,8.4,overcast
+Open-Meteo,Nairobi,Kenya,2026-04-14 05:27:18.956380+00:00,16.6,16.5,91.0,12.7,overcast
+Open-Meteo,Johannesburg,South Africa,2026-04-14 05:27:22.126301+00:00,13.8,13.1,91.0,9.9,overcast
+Open-Meteo,Mumbai,India,2026-04-14 05:29:36.658740+00:00,29.2,37.0,77.0,3.9,mainly clear
+Open-Meteo,Tokyo,Japan,2026-04-14 05:29:39.843826+00:00,21.5,21.5,57.0,5.6,mainly clear
+Open-Meteo,Temasek,Singapore,2026-04-14 05:31:54.408066+00:00,31.4,37.8,70.0,9.8,thunderstorm
+Open-Meteo,Sydney,Australia,2026-04-14 05:31:57.579075+00:00,23.9,22.4,37.0,7.7,clear sky
+Open-Meteo,Auckland,New Zealand,2026-04-14 05:34:46.923164+00:00,16.2,15.6,87.0,12.7,slight rain showers
+TimeAndDate,Beirut,Lebanon,2026-04-14 05:35:19.579935+00:00,43.0,40.0,83.0,6.44,clear.
+TimeAndDate,Toronto,Canada,2026-04-14 05:35:28.269958+00:00,55.0,55.0,88.0,8.05,overcast.
+TimeAndDate,London,United Kingdom,2026-04-14 05:35:36.822639+00:00,34.0,34.0,93.0,1.61,clear.
+TimeAndDate,Paris,France,2026-04-14 05:35:38.995547+00:00,39.0,39.0,93.0,8.05,clear.
+TimeAndDate,Berlin,Germany,2026-04-14 05:35:41.150534+00:00,46.0,44.0,62.0,8.05,sunny.
+TimeAndDate,Madrid,Spain,2026-04-14 05:35:43.239972+00:00,43.0,37.0,87.0,14.48,passing clouds.
+TimeAndDate,Rome,Italy,2026-04-14 05:35:45.392552+00:00,59.0,57.0,94.0,19.31,cool.
+TimeAndDate,Johannesburg,South Africa,2026-04-14 05:35:51.815138+00:00,54.0,50.0,97.0,17.7,fog.

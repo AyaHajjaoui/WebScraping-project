@@ -20454,3 +20454,31 @@ TimeAndDate,Seoul,South Korea,2026-04-14 19:16:55.065557+00:00,52.0,51.0,77.0,8.
 TimeAndDate,Sydney,Australia,2026-04-14 19:16:59.289161+00:00,55.0,53.0,82.0,12.87,clear.
 TimeAndDate,Melbourne,Australia,2026-04-14 19:17:01.379759+00:00,55.0,53.0,77.0,16.09,passing clouds.
 TimeAndDate,Auckland,New Zealand,2026-04-14 19:17:03.464523+00:00,59.0,56.0,82.0,22.53,passing clouds.
+Open-Meteo,Beirut,Lebanon,2026-04-14 21:43:37.334514+00:00,17.7,17.1,72.0,9.3,mainly clear
+Open-Meteo,New York,United States,2026-04-14 21:43:40.259594+00:00,29.5,27.4,37.0,21.7,clear sky
+Open-Meteo,Los Angeles,United States,2026-04-14 21:43:43.182644+00:00,22.7,22.2,45.0,16.2,clear sky
+Open-Meteo,Toronto,Canada,2026-04-14 21:46:31.336411+00:00,16.6,14.5,77.0,19.4,mainly clear
+Open-Meteo,Mexico City,Mexico,2026-04-14 21:46:34.251139+00:00,25.2,22.1,24.0,14.8,clear sky
+Open-Meteo,São Paulo,Brazil,2026-04-14 21:46:37.173597+00:00,20.4,20.8,78.0,12.5,partly cloudy
+Open-Meteo,London,United Kingdom,2026-04-14 21:49:25.554892+00:00,14.1,11.2,58.0,13.3,overcast
+Open-Meteo,Paris,France,2026-04-14 21:49:28.473349+00:00,13.6,10.8,42.0,5.4,mainly clear
+Open-Meteo,Berlin,Germany,2026-04-14 21:49:31.364187+00:00,8.8,6.9,82.0,6.4,clear sky
+Open-Meteo,Rome,Italy,2026-04-14 21:52:20.006773+00:00,16.1,16.6,83.0,3.1,overcast
+Open-Meteo,Cairo,Egypt,2026-04-14 21:52:22.906927+00:00,18.4,17.4,61.0,8.4,overcast
+Open-Meteo,Johannesburg,South Africa,2026-04-14 21:54:36.956994+00:00,14.0,14.2,89.0,3.7,mainly clear
+Open-Meteo,Dubai,United Arab Emirates,2026-04-14 21:54:39.857239+00:00,23.8,24.9,74.0,15.4,clear sky
+Open-Meteo,Mumbai,India,2026-04-14 21:54:42.847798+00:00,29.3,35.0,78.0,7.3,mainly clear
+Open-Meteo,Seoul,South Korea,2026-04-14 21:56:56.878435+00:00,8.9,7.1,74.0,3.2,mainly clear
+Open-Meteo,Temasek,Singapore,2026-04-14 21:56:59.785534+00:00,25.6,31.2,89.0,1.6,slight rain showers
+Open-Meteo,Sydney,Australia,2026-04-14 21:57:02.682876+00:00,11.7,10.7,79.0,3.8,fog
+Open-Meteo,Auckland,New Zealand,2026-04-14 21:58:44.514394+00:00,17.2,14.1,73.0,26.2,slight rain showers
+TimeAndDate,Beirut,Lebanon,2026-04-14 21:59:16.991087+00:00,57.0,57.0,64.0,11.27,passing clouds.
+TimeAndDate,London,United Kingdom,2026-04-14 21:59:33.763826+00:00,55.0,53.0,72.0,14.48,overcast.
+TimeAndDate,Paris,France,2026-04-14 21:59:35.843680+00:00,54.0,53.0,54.0,8.05,clear.
+TimeAndDate,Berlin,Germany,2026-04-14 21:59:37.932191+00:00,46.0,44.0,87.0,9.66,clear.
+TimeAndDate,Madrid,Spain,2026-04-14 21:59:40.019475+00:00,57.0,57.0,51.0,3.22,clear.
+TimeAndDate,Rome,Italy,2026-04-14 21:59:42.105472+00:00,57.0,57.0,94.0,4.83,passing clouds.
+TimeAndDate,Tokyo,Japan,2026-04-14 21:59:54.685003+00:00,60.0,60.0,86.0,6.44,overcast.
+TimeAndDate,Seoul,South Korea,2026-04-14 21:59:56.775653+00:00,48.0,48.0,82.0,3.22,clear.
+TimeAndDate,Sydney,Australia,2026-04-14 22:00:01.084531+00:00,57.0,56.0,77.0,9.66,sunny.
+TimeAndDate,Melbourne,Australia,2026-04-14 22:00:03.173874+00:00,55.0,53.0,77.0,16.09,overcast.

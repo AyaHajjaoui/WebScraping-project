@@ -33,6 +33,47 @@ def load_data(path: str) -> pd.DataFrame:
         return pd.DataFrame()
 
 
+PLACEHOLDER_NA_VALUES = {"", "-", "N/A", "NA", "None", "nan", "null"}
+
+
+def make_arrow_compatible(df: pd.DataFrame) -> pd.DataFrame:
+    """Normalize mixed-type dataframe columns so Streamlit can serialize them safely."""
+    if df is None or df.empty:
+        return pd.DataFrame() if df is None else df
+
+    safe_df = df.copy()
+
+    for col in safe_df.columns:
+        series = safe_df[col]
+        if pd.api.types.is_object_dtype(series) or pd.api.types.is_string_dtype(series):
+            normalized = series.replace(list(PLACEHOLDER_NA_VALUES), pd.NA)
+            normalized = normalized.where(~normalized.isna(), pd.NA)
+            normalized = normalized.apply(lambda value: value.strip() if isinstance(value, str) else value)
+            normalized = normalized.replace(list(PLACEHOLDER_NA_VALUES), pd.NA)
+
+            numeric_candidate = pd.to_numeric(normalized, errors="coerce")
+            non_null_mask = normalized.notna()
+            if non_null_mask.any() and numeric_candidate[non_null_mask].notna().all():
+                safe_df[col] = numeric_candidate
+            else:
+                safe_df[col] = normalized
+
+    return safe_df
+
+
+def prepare_display_df(df: pd.DataFrame, na_columns: list[str] | None = None) -> pd.DataFrame:
+    """Return an Arrow-compatible dataframe, optionally labeling missing values for display."""
+    safe_df = make_arrow_compatible(df)
+    if safe_df.empty or not na_columns:
+        return safe_df
+
+    display_df = safe_df.copy()
+    for col in na_columns:
+        if col in display_df.columns:
+            display_df[col] = display_df[col].astype("string").fillna("N/A")
+    return display_df
+
+
 @st.cache_resource(show_spinner=False)
 def load_analysis_module(module_name: str, relative_path: str):
     """Load a local analysis module by file path."""
@@ -52,6 +93,17 @@ def load_analysis_module(module_name: str, relative_path: str):
 def parse_datetime(series: pd.Series) -> pd.Series:
     """Parse datetimes and normalize to timezone-naive UTC for safe comparisons."""
     parsed = pd.to_datetime(series, errors="coerce", utc=True)
+
+    # Some sources emit mixed timestamp formats in the same CSV column.
+    # Retry failed non-null values individually so one source format does not
+    # cause another source's timestamps to become NaT in the dashboard.
+    failed_mask = series.notna() & parsed.isna()
+    if failed_mask.any():
+        reparsed = series.loc[failed_mask].apply(
+            lambda value: pd.to_datetime(value, errors="coerce", utc=True)
+        )
+        parsed.loc[failed_mask] = reparsed
+
     return parsed.dt.tz_localize(None)
 
 
@@ -232,13 +284,13 @@ def build_city_ranking(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_source_summary(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Return temperature by source, humidity by source, and city disagreement table."""
+    """Return temperature by source, wind by source, and city disagreement table."""
     temp_by_source = pd.DataFrame()
-    humid_by_source = pd.DataFrame()
+    wind_by_source = pd.DataFrame()
     disagreement = pd.DataFrame()
 
     if df.empty or "SourceWebsite" not in df.columns:
-        return temp_by_source, humid_by_source, disagreement
+        return temp_by_source, wind_by_source, disagreement
 
     if "Temperature_C" in df.columns:
         temp_by_source = (
@@ -248,13 +300,13 @@ def build_source_summary(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, 
         )
         temp_by_source["Avg Temperature_C"] = temp_by_source["Avg Temperature_C"].round(1)
 
-    if "Humidity_%" in df.columns:
-        humid_by_source = (
-            df.groupby("SourceWebsite", as_index=False)["Humidity_%"]
+    if "WindSpeed_kmh" in df.columns:
+        wind_by_source = (
+            df.groupby("SourceWebsite", as_index=False)["WindSpeed_kmh"]
             .mean()
-            .rename(columns={"Humidity_%": "Avg Humidity_%"})
+            .rename(columns={"WindSpeed_kmh": "Avg Wind (km/h)"})
         )
-        humid_by_source["Avg Humidity_%"] = humid_by_source["Avg Humidity_%"].round(1)
+        wind_by_source["Avg Wind (km/h)"] = wind_by_source["Avg Wind (km/h)"].round(1)
 
     if all(c in df.columns for c in ["City", "SourceWebsite", "Temperature_C"]):
         disagreement = (
@@ -271,7 +323,7 @@ def build_source_summary(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, 
         disagreement["Temp Disagreement (C)"] = (disagreement["max"] - disagreement["min"]).round(2)
         disagreement = disagreement.sort_values("Temp Disagreement (C)", ascending=False)
 
-    return temp_by_source, humid_by_source, disagreement
+    return temp_by_source, wind_by_source, disagreement
 
 
 def best_hour_analysis(df: pd.DataFrame) -> pd.DataFrame:
@@ -560,13 +612,13 @@ def build_ai_summary(request: str, rec_df: pd.DataFrame) -> str:
 @st.cache_data(show_spinner=False)
 def load_summary_report(path: str = SUMMARY_REPORT_PATH) -> pd.DataFrame:
     """Load saved summary report from processed outputs."""
-    return load_data(path)
+    return make_arrow_compatible(load_data(path))
 
 
 @st.cache_data(show_spinner=False)
 def load_condition_analysis(path: str = CONDITION_ANALYSIS_PATH) -> pd.DataFrame:
     """Load saved normalized-condition analysis output."""
-    return load_data(path)
+    return make_arrow_compatible(load_data(path))
 
 
 @st.cache_data(show_spinner=False)
@@ -587,9 +639,15 @@ def run_ml_analysis_dashboard(data_path: str = DATA_PATH) -> tuple[pd.DataFrame,
     results_df, best_model_name, best_pipeline = ml_module.train_and_evaluate_models(
         X_train, X_test, y_train, y_test
     )
-    results_df = results_df.copy().round(4)
+    if results_df is None:
+        results_df = pd.DataFrame()
+    else:
+        results_df = make_arrow_compatible(results_df.copy().round(4))
 
     importance_df = pd.DataFrame()
+    if best_pipeline is None:
+        return results_df, str(best_model_name), importance_df
+
     model = best_pipeline.named_steps["model"]
     preprocessor = best_pipeline.named_steps["preprocessor"]
     if hasattr(model, "feature_importances_"):
@@ -601,6 +659,7 @@ def run_ml_analysis_dashboard(data_path: str = DATA_PATH) -> tuple[pd.DataFrame,
             .reset_index(drop=True)
         )
         importance_df["Importance"] = importance_df["Importance"].round(4)
+        importance_df = make_arrow_compatible(importance_df)
 
     return results_df, str(best_model_name), importance_df
 
@@ -717,7 +776,9 @@ def build_source_health_summary(df: pd.DataFrame) -> pd.DataFrame:
     if not missing_condition.empty:
         source_summary = source_summary.merge(missing_condition, on="SourceWebsite", how="left")
 
-    return source_summary.sort_values(["Cities", "Records"], ascending=[False, False])
+    return make_arrow_compatible(
+        source_summary.sort_values(["Cities", "Records"], ascending=[False, False])
+    )
 
 
 def build_country_summary(ranking_df: pd.DataFrame) -> pd.DataFrame:
@@ -1405,7 +1466,7 @@ svg text {
 }
 
 .stDivider {
-    margin: 32px 0 !important;
+    margin: 12px 0 !important;
 }
 
 /* Add spacing to subheaders */
@@ -1417,6 +1478,12 @@ h2, h3 {
 /* Spacing for markdown content */
 .stMarkdown {
     margin: 12px 0 !important;
+}
+
+.packing-tips .stMarkdown,
+.packing-tips p,
+.packing-tips ul {
+    margin-bottom: 4px !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -1478,7 +1545,7 @@ if "dashboard_filters_initialized" not in st.session_state:
 st.sidebar.header("Dashboard Filters")
 
 # Reset button BEFORE widgets are created
-if st.sidebar.button("Reset filters", use_container_width=True):
+if st.sidebar.button("Reset filters", width="stretch"):
     st.session_state.country_filter = []
     st.session_state.source_filter = []
     st.session_state.city_scope = "All cities"
@@ -1601,17 +1668,32 @@ last_updated = get_data_freshness(filtered_df)
 snapshot_df = filter_latest_per_city_source(filtered_df)
 snapshot_ranking_df = build_city_ranking(snapshot_df)
 source_health_df = build_source_health_summary(filtered_df)
+source_health_display_df = prepare_display_df(
+    source_health_df,
+    [
+        "Latest Update",
+        "Avg Temp (C)",
+        "Avg Humidity (%)",
+        "Avg Wind (km/h)",
+        "Avg Comfort",
+        "Condition Missing (%)",
+    ],
+)
 country_summary_df = build_country_summary(ranking_df)
-temp_by_source, humid_by_source, disagreement = build_source_summary(filtered_df)
+temp_by_source, wind_by_source, disagreement = build_source_summary(filtered_df)
 alerts = build_alerts(ranking_df, disagreement)
 all_cities_table = build_all_cities_table(filtered_df, ranking_df)
 summary_report_df = load_summary_report()
 condition_analysis_df = load_condition_analysis()
 
 # ⚠️ LAZY LOAD - Only compute ML when user visits Analytics tab
-ml_results_df = None
-ml_best_model = None
-ml_importance_df = None
+ml_results_df, ml_best_model, ml_importance_df = run_ml_analysis_dashboard()
+if ml_results_df is None:
+    ml_results_df = pd.DataFrame()
+if ml_importance_df is None:
+    ml_importance_df = pd.DataFrame()
+if ml_best_model is None:
+    ml_best_model = "Unavailable"
 
 eda_snapshot_df = build_eda_snapshot(filtered_df, ranking_df)
 
@@ -1664,7 +1746,7 @@ with overview_tab:
     with left:
         st.subheader("City Ranking")
         ranking_preview = ranking_df.head(top_n)
-        st.dataframe(ranking_preview, use_container_width=True, hide_index=True)
+        st.dataframe(ranking_preview, width="stretch", hide_index=True)
 
     with right:
         st.subheader("Travel Insights")
@@ -1690,14 +1772,10 @@ with overview_tab:
             data=csv_bytes,
             file_name="city_ranking_filtered.csv",
             mime="text/csv",
-            use_container_width=True,
+            width="stretch",
         )
 
     st.divider()
-    chart_controls_col = st.columns([1.1, 1.3])
-
-    with chart_controls_col[0]:
-        st.write("")
 
     _, mid, _ = st.columns([1, 2, 1])
 
@@ -1741,7 +1819,7 @@ with overview_tab:
         )
 
         style_figure(fig_comfort, height=CHART_HEIGHT)
-        st.plotly_chart(fig_comfort, use_container_width=True)
+        st.plotly_chart(fig_comfort, width="stretch")
 
     with viz_right:
         if "Travel Recommendation" in ranking_df.columns:
@@ -1772,7 +1850,7 @@ with overview_tab:
             fig_reco.update_layout(height=CHART_HEIGHT)
 
             style_figure(fig_reco, height=CHART_HEIGHT)
-            st.plotly_chart(fig_reco, use_container_width=True)
+            st.plotly_chart(fig_reco, width="stretch")
     st.divider()
 
 
@@ -1790,7 +1868,7 @@ with overview_tab:
 
             st.dataframe(
                 country_summary_df.head(10),
-                use_container_width=True,
+                width="stretch",
                 hide_index=True
             )
 
@@ -1802,7 +1880,7 @@ with overview_tab:
 
             st.dataframe(
                 compare_df,
-                use_container_width=True,
+                width="stretch",
                 hide_index=True
             )
         else:
@@ -1831,7 +1909,7 @@ with overview_tab:
             )
 
             style_figure(fig_band, height=350)
-            st.plotly_chart(fig_band, use_container_width=True)
+            st.plotly_chart(fig_band, width="stretch")
 
     with bottom_right:
         if not country_summary_df.empty:
@@ -1847,7 +1925,7 @@ with overview_tab:
             )
 
             style_figure(fig_country, height=350)
-            st.plotly_chart(fig_country, use_container_width=True)
+            st.plotly_chart(fig_country, width="stretch")
     panel_end()
 
 with explorer_tab:
@@ -1875,9 +1953,11 @@ with explorer_tab:
         if "Travel Recommendation" in city_rank.columns:
             r4.metric("Recommendation", str(city_rank.iloc[0]["Travel Recommendation"]))
 
+        st.markdown('<div class="packing-tips">', unsafe_allow_html=True)
         st.markdown("**Quick packing tips**")
         for tip in add_quick_trip_tips(city_rank.iloc[0]):
             st.markdown(f"- {tip}")
+        st.markdown("</div>", unsafe_allow_html=True)
         
 
     explorer_metric = st.selectbox(
@@ -1903,7 +1983,7 @@ with explorer_tab:
                 fig_trend.update_layout(xaxis_title="Date", yaxis_title=explorer_metric)
                 fig_trend.update_traces(line=dict(color=PALETTE["blue"], width=3))
                 style_figure(fig_trend, height=410)
-                st.plotly_chart(fig_trend, use_container_width=True)
+                st.plotly_chart(fig_trend, width="stretch")
 
     with exp_right:
         if all(c in city_df.columns for c in ["Temperature_C", "FeelsLike_C"]):
@@ -1925,7 +2005,7 @@ with explorer_tab:
                     ],
                 )
                 style_figure(fig_scatter, height=410)
-                st.plotly_chart(fig_scatter, use_container_width=True)
+                st.plotly_chart(fig_scatter, width="stretch")
 
     if all(c in city_df.columns for c in ["Date", "Temperature_C", "SourceWebsite"]):
         source_split = (
@@ -1943,7 +2023,7 @@ with explorer_tab:
                 color_discrete_sequence=[PALETTE["blue"], PALETTE["teal"], PALETTE["accent"]],
             )
             style_figure(fig_sources, height=360)
-            st.plotly_chart(fig_sources, use_container_width=True)
+            st.plotly_chart(fig_sources, width="stretch")
 
     st.divider()
 
@@ -1969,7 +2049,7 @@ with explorer_tab:
             ],
         )
         style_figure(fig_condition, height=410)
-        st.plotly_chart(fig_condition, use_container_width=True)
+        st.plotly_chart(fig_condition, width="stretch")
 
     if not city_latest_df.empty:
         st.subheader("Latest Source Snapshot")
@@ -1984,7 +2064,7 @@ with explorer_tab:
                 "Comfort Score",
             ] if c in city_latest_df.columns
         ]
-        st.dataframe(city_latest_df[latest_cols], use_container_width=True, hide_index=True)
+        st.dataframe(city_latest_df[latest_cols], width="stretch", hide_index=True)
     panel_end()
 
     st.divider()
@@ -1992,8 +2072,8 @@ with explorer_tab:
 with source_tab:
     panel_start("Source Quality", "Audit how each source behaves, where coverage is weak, and which cities show disagreement across providers.")
     st.subheader("Multi-Source Reliability View")
-    if not source_health_df.empty:
-        st.dataframe(source_health_df, use_container_width=True, hide_index=True)
+    if not source_health_display_df.empty:
+        st.dataframe(source_health_display_df, width="stretch", hide_index=True)
 
     s1, s2 = st.columns(2)
 
@@ -2008,24 +2088,24 @@ with source_tab:
                 color_discrete_sequence=[PALETTE["blue"], PALETTE["teal"], PALETTE["mint"]],
             )
             style_figure(fig_temp_source, height=400)
-            st.plotly_chart(fig_temp_source, use_container_width=True)
+            st.plotly_chart(fig_temp_source, width="stretch")
         else:
             st.info("Temperature comparison by source is unavailable.")
 
     with s2:
-        if not humid_by_source.empty:
+        if not wind_by_source.empty:
             fig_hum_source = px.bar(
-                humid_by_source,
+                wind_by_source,
                 x="SourceWebsite",
-                y="Avg Humidity_%",
+                y="Avg Wind (km/h)",
                 color="SourceWebsite",
-                title="Average Humidity by Source",
+                title="Average Wind by Source",
                 color_discrete_sequence=[PALETTE["yellow"], PALETTE["mint"], PALETTE["stone"]],
             )
             style_figure(fig_hum_source, height=400)
-            st.plotly_chart(fig_hum_source, use_container_width=True)
+            st.plotly_chart(fig_hum_source, width="stretch")
         else:
-            st.info("Humidity comparison by source is unavailable.")
+            st.info("Wind comparison by source is unavailable.")
 
     st.divider()
 
@@ -2049,7 +2129,7 @@ with source_tab:
         disagreement = disagreement[disagreement["Temp Disagreement (C)"] >= threshold]
         st.dataframe(
             disagreement[["City", "Source Count", "Temp Disagreement (C)"]].head(show_rows),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
@@ -2062,12 +2142,12 @@ with source_tab:
             title="Cities with Largest Temperature Disagreement Across Sources",
         )
         style_figure(fig_disagree, height=420)
-        st.plotly_chart(fig_disagree, use_container_width=True)
+        st.plotly_chart(fig_disagree, width="stretch")
 
     coverage_matrix = build_source_coverage_matrix(filtered_df)
     if not coverage_matrix.empty:
         st.subheader("City-by-Source Coverage Matrix")
-        st.dataframe(coverage_matrix, use_container_width=True, hide_index=True)
+        st.dataframe(coverage_matrix, width="stretch", hide_index=True)
     panel_end()
 
     st.divider()
@@ -2128,7 +2208,7 @@ with planner_tab:
         st.warning("No cities match your planner target with current filters.")
     else:
         st.write("Cities that satisfy your target:")
-        st.dataframe(planner_df, use_container_width=True, hide_index=True)
+        st.dataframe(planner_df, width="stretch", hide_index=True)
 
     st.subheader("Best Time of Day (if hourly data is available)")
     best_hour_df = best_hour_analysis(filtered_df)
@@ -2138,7 +2218,7 @@ with planner_tab:
         planner_hour_df = best_hour_df
         if not planner_df.empty and "City" in planner_df.columns:
             planner_hour_df = planner_hour_df[planner_hour_df["City"].isin(planner_df["City"])]
-        st.dataframe(planner_hour_df, use_container_width=True, hide_index=True)
+        st.dataframe(planner_hour_df, width="stretch", hide_index=True)
 
     st.divider()
 
@@ -2167,7 +2247,7 @@ with planner_tab:
             )
             fig_line.update_layout(xaxis_title="Date", yaxis_title="Avg Temperature (C)")
             style_figure(fig_line, height=440)
-            st.plotly_chart(fig_line, use_container_width=True)
+            st.plotly_chart(fig_line, width="stretch")
     planner_csv = planner_df.to_csv(index=False).encode("utf-8")
     st.download_button(
         label="Download planner results",
@@ -2215,7 +2295,7 @@ with ai_tab:
                 "Why it matches",
             ] if c in ai_rec_df.columns
         ]
-        st.dataframe(ai_rec_df[ai_display_cols], use_container_width=True, hide_index=True)
+        st.dataframe(ai_rec_df[ai_display_cols], width="stretch", hide_index=True)
 
         ai_csv = ai_rec_df.to_csv(index=False).encode("utf-8")
         st.download_button(
@@ -2233,11 +2313,11 @@ with analytics_tab:
     with eda_subtab:
         st.subheader("Data Overview")
         if not eda_snapshot_df.empty:
-            st.dataframe(eda_snapshot_df, use_container_width=True, hide_index=True)
+            st.dataframe(eda_snapshot_df, width="stretch", hide_index=True)
 
         if not summary_report_df.empty:
             st.subheader("Saved Data Summary")
-            st.dataframe(summary_report_df, use_container_width=True, hide_index=True)
+            st.dataframe(summary_report_df, width="stretch", hide_index=True)
 
         eda_left, eda_right = st.columns(2)
         with eda_left:
@@ -2251,7 +2331,7 @@ with analytics_tab:
                     color_continuous_scale=[PALETTE["accent_soft"], PALETTE["teal"]],
                 )
                 style_figure(fig_country_eda, height=380)
-                st.plotly_chart(fig_country_eda, use_container_width=True)
+                st.plotly_chart(fig_country_eda, width="stretch")
         with eda_right:
             if "SourceWebsite" in filtered_df.columns:
                 source_volume = (
@@ -2269,15 +2349,15 @@ with analytics_tab:
                     color_discrete_sequence=[PALETTE["blue"], PALETTE["teal"], PALETTE["accent"], PALETTE["mint"]],
                 )
                 style_figure(fig_source_volume, height=380)
-                st.plotly_chart(fig_source_volume, use_container_width=True)
+                st.plotly_chart(fig_source_volume, width="stretch")
 
     with ml_subtab:
         st.subheader("Prediction Quality")
-        if ml_results_df.empty:
+        if ml_results_df is None or ml_results_df.empty:
             st.info("Prediction results are unavailable or there is not enough data to train the models.")
         else:
             st.markdown(f"**Best prediction model:** {ml_best_model}")
-            st.dataframe(ml_results_df, use_container_width=True, hide_index=True)
+            st.dataframe(ml_results_df, width="stretch", hide_index=True)
 
             fig_ml = px.bar(
                 ml_results_df,
@@ -2289,11 +2369,11 @@ with analytics_tab:
                 text_auto=".3f",
             )
             style_figure(fig_ml, height=360)
-            st.plotly_chart(fig_ml, use_container_width=True)
+            st.plotly_chart(fig_ml, width="stretch")
 
             if not ml_importance_df.empty:
                 st.subheader("What Influences the Prediction Most")
-                st.dataframe(ml_importance_df, use_container_width=True, hide_index=True)
+                st.dataframe(ml_importance_df, width="stretch", hide_index=True)
                 fig_imp = px.bar(
                     ml_importance_df.head(10).sort_values("Importance", ascending=True),
                     x="Importance",
@@ -2304,7 +2384,7 @@ with analytics_tab:
                     color_continuous_scale=[PALETTE["accent_soft"], PALETTE["accent"]],
                 )
                 style_figure(fig_imp, height=420)
-                st.plotly_chart(fig_imp, use_container_width=True)
+                st.plotly_chart(fig_imp, width="stretch")
 
     with nlp_subtab:
         st.subheader("Weather Language")
@@ -2342,7 +2422,7 @@ with analytics_tab:
                         color_discrete_sequence=[PALETTE["mint"], PALETTE["blue"], PALETTE["yellow"], PALETTE["accent"], PALETTE["teal"], PALETTE["stone"]],
                     )
                     style_figure(fig_nlp, height=360)
-                    st.plotly_chart(fig_nlp, use_container_width=True)
+                    st.plotly_chart(fig_nlp, width="stretch")
             with nlp_right:
                 if not source_condition_counts.empty:
                     fig_source_nlp = px.bar(
@@ -2355,7 +2435,7 @@ with analytics_tab:
                         color_discrete_sequence=[PALETTE["mint"], PALETTE["blue"], PALETTE["yellow"], PALETTE["accent"], PALETTE["teal"], PALETTE["stone"]],
                     )
                     style_figure(fig_source_nlp, height=360)
-                    st.plotly_chart(fig_source_nlp, use_container_width=True)
+                    st.plotly_chart(fig_source_nlp, width="stretch")
 
             top_raw_conditions = (
                 nlp_df["CleanCondition"]
@@ -2367,7 +2447,7 @@ with analytics_tab:
             ) if "CleanCondition" in nlp_df.columns else pd.DataFrame()
             if not top_raw_conditions.empty:
                 st.subheader("Top Raw Condition Phrases")
-                st.dataframe(top_raw_conditions, use_container_width=True, hide_index=True)
+                st.dataframe(top_raw_conditions, width="stretch", hide_index=True)
     panel_end()
 
 with all_cities_tab:
@@ -2401,7 +2481,7 @@ with all_cities_tab:
     if all_cities_df.empty:
         st.info("No cities match the current filters/search.")
     else:
-        st.dataframe(all_cities_df, use_container_width=True, hide_index=True)
+        st.dataframe(all_cities_df, width="stretch", hide_index=True)
         all_cities_csv = all_cities_df.to_csv(index=False).encode("utf-8")
         st.download_button(
             label="Download all filtered cities as CSV",

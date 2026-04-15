@@ -8,6 +8,7 @@ try:
     from processing.clean_data import (
         STANDARD_SCHEMA,
         clean_dataframe,
+        fill_remaining_missing,
         remove_duplicates,
         summarize_cleaning,
     )
@@ -15,6 +16,7 @@ except ModuleNotFoundError:
     from clean_data import (  # type: ignore
         STANDARD_SCHEMA,
         clean_dataframe,
+        fill_remaining_missing,
         remove_duplicates,
         summarize_cleaning,
     )
@@ -78,6 +80,7 @@ def preprocess_all() -> None:
     combined = remove_duplicates(combined)
     removed_final = before_final_dedupe - len(combined)
 
+    combined = fill_remaining_missing(combined)
     combined = combined[STANDARD_SCHEMA]
     combined = combined.sort_values(
         by=["ScrapeDateTime", "SourceWebsite", "City", "Country"]

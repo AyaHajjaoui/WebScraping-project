@@ -162,13 +162,20 @@ def remove_duplicates(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def fill_remaining_missing(df: pd.DataFrame) -> pd.DataFrame:
-    """Fill non-critical numeric gaps using median by source when available."""
+    """Fill non-critical numeric gaps using progressively broader median fallbacks."""
     out = df.copy()
     fill_cols = ["FeelsLike_C", "Humidity_%", "WindSpeed_kmh"]
 
     for col in fill_cols:
+        source_city_medians = out.groupby(["SourceWebsite", "City"])[col].transform("median")
+        city_medians = out.groupby("City")[col].transform("median")
         source_medians = out.groupby("SourceWebsite")[col].transform("median")
+        global_median = out[col].median()
+
+        out[col] = out[col].fillna(source_city_medians)
+        out[col] = out[col].fillna(city_medians)
         out[col] = out[col].fillna(source_medians)
+        out[col] = out[col].fillna(global_median)
 
     return out
 

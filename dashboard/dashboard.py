@@ -1776,7 +1776,6 @@ with overview_tab:
         )
 
     st.divider()
-
     _, mid, _ = st.columns([1, 2, 1])
 
     with mid:
@@ -1792,65 +1791,34 @@ with overview_tab:
 
         st.markdown('</div>', unsafe_allow_html=True)
 
-    viz_left, viz_right = st.columns([1.15, 1])
     CHART_HEIGHT = 450
 
-    with viz_left:
-        fig_comfort = px.bar(
-            ranking_df.head(top_n).sort_values(selected_metric, ascending=False),
-            x="City",
-            y=selected_metric,
-            color="Travel Recommendation" if "Travel Recommendation" in ranking_df.columns else "Comfort Score",
-            title=f"{selected_metric} Across Cities",
-            color_discrete_map={
-                "Ideal": PALETTE["mint"],
-                "Good": PALETTE["blue"],
-                "Moderate": PALETTE["yellow"],
-                "Avoid": PALETTE["accent"],
-                "Unknown": PALETTE["stone"],
-            },
-            text_auto=".1f",
-        )
+    fig_comfort = px.bar(
+        ranking_df.head(top_n).sort_values(selected_metric, ascending=False),
+        x="City",
+        y=selected_metric,
+        color="Travel Recommendation" if "Travel Recommendation" in ranking_df.columns else "Comfort Score",
+        title=f"{selected_metric} Across Cities",
+        color_discrete_map={
+            "Ideal": PALETTE["mint"],
+            "Good": PALETTE["blue"],
+            "Moderate": PALETTE["yellow"],
+            "Avoid": PALETTE["accent"],
+            "Unknown": PALETTE["stone"],
+        },
+        text_auto=".1f",
+    )
 
-        fig_comfort.update_layout(
-            xaxis_title="City",
-            yaxis_title=selected_metric,
-            height=CHART_HEIGHT
-        )
+    fig_comfort.update_layout(
+        xaxis_title="City",
+        yaxis_title=selected_metric,
+        height=CHART_HEIGHT
+    )
 
-        style_figure(fig_comfort, height=CHART_HEIGHT)
-        st.plotly_chart(fig_comfort, width="stretch")
+    style_figure(fig_comfort, height=CHART_HEIGHT)
 
-    with viz_right:
-        if "Travel Recommendation" in ranking_df.columns:
-
-            rec_counts = (
-                ranking_df["Travel Recommendation"]
-                .value_counts()
-                .rename_axis("Recommendation")
-                .reset_index(name="City Count")
-            )
-
-            fig_reco = px.pie(
-                rec_counts,
-                names="Recommendation",
-                values="City Count",
-                title="Recommendation Mix",
-                hole=0.35,
-                color="Recommendation",
-                color_discrete_map={
-                    "Ideal": PALETTE["mint"],
-                    "Good": PALETTE["blue"],
-                    "Moderate": PALETTE["yellow"],
-                    "Avoid": PALETTE["accent"],
-                    "Unknown": PALETTE["stone"],
-                },
-            )
-
-            fig_reco.update_layout(height=CHART_HEIGHT)
-
-            style_figure(fig_reco, height=CHART_HEIGHT)
-            st.plotly_chart(fig_reco, width="stretch")
+    # ✅ NOW actually full width
+    st.plotly_chart(fig_comfort, use_container_width=True)
     st.divider()
 
 
@@ -1910,24 +1878,42 @@ with overview_tab:
 
             style_figure(fig_band, height=350)
             st.plotly_chart(fig_band, width="stretch")
+with bottom_right:
+    if not country_summary_df.empty:
+        st.markdown("### Country Comfort & City Coverage")
+        
+        df_plot = country_summary_df.head(10).sort_values("Avg Comfort Score", ascending=False).copy()
+        df_plot["Cities"] = df_plot["Cities"].astype(int)
+        df_plot["# Cities"] = df_plot["Cities"].astype(str)  # ← string = categorical color
 
-    with bottom_right:
-        if not country_summary_df.empty:
-            st.subheader("City Distribution by Comfort Band")
+        blue_shades = {
+            "1": "#AED6F1",
+            "2": "#5DADE2",
+            "3": "#2E86C1",
+            "4": "#1A5276",
+            "5": "#0B2545",
+        }
 
-            fig_country = px.bar(
-                country_summary_df.head(10),
-                x="Country",
-                y="Avg Comfort Score",
-                color="Cities",
-                title="How many cities fall into each comfort band",
-                color_continuous_scale=[PALETTE["accent_soft"], PALETTE["teal"]],
-            )
+        fig_country = px.bar(
+            df_plot,
+            x="Country",
+            y="Avg Comfort Score",
+            color="# Cities",                          # ← categorical now
+            title="Comfort Score by Country & Cities Covered",
+            text_auto=True,
+            color_discrete_map=blue_shades,            # ← maps "1" → light blue, etc.
+            category_orders={"# Cities": ["1","2","3","4","5"]},  # legend order
+        )
 
-            style_figure(fig_country, height=350)
-            st.plotly_chart(fig_country, width="stretch")
-    panel_end()
-
+        fig_country.update_yaxes(title="Avg Comfort Score")
+        fig_country.update_layout(
+            xaxis_title="Country",
+            legend_title_text="# Cities",
+            height=350
+        )
+        style_figure(fig_country, height=350)
+        st.plotly_chart(fig_country, use_container_width=True)
+        panel_end()
 with explorer_tab:
     panel_start("City Explorer", "Inspect one city deeply, compare sources, and review the latest raw observations behind its ranking.")
     st.subheader("City-Level Weather Explorer")
@@ -2050,28 +2036,45 @@ with explorer_tab:
         )
         style_figure(fig_condition, height=410)
         st.plotly_chart(fig_condition, width="stretch")
+if not city_latest_df.empty:
+    st.subheader("Latest Weather Conditions by Source")
 
-    if not city_latest_df.empty:
-        st.subheader("Latest Source Snapshot")
-        latest_cols = [
-            c for c in [
-                "SourceWebsite",
-                "Temperature_C",
-                "FeelsLike_C",
-                "Humidity_%",
-                "WindSpeed_kmh",
-                "Condition",
-                "Comfort Score",
-            ] if c in city_latest_df.columns
-        ]
-        st.dataframe(city_latest_df[latest_cols], width="stretch", hide_index=True)
+    latest_cols = [
+        c for c in [
+            "SourceWebsite",
+            "ScrapeDateTime",
+            "Temperature_C",
+            "FeelsLike_C",
+            "Humidity_%",
+            "WindSpeed_kmh",
+            "Condition",
+            "Comfort Score",
+        ] if c in city_latest_df.columns
+    ]
+
+    display_df = city_latest_df[latest_cols].copy()
+
+    # format datetime nicely
+    if "ScrapeDateTime" in display_df.columns:
+        display_df["ScrapeDateTime"] = (
+            pd.to_datetime(display_df["ScrapeDateTime"])
+            .dt.strftime("%Y-%m-%d %H:%M")
+        )
+
+    # rename ONLY for display
+    display_df = display_df.rename(columns={
+        "ScrapeDateTime": "Date"
+    })
+
+    st.dataframe(display_df, use_container_width=True, hide_index=True)
+
     panel_end()
 
     st.divider()
 
 with source_tab:
     panel_start("Source Quality", "Audit how each source behaves, where coverage is weak, and which cities show disagreement across providers.")
-    st.subheader("Multi-Source Reliability View")
+    st.subheader("Statistics of Weather Based on Source")
     if not source_health_display_df.empty:
         st.dataframe(source_health_display_df, width="stretch", hide_index=True)
 

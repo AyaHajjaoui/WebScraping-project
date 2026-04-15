@@ -2114,7 +2114,7 @@ with source_tab:
 
     st.divider()
 
-    st.subheader("Source Disagreement by City")
+    st.subheader("Temperature Variations by Data Source")
     if disagreement.empty:
         st.info("Need City + SourceWebsite + Temperature_C to compute disagreement.")
     else:
@@ -2125,33 +2125,43 @@ with source_tab:
         threshold = 0.0
     else:
         threshold = st.slider(
-            "Minimum disagreement to display",
+            "Minimum Temperature Difference to Display",
             min_value=0.0,
             max_value=max_disagreement,
             value=0.0,
             step=0.1,
         )
         disagreement = disagreement[disagreement["Temp Disagreement (C)"] >= threshold]
+
+        disagreement_display = disagreement.rename(
+            columns={"Temp Disagreement (C)": "Temp Difference (°C)"}
+        )
+
         st.dataframe(
-            disagreement[["City", "Source Count", "Temp Disagreement (C)"]].head(show_rows),
+            disagreement_display[["City", "Source Count", "Temp Difference (°C)"]].head(show_rows),
             width="stretch",
             hide_index=True,
         )
+        disagreement_display = disagreement.rename(
+            columns={"Temp Disagreement (C)": "Temp Difference (°C)"}
+        )
 
         fig_disagree = px.bar(
-            disagreement.head(show_rows),
+            disagreement_display.head(show_rows),
             x="City",
-            y="Temp Disagreement (C)",
-            color="Temp Disagreement (C)",
+            y="Temp Difference (°C)",
+            color="Temp Difference (°C)",
             color_continuous_scale=[PALETTE["accent_soft"], PALETTE["accent"]],
-            title="Cities with Largest Temperature Disagreement Across Sources",
+            title="Cities with Largest Temperature Differences Across Sources",
         )
-        style_figure(fig_disagree, height=420)
-        st.plotly_chart(fig_disagree, width="stretch")
+
+        fig_disagree.update_yaxes(title="Temp Difference (°C)")
+
+        st.plotly_chart(fig_disagree, use_container_width=True) 
 
     coverage_matrix = build_source_coverage_matrix(filtered_df)
     if not coverage_matrix.empty:
-        st.subheader("City-by-Source Coverage Matrix")
+        st.subheader("Records from Each Source per City")
         st.dataframe(coverage_matrix, width="stretch", hide_index=True)
     panel_end()
 

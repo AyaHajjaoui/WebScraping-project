@@ -2169,8 +2169,13 @@ with planner_tab:
     cutoff = label_order[target_label]
 
     planner_df = ranking_df.copy()
-    planner_df["_rank"] = planner_df["Travel Recommendation"].map(label_order)
-    planner_df = planner_df[planner_df["_rank"] <= cutoff].drop(columns=["_rank"])
+    
+    # Filter by Travel Recommendation if column exists
+    if "Travel Recommendation" in planner_df.columns:
+        planner_df["_rank"] = planner_df["Travel Recommendation"].map(label_order).fillna(999)
+        planner_df = planner_df[planner_df["_rank"] <= cutoff].drop(columns=["_rank"])
+    else:
+        st.warning("⚠️ Travel Recommendation column not found in data.")
 
     pref_col1, pref_col2 = st.columns(2)
     with pref_col1:
@@ -2210,7 +2215,7 @@ with planner_tab:
     if planner_df.empty:
         st.warning("No cities match your planner target with current filters.")
     else:
-        st.write("Cities that satisfy your target:")
+        st.write(f"**Cities that satisfy your target** _{target_label} or better_: **{len(planner_df)}** cities")
         st.dataframe(planner_df, width="stretch", hide_index=True)
 
     st.subheader("Best Time of Day (if hourly data is available)")

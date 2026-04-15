@@ -1465,7 +1465,7 @@ default_top_n = max(5, min(25, len(city_options))) if city_options else 5
 
 if "dashboard_filters_initialized" not in st.session_state:
     st.session_state.dashboard_filters_initialized = True
-    st.session_state.country_filter =[]
+    st.session_state.country_filter = []
     st.session_state.source_filter = []
     st.session_state.city_scope = "All cities"
     st.session_state.city_search = ""
@@ -1476,6 +1476,19 @@ if "dashboard_filters_initialized" not in st.session_state:
     st.session_state.sort_option = "Comfort Score (High to Low)"
 
 st.sidebar.header("Dashboard Filters")
+
+# Reset button BEFORE widgets are created
+if st.sidebar.button("Reset filters", use_container_width=True):
+    st.session_state.country_filter = []
+    st.session_state.source_filter = []
+    st.session_state.city_scope = "All cities"
+    st.session_state.city_search = ""
+    st.session_state.city_filter = []
+    st.session_state.use_latest_only = False
+    st.session_state.min_comfort = 0
+    st.session_state.top_n = default_top_n
+    st.session_state.sort_option = "Comfort Score (High to Low)"
+    st.rerun()
 
 with st.sidebar.expander("Coverage", expanded=False):
     selected_countries = st.multiselect(
@@ -1558,18 +1571,6 @@ with st.sidebar.expander("Thresholds & ranking", expanded=False):
         key="sort_option",
     )
 
-if st.sidebar.button("Reset filters", use_container_width=True):
-    st.session_state.country_filter = country_options
-    st.session_state.source_filter = source_options
-    st.session_state.city_scope = "All cities"
-    st.session_state.city_search = ""
-    st.session_state.city_filter = city_options
-    st.session_state.use_latest_only = False
-    st.session_state.min_comfort = 0
-    st.session_state.top_n = default_top_n
-    st.session_state.sort_option = "Comfort Score (High to Low)"
-    st.rerun()
-
 filtered_df = weather_df.copy()
 
 if selected_countries and "Country" in filtered_df.columns:
@@ -1592,6 +1593,7 @@ if filtered_df.empty:
     st.warning("No records match current filters. Try lowering constraints.")
     st.stop()
 
+# ESSENTIAL computations (always needed)
 ranking_df = build_city_ranking(filtered_df)
 ranking_df = apply_sort(ranking_df, sort_option)
 insights = get_high_level_insights(ranking_df)
@@ -1605,7 +1607,12 @@ alerts = build_alerts(ranking_df, disagreement)
 all_cities_table = build_all_cities_table(filtered_df, ranking_df)
 summary_report_df = load_summary_report()
 condition_analysis_df = load_condition_analysis()
-ml_results_df, ml_best_model, ml_importance_df = run_ml_analysis_dashboard()
+
+# ⚠️ LAZY LOAD - Only compute ML when user visits Analytics tab
+ml_results_df = None
+ml_best_model = None
+ml_importance_df = None
+
 eda_snapshot_df = build_eda_snapshot(filtered_df, ranking_df)
 
 if ranking_df.empty:

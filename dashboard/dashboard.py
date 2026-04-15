@@ -1876,44 +1876,46 @@ with overview_tab:
                 fillcolor="rgba(86, 197, 193, 0.28)",
             )
 
-            style_figure(fig_band, height=350)
-            st.plotly_chart(fig_band, width="stretch")
-with bottom_right:
-    if not country_summary_df.empty:
-        st.markdown("### Country Comfort & City Coverage")
-        
-        df_plot = country_summary_df.head(10).sort_values("Avg Comfort Score", ascending=False).copy()
-        df_plot["Cities"] = df_plot["Cities"].astype(int)
-        df_plot["# Cities"] = df_plot["Cities"].astype(str)  # ← string = categorical color
+            fig_band.update_layout(height=420, margin=dict(l=22, r=22, t=60, b=24))
+            style_figure(fig_band, height=420)
+            st.plotly_chart(fig_band, use_container_width=True)
+    with bottom_right:
+        if not country_summary_df.empty:
+            st.subheader("Country Comfort & City Coverage")
+            
+            df_plot = country_summary_df.head(10).sort_values("Avg Comfort Score", ascending=False).copy()
+            df_plot["Cities"] = df_plot["Cities"].astype(int)
+            df_plot["# Cities"] = df_plot["Cities"].astype(str)  # ← string = categorical color
 
-        blue_shades = {
-            "1": "#AED6F1",
-            "2": "#5DADE2",
-            "3": "#2E86C1",
-            "4": "#1A5276",
-            "5": "#0B2545",
-        }
+            blue_shades = {
+                "1": "#AED6F1",
+                "2": "#5DADE2",
+                "3": "#2E86C1",
+                "4": "#1A5276",
+                "5": "#0B2545",
+            }
 
-        fig_country = px.bar(
-            df_plot,
-            x="Country",
-            y="Avg Comfort Score",
-            color="# Cities",                          # ← categorical now
-            title="Comfort Score by Country & Cities Covered",
-            text_auto=True,
-            color_discrete_map=blue_shades,            # ← maps "1" → light blue, etc.
-            category_orders={"# Cities": ["1","2","3","4","5"]},  # legend order
-        )
+            fig_country = px.bar(
+                df_plot,
+                x="Country",
+                y="Avg Comfort Score",
+                color="# Cities",                          # ← categorical now
+                title="Comfort Score by Country & Cities Covered",
+                text_auto=True,
+                color_discrete_map=blue_shades,            # ← maps "1" → light blue, etc.
+                category_orders={"# Cities": ["1","2","3","4","5"]},  # legend order
+            )
 
-        fig_country.update_yaxes(title="Avg Comfort Score")
-        fig_country.update_layout(
-            xaxis_title="Country",
-            legend_title_text="# Cities",
-            height=350
-        )
-        style_figure(fig_country, height=350)
-        st.plotly_chart(fig_country, use_container_width=True)
-        panel_end()
+            fig_country.update_yaxes(title="Avg Comfort Score")
+            fig_country.update_layout(
+                xaxis_title="Country",
+                legend_title_text="# Cities",
+                height=420,
+                margin=dict(l=22, r=22, t=60, b=24)
+            )
+            style_figure(fig_country, height=420)
+            st.plotly_chart(fig_country, use_container_width=True)
+    panel_end()
 with explorer_tab:
     panel_start("City Explorer", "Inspect one city deeply, compare sources, and review the latest raw observations behind its ranking.")
     st.subheader("City-Level Weather Explorer")

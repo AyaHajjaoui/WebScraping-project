@@ -10095,3 +10095,406 @@ SCHEDULED SCRAPE COMPLETED
 After: {'Open-Meteo': 17475, 'TimeAndDate': 2488, 'WeatherUnderground': 572}
 ================================================================================
 
+2026-04-15 07:20:33,878 | INFO | main | Loaded 24 cities from /home/runner/work/WebScraping-project/WebScraping-project/cities.csv
+2026-04-15 07:20:33,878 | INFO | main | Loaded 24 cities
+2026-04-15 07:20:34,171 | INFO | utils | Loaded 24498 rows from openmeteo_raw.csv
+2026-04-15 07:20:34,218 | INFO | utils | Loaded 4099 rows from timeanddate_raw.csv
+2026-04-15 07:20:34,322 | INFO | utils | Loaded 9141 rows from wunderground_raw.csv
+2026-04-15 07:20:34,322 | INFO | main | Loaded 37738 raw rows
+2026-04-15 07:20:34,694 | INFO | main | Deduplicated: 37738 -> 30291 rows
+2026-04-15 07:20:34,947 | INFO | main | Saved 30291 rows to /home/runner/work/WebScraping-project/WebScraping-project/data/processed/weather_data.csv
+2026-04-15 07:20:39,048 | INFO | main | Saved 30291 rows to /home/runner/work/WebScraping-project/WebScraping-project/data/processed/weather_data.xlsx
+2026-04-15 07:20:39,098 | INFO | utils | Updated summary report with 7 entries
+2026-04-15 07:20:39,144 | INFO | main | 
+Current data counts:
+2026-04-15 07:20:39,145 | INFO | main |   Open-Meteo: 18834 rows
+2026-04-15 07:20:39,145 | INFO | main |   TimeAndDate: 2701 rows
+2026-04-15 07:20:39,145 | INFO | main |   WeatherUnderground: 8756 rows
+2026-04-15 07:20:39,184 | INFO | main | 
+================================================================================
+SCHEDULED SCRAPE STARTED - 2026-04-15 07:20:39.184748
+Before: {'Open-Meteo': 18834, 'TimeAndDate': 2701, 'WeatherUnderground': 8756}
+================================================================================
+2026-04-15 07:20:39,184 | INFO | main | 
+============================================================
+Open-Meteo: Collecting 0 days of data
+============================================================
+2026-04-15 07:20:41,036 | INFO | main | [1/24] Beirut...
+2026-04-15 07:20:41,036 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Beirut
+2026-04-15 07:20:42,207 | INFO | scrapers.openmeteo_scraper | Got current weather for Beirut: 23.0°C
+2026-04-15 07:20:42,210 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:20:42,210 | INFO | main |   OK 1 new rows (Current: 23.0 C)
+2026-04-15 07:20:44,210 | INFO | main | [2/24] New York...
+2026-04-15 07:20:44,210 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for New York
+2026-04-15 07:20:45,374 | INFO | scrapers.openmeteo_scraper | Got current weather for New York: 20.5°C
+2026-04-15 07:20:45,377 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:20:45,377 | INFO | main |   OK 1 new rows (Current: 20.5 C)
+2026-04-15 07:20:47,377 | INFO | main | [3/24] Los Angeles...
+2026-04-15 07:20:47,377 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Los Angeles
+2026-04-15 07:21:17,560 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Los Angeles: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:21:17,560 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:21:19,560 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Los Angeles
+2026-04-15 07:21:49,736 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Los Angeles: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:21:49,736 | WARNING | main |   No data (attempt 2/3)
+2026-04-15 07:21:53,736 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Los Angeles
+2026-04-15 07:22:24,536 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Los Angeles: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:22:24,536 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Los Angeles
+2026-04-15 07:22:24,536 | WARNING | main |   No data (attempt 3/3)
+2026-04-15 07:22:26,536 | INFO | main | [4/24] Chicago...
+2026-04-15 07:22:26,536 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Chicago
+2026-04-15 07:22:56,740 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Chicago: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:22:56,740 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:22:58,741 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Chicago
+2026-04-15 07:22:59,962 | INFO | scrapers.openmeteo_scraper | Got current weather for Chicago: 14.9°C
+2026-04-15 07:22:59,965 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:22:59,965 | INFO | main |   OK 1 new rows (Current: 14.9 C)
+2026-04-15 07:23:01,965 | INFO | main | [5/24] Toronto...
+2026-04-15 07:23:01,965 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Toronto
+2026-04-15 07:23:03,129 | INFO | scrapers.openmeteo_scraper | Got current weather for Toronto: 7.1°C
+2026-04-15 07:23:03,132 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:23:03,132 | INFO | main |   OK 1 new rows (Current: 7.1 C)
+2026-04-15 07:23:05,132 | INFO | main | [6/24] Mexico City...
+2026-04-15 07:23:05,132 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mexico City
+2026-04-15 07:23:35,312 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Mexico City: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:23:35,312 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:23:37,312 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mexico City
+2026-04-15 07:24:07,496 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Mexico City: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:24:07,496 | WARNING | main |   No data (attempt 2/3)
+2026-04-15 07:24:11,496 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mexico City
+2026-04-15 07:24:42,289 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Mexico City: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:24:42,289 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Mexico City
+2026-04-15 07:24:42,289 | WARNING | main |   No data (attempt 3/3)
+2026-04-15 07:24:44,289 | INFO | main | [7/24] Sao Paulo...
+2026-04-15 07:24:44,289 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sao Paulo
+2026-04-15 07:25:14,470 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Sao Paulo: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:25:14,470 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:25:16,470 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sao Paulo
+2026-04-15 07:25:17,624 | INFO | scrapers.openmeteo_scraper | Got current weather for São Paulo: 17.1°C
+2026-04-15 07:25:17,627 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:25:17,627 | INFO | main |   OK 1 new rows (Current: 17.1 C)
+2026-04-15 07:25:19,627 | INFO | main | [8/24] Buenos Aires...
+2026-04-15 07:25:19,627 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Buenos Aires
+2026-04-15 07:25:20,792 | INFO | scrapers.openmeteo_scraper | Got current weather for Buenos Aires: 20.7°C
+2026-04-15 07:25:20,795 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:25:20,795 | INFO | main |   OK 1 new rows (Current: 20.7 C)
+2026-04-15 07:25:22,795 | INFO | main | [9/24] London...
+2026-04-15 07:25:22,795 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for London
+2026-04-15 07:25:52,987 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for London: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:25:52,987 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:25:54,987 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for London
+2026-04-15 07:26:25,220 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for London: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:26:25,220 | WARNING | main |   No data (attempt 2/3)
+2026-04-15 07:26:29,220 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for London
+2026-04-15 07:27:00,018 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for London: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:27:00,018 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for London
+2026-04-15 07:27:00,018 | WARNING | main |   No data (attempt 3/3)
+2026-04-15 07:27:02,019 | INFO | main | [10/24] Paris...
+2026-04-15 07:27:02,019 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Paris
+2026-04-15 07:27:32,213 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Paris: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:27:32,213 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:27:34,213 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Paris
+2026-04-15 07:27:35,367 | INFO | scrapers.openmeteo_scraper | Got current weather for Paris: 10.4°C
+2026-04-15 07:27:35,373 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:27:35,373 | INFO | main |   OK 1 new rows (Current: 10.4 C)
+2026-04-15 07:27:37,373 | INFO | main | [11/24] Berlin...
+2026-04-15 07:27:37,374 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Berlin
+2026-04-15 07:27:38,492 | INFO | scrapers.openmeteo_scraper | Got current weather for Berlin: 7.6°C
+2026-04-15 07:27:38,494 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:27:38,494 | INFO | main |   OK 1 new rows (Current: 7.6 C)
+2026-04-15 07:27:40,495 | INFO | main | [12/24] Madrid...
+2026-04-15 07:27:40,495 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Madrid
+2026-04-15 07:28:10,690 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Madrid: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:28:10,691 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:28:12,691 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Madrid
+2026-04-15 07:28:42,872 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Madrid: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:28:42,872 | WARNING | main |   No data (attempt 2/3)
+2026-04-15 07:28:46,872 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Madrid
+2026-04-15 07:29:17,704 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Madrid: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:29:17,704 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Madrid
+2026-04-15 07:29:17,704 | WARNING | main |   No data (attempt 3/3)
+2026-04-15 07:29:19,704 | INFO | main | [13/24] Rome...
+2026-04-15 07:29:19,704 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Rome
+2026-04-15 07:29:20,874 | INFO | scrapers.openmeteo_scraper | Got current weather for Rome: 17.0°C
+2026-04-15 07:29:20,876 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:29:20,876 | INFO | main |   OK 1 new rows (Current: 17.0 C)
+2026-04-15 07:29:22,877 | INFO | main | [14/24] Cairo...
+2026-04-15 07:29:22,877 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Cairo
+2026-04-15 07:29:53,072 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Cairo: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:29:53,072 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:29:55,072 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Cairo
+2026-04-15 07:30:25,268 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Cairo: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:30:25,269 | WARNING | main |   No data (attempt 2/3)
+2026-04-15 07:30:29,269 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Cairo
+2026-04-15 07:31:00,080 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Cairo: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:31:00,080 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Cairo
+2026-04-15 07:31:00,080 | WARNING | main |   No data (attempt 3/3)
+2026-04-15 07:31:02,080 | INFO | main | [15/24] Nairobi...
+2026-04-15 07:31:02,080 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Nairobi
+2026-04-15 07:31:32,298 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Nairobi: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:31:32,298 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:31:34,299 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Nairobi
+2026-04-15 07:31:35,422 | INFO | scrapers.openmeteo_scraper | Got current weather for Nairobi: 20.0°C
+2026-04-15 07:31:35,425 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:31:35,425 | INFO | main |   OK 1 new rows (Current: 20.0 C)
+2026-04-15 07:31:37,425 | INFO | main | [16/24] Johannesburg...
+2026-04-15 07:31:37,425 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Johannesburg
+2026-04-15 07:31:38,582 | INFO | scrapers.openmeteo_scraper | Got current weather for Johannesburg: 17.4°C
+2026-04-15 07:31:38,585 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:31:38,585 | INFO | main |   OK 1 new rows (Current: 17.4 C)
+2026-04-15 07:31:40,585 | INFO | main | [17/24] Dubai...
+2026-04-15 07:31:40,586 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Dubai
+2026-04-15 07:32:10,777 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Dubai: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:32:10,777 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:32:12,777 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Dubai
+2026-04-15 07:32:42,974 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Dubai: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:32:42,974 | WARNING | main |   No data (attempt 2/3)
+2026-04-15 07:32:46,975 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Dubai
+2026-04-15 07:32:48,129 | INFO | scrapers.openmeteo_scraper | Got current weather for Dubai: 25.8°C
+2026-04-15 07:32:48,135 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:32:48,136 | INFO | main |   OK 1 new rows (Current: 25.8 C)
+2026-04-15 07:32:50,136 | INFO | main | [18/24] Mumbai...
+2026-04-15 07:32:50,136 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mumbai
+2026-04-15 07:33:20,888 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Mumbai: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:33:20,888 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Mumbai
+2026-04-15 07:33:20,888 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:33:22,888 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mumbai
+2026-04-15 07:33:53,084 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Mumbai: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:33:53,084 | WARNING | main |   No data (attempt 2/3)
+2026-04-15 07:33:57,084 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Mumbai
+2026-04-15 07:34:27,279 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Mumbai: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:34:27,279 | WARNING | main |   No data (attempt 3/3)
+2026-04-15 07:34:29,279 | INFO | main | [19/24] Tokyo...
+2026-04-15 07:34:29,279 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Tokyo
+2026-04-15 07:35:00,087 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Tokyo: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:35:00,087 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Tokyo
+2026-04-15 07:35:00,087 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:35:02,088 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Tokyo
+2026-04-15 07:35:32,264 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Tokyo: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:35:32,264 | WARNING | main |   No data (attempt 2/3)
+2026-04-15 07:35:36,264 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Tokyo
+2026-04-15 07:35:37,416 | INFO | scrapers.openmeteo_scraper | Got current weather for Tokyo: 17.3°C
+2026-04-15 07:35:37,419 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:35:37,419 | INFO | main |   OK 1 new rows (Current: 17.3 C)
+2026-04-15 07:35:39,419 | INFO | main | [20/24] Seoul...
+2026-04-15 07:35:39,419 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Seoul
+2026-04-15 07:35:40,556 | INFO | scrapers.openmeteo_scraper | Got current weather for Seoul: 21.7°C
+2026-04-15 07:35:40,558 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:35:40,558 | INFO | main |   OK 1 new rows (Current: 21.7 C)
+2026-04-15 07:35:42,558 | INFO | main | [21/24] Singapore...
+2026-04-15 07:35:42,558 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Singapore
+2026-04-15 07:36:13,321 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Temasek: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:36:13,322 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Temasek
+2026-04-15 07:36:13,322 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:36:15,322 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Singapore
+2026-04-15 07:36:45,541 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Singapore: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:36:45,541 | WARNING | main |   No data (attempt 2/3)
+2026-04-15 07:36:49,542 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Singapore
+2026-04-15 07:36:50,732 | INFO | scrapers.openmeteo_scraper | Got current weather for Temasek: 29.2°C
+2026-04-15 07:36:50,735 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:36:50,735 | INFO | main |   OK 1 new rows (Current: 29.2 C)
+2026-04-15 07:36:52,735 | INFO | main | [22/24] Sydney...
+2026-04-15 07:36:52,735 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sydney
+2026-04-15 07:37:23,564 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Sydney: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:37:23,564 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Sydney
+2026-04-15 07:37:23,565 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:37:25,565 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Sydney
+2026-04-15 07:37:26,698 | INFO | scrapers.openmeteo_scraper | Got current weather for Sydney: 20.2°C
+2026-04-15 07:37:26,700 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:37:26,700 | INFO | main |   OK 1 new rows (Current: 20.2 C)
+2026-04-15 07:37:28,701 | INFO | main | [23/24] Melbourne...
+2026-04-15 07:37:28,701 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Melbourne
+2026-04-15 07:37:58,895 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Melbourne: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:37:58,895 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:38:00,896 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Melbourne
+2026-04-15 07:38:31,075 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Melbourne: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:38:31,076 | WARNING | main |   No data (attempt 2/3)
+2026-04-15 07:38:35,077 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Melbourne
+2026-04-15 07:39:05,910 | ERROR | scrapers.openmeteo_scraper | Error getting current weather for Melbourne: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:39:05,910 | WARNING | scrapers.openmeteo_scraper | Could not get current weather for Melbourne
+2026-04-15 07:39:05,910 | WARNING | main |   No data (attempt 3/3)
+2026-04-15 07:39:07,911 | INFO | main | [24/24] Auckland...
+2026-04-15 07:39:07,911 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Auckland
+2026-04-15 07:39:38,088 | ERROR | scrapers.openmeteo_scraper | Error getting coordinates for Auckland: HTTPSConnectionPool(host='geocoding-api.open-meteo.com', port=443): Read timed out. (read timeout=30)
+2026-04-15 07:39:38,088 | WARNING | main |   No data (attempt 1/3)
+2026-04-15 07:39:40,088 | INFO | scrapers.openmeteo_scraper | Scraping Open-Meteo for Auckland
+2026-04-15 07:39:41,220 | INFO | scrapers.openmeteo_scraper | Got current weather for Auckland: 16.7°C
+2026-04-15 07:39:41,222 | INFO | utils | Appended 1 rows to openmeteo_raw.csv
+2026-04-15 07:39:41,223 | INFO | main |   OK 1 new rows (Current: 16.7 C)
+2026-04-15 07:39:43,223 | INFO | main | 
+Open-Meteo Summary: 17 rows from 17/24 cities
+2026-04-15 07:39:43,223 | WARNING | main | Failed: Los Angeles, Mexico City, London, Madrid, Cairo, Mumbai, Melbourne
+2026-04-15 07:40:13,223 | INFO | main | 
+============================================================
+TimeAndDate: Collecting 0 days of data
+============================================================
+2026-04-15 07:40:13,539 | INFO | main | [1/24] Beirut...
+2026-04-15 07:40:13,859 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:13,859 | INFO | main |   OK 1 new rows (Current: 53.0 C)
+2026-04-15 07:40:15,859 | INFO | main | [2/24] New York...
+2026-04-15 07:40:16,038 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:16,039 | INFO | main |   OK 1 new rows (Current: 71.0 C)
+2026-04-15 07:40:18,039 | INFO | main | [3/24] Los Angeles...
+2026-04-15 07:40:18,133 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:18,133 | INFO | main |   OK 1 new rows (Current: 61.0 C)
+2026-04-15 07:40:20,133 | INFO | main | [4/24] Chicago...
+2026-04-15 07:40:20,257 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:20,257 | INFO | main |   OK 1 new rows (Current: 65.0 C)
+2026-04-15 07:40:22,257 | INFO | main | [5/24] Toronto...
+2026-04-15 07:40:22,513 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:22,513 | INFO | main |   OK 1 new rows (Current: 50.0 C)
+2026-04-15 07:40:24,513 | INFO | main | [6/24] Mexico City...
+2026-04-15 07:40:24,683 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:24,683 | INFO | main |   OK 1 new rows (Current: 64.0 C)
+2026-04-15 07:40:26,683 | INFO | main | [7/24] Sao Paulo...
+2026-04-15 07:40:26,830 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:26,830 | INFO | main |   OK 1 new rows (Current: 61.0 C)
+2026-04-15 07:40:28,830 | INFO | main | [8/24] Buenos Aires...
+2026-04-15 07:40:29,000 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:29,000 | INFO | main |   OK 1 new rows (Current: 70.0 C)
+2026-04-15 07:40:31,001 | INFO | main | [9/24] London...
+2026-04-15 07:40:31,148 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:31,148 | INFO | main |   OK 1 new rows (Current: 55.0 C)
+2026-04-15 07:40:33,148 | INFO | main | [10/24] Paris...
+2026-04-15 07:40:33,397 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:33,398 | INFO | main |   OK 1 new rows (Current: 52.0 C)
+2026-04-15 07:40:35,398 | INFO | main | [11/24] Berlin...
+2026-04-15 07:40:35,491 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:35,491 | INFO | main |   OK 1 new rows (Current: 50.0 C)
+2026-04-15 07:40:37,492 | INFO | main | [12/24] Madrid...
+2026-04-15 07:40:37,644 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:37,644 | INFO | main |   OK 1 new rows (Current: 55.0 C)
+2026-04-15 07:40:39,644 | INFO | main | [13/24] Rome...
+2026-04-15 07:40:39,739 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:39,739 | INFO | main |   OK 1 new rows (Current: 63.0 C)
+2026-04-15 07:40:41,739 | INFO | main | [14/24] Cairo...
+2026-04-15 07:40:41,834 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:41,834 | INFO | main |   OK 1 new rows (Current: 70.0 C)
+2026-04-15 07:40:43,834 | INFO | main | [15/24] Nairobi...
+2026-04-15 07:40:43,976 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:43,976 | INFO | main |   OK 1 new rows (Current: 66.0 C)
+2026-04-15 07:40:45,976 | INFO | main | [16/24] Johannesburg...
+2026-04-15 07:40:46,072 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:46,072 | INFO | main |   OK 1 new rows (Current: 60.0 C)
+2026-04-15 07:40:48,072 | INFO | main | [17/24] Dubai...
+2026-04-15 07:40:48,164 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:48,164 | INFO | main |   OK 1 new rows (Current: 91.0 C)
+2026-04-15 07:40:50,164 | INFO | main | [18/24] Mumbai...
+2026-04-15 07:40:50,407 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:50,407 | INFO | main |   OK 1 new rows (Current: 91.0 C)
+2026-04-15 07:40:52,407 | INFO | main | [19/24] Tokyo...
+2026-04-15 07:40:52,507 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:52,507 | INFO | main |   OK 1 new rows (Current: 70.0 C)
+2026-04-15 07:40:54,507 | INFO | main | [20/24] Seoul...
+2026-04-15 07:40:54,762 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:54,762 | INFO | main |   OK 1 new rows (Current: 75.0 C)
+2026-04-15 07:40:56,762 | INFO | main | [21/24] Singapore...
+2026-04-15 07:40:57,008 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:57,009 | INFO | main |   OK 1 new rows (Current: 88.0 C)
+2026-04-15 07:40:59,009 | INFO | main | [22/24] Sydney...
+2026-04-15 07:40:59,112 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:40:59,112 | INFO | main |   OK 1 new rows (Current: 72.0 C)
+2026-04-15 07:41:01,113 | INFO | main | [23/24] Melbourne...
+2026-04-15 07:41:01,300 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:41:01,300 | INFO | main |   OK 1 new rows (Current: 68.0 C)
+2026-04-15 07:41:03,300 | INFO | main | [24/24] Auckland...
+2026-04-15 07:41:03,401 | INFO | utils | Appended 1 rows to timeanddate_raw.csv
+2026-04-15 07:41:03,401 | INFO | main |   OK 1 new rows (Current: 63.0 C)
+2026-04-15 07:41:05,401 | INFO | main | 
+TimeAndDate Summary: 24 rows from 24/24 cities
+2026-04-15 07:41:35,403 | INFO | main | 
+============================================================
+WeatherUnderground: Collecting 0 days of data
+============================================================
+2026-04-15 07:41:36,495 | INFO | main | [1/24] Beirut...
+2026-04-15 07:41:38,794 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:41:38,794 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:41:40,795 | INFO | main | [2/24] New York...
+2026-04-15 07:41:41,742 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:41:41,742 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:41:43,742 | INFO | main | [3/24] Los Angeles...
+2026-04-15 07:41:44,433 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:41:44,433 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:41:46,434 | INFO | main | [4/24] Chicago...
+2026-04-15 07:41:47,180 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:41:47,180 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:41:49,181 | INFO | main | [5/24] Toronto...
+2026-04-15 07:41:49,915 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:41:49,915 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:41:51,915 | INFO | main | [6/24] Mexico City...
+2026-04-15 07:41:52,489 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:41:52,489 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:41:54,489 | INFO | main | [7/24] Sao Paulo...
+2026-04-15 07:41:55,344 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:41:55,344 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:41:57,344 | INFO | main | [8/24] Buenos Aires...
+2026-04-15 07:41:59,706 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:41:59,706 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:01,706 | INFO | main | [9/24] London...
+2026-04-15 07:42:05,874 | INFO | utils | Appended 6 rows to wunderground_raw.csv
+2026-04-15 07:42:05,875 | INFO | main |   OK 6 new rows (Current: 54.0 C)
+2026-04-15 07:42:07,875 | INFO | main | [10/24] Paris...
+2026-04-15 07:42:08,926 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:08,926 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:10,927 | INFO | main | [11/24] Berlin...
+2026-04-15 07:42:11,807 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:11,807 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:13,807 | INFO | main | [12/24] Madrid...
+2026-04-15 07:42:15,029 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:15,029 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:17,029 | INFO | main | [13/24] Rome...
+2026-04-15 07:42:17,905 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:17,906 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:19,906 | INFO | main | [14/24] Cairo...
+2026-04-15 07:42:20,857 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:20,857 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:22,857 | INFO | main | [15/24] Nairobi...
+2026-04-15 07:42:25,250 | INFO | utils | Appended 8 rows to wunderground_raw.csv
+2026-04-15 07:42:25,250 | INFO | main |   OK 8 new rows (Current: 54.0 C)
+2026-04-15 07:42:27,250 | INFO | main | [16/24] Johannesburg...
+2026-04-15 07:42:28,659 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:28,659 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:30,659 | INFO | main | [17/24] Dubai...
+2026-04-15 07:42:31,428 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:31,428 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:33,429 | INFO | main | [18/24] Mumbai...
+2026-04-15 07:42:34,645 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:34,646 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:36,646 | INFO | main | [19/24] Tokyo...
+2026-04-15 07:42:37,431 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:37,431 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:39,431 | INFO | main | [20/24] Seoul...
+2026-04-15 07:42:40,118 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:40,118 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:42,118 | INFO | main | [21/24] Singapore...
+2026-04-15 07:42:43,077 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:43,077 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:45,077 | INFO | main | [22/24] Sydney...
+2026-04-15 07:42:45,835 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:45,835 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:47,835 | INFO | main | [23/24] Melbourne...
+2026-04-15 07:42:48,922 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:48,922 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:50,922 | INFO | main | [24/24] Auckland...
+2026-04-15 07:42:51,895 | INFO | utils | Appended 7 rows to wunderground_raw.csv
+2026-04-15 07:42:51,895 | INFO | main |   OK 7 new rows (Current: 54.0 C)
+2026-04-15 07:42:53,895 | INFO | main | 
+WeatherUnderground Summary: 168 rows from 24/24 cities
+2026-04-15 07:42:53,899 | INFO | main | 
+Auto-merging raw data...
+2026-04-15 07:42:54,167 | INFO | utils | Loaded 24515 rows from openmeteo_raw.csv
+2026-04-15 07:42:54,210 | INFO | utils | Loaded 4123 rows from timeanddate_raw.csv
+2026-04-15 07:42:54,311 | INFO | utils | Loaded 9309 rows from wunderground_raw.csv
+2026-04-15 07:42:54,311 | INFO | main | Loaded 37947 raw rows
+2026-04-15 07:42:54,685 | INFO | main | Deduplicated: 37947 -> 30500 rows
+2026-04-15 07:42:54,938 | INFO | main | Saved 30500 rows to /home/runner/work/WebScraping-project/WebScraping-project/data/processed/weather_data.csv
+2026-04-15 07:42:58,961 | INFO | main | Saved 30500 rows to /home/runner/work/WebScraping-project/WebScraping-project/data/processed/weather_data.xlsx
+2026-04-15 07:42:59,010 | INFO | utils | Updated summary report with 7 entries
+2026-04-15 07:42:59,017 | INFO | main | Merge complete: 30500 rows
+2026-04-15 07:42:59,018 | INFO | main | Running cleaning and preprocessing pipeline...
+2026-04-15 07:42:59,560 | INFO | main | Cleaning and preprocessing completed successfully.
+2026-04-15 07:42:59,584 | INFO | main | 
+================================================================================
+SCHEDULED SCRAPE COMPLETED
+After: {'Open-Meteo': 17492, 'TimeAndDate': 2495, 'WeatherUnderground': 572}
+================================================================================
+

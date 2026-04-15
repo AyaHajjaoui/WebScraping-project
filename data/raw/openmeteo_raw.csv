@@ -24302,3 +24302,233 @@ Open-Meteo,Tokyo,Japan,2026-04-13T19:17:38.867020,13.1,13.6,99,2.8,Overcast
 Open-Meteo,Temasek,Singapore,2026-04-13T19:19:53.681344,27.0,33.6,90,2.3,Overcast
 Open-Meteo,Sydney,Australia,2026-04-13T19:19:56.983915,11.1,9.7,73,3.7,Clear sky
 Open-Meteo,Auckland,New Zealand,2026-04-13T19:22:11.699339,15.9,16.4,92,6.8,Partly cloudy
+Open-Meteo,Beirut,Lebanon,2026-04-13T21:40:41.766507,14.7,14.2,74,4.0,Clear sky
+Open-Meteo,New York,United States,2026-04-13T21:40:44.640324,26.3,22.6,40,29.1,Clear sky
+Open-Meteo,Los Angeles,United States,2026-04-13T21:40:47.523444,18.7,15.3,44,18.7,Partly cloudy
+Open-Meteo,Toronto,Canada,2026-04-13T21:43:35.459079,19.5,17.9,76,23.4,Clear sky
+Open-Meteo,Mexico City,Mexico,2026-04-13T21:43:38.277748,24.5,21.7,28,13.1,Overcast
+Open-Meteo,São Paulo,Brazil,2026-04-13T21:43:41.083890,21.8,23.6,85,11.8,Overcast
+Open-Meteo,London,United Kingdom,2026-04-13T21:46:29.142898,10.5,7.9,65,8.6,Mainly clear
+Open-Meteo,Paris,France,2026-04-13T21:46:31.935967,9.1,7.9,82,1.8,Clear sky
+Open-Meteo,Berlin,Germany,2026-04-13T21:46:34.733360,11.7,7.7,42,12.6,Overcast
+Open-Meteo,Rome,Italy,2026-04-13T21:49:23.108856,16.2,15.3,81,12.6,Overcast
+Open-Meteo,Cairo,Egypt,2026-04-13T21:49:25.902098,18.4,17.5,65,9.4,Clear sky
+Open-Meteo,Nairobi,Kenya,2026-04-13T21:49:28.689356,16.7,16.5,89,12.3,Overcast
+Open-Meteo,Dubai,United Arab Emirates,2026-04-13T21:51:42.517803,23.1,26.3,84,5.7,Clear sky
+Open-Meteo,Mumbai,India,2026-04-13T21:51:45.304809,28.3,35.1,84,1.1,Partly cloudy
+Open-Meteo,Tokyo,Japan,2026-04-13T21:51:48.103157,13.4,14.1,99,2.2,Overcast
+Open-Meteo,Temasek,Singapore,2026-04-13T21:54:01.924437,26.6,33.3,92,1.5,Mainly clear
+Open-Meteo,Sydney,Australia,2026-04-13T21:54:04.719717,12.7,11.6,71,3.4,Clear sky
+Open-Meteo,Melbourne,Australia,2026-04-13T21:54:07.513051,14.0,13.4,84,7.0,Partly cloudy
+Open-Meteo,Beirut,Lebanon,2026-04-14T01:49:49.921877,14.4,13.3,70,5.2,Clear sky
+Open-Meteo,New York,United States,2026-04-14T01:49:53.222734,21.6,19.2,48,16.6,Clear sky
+Open-Meteo,Chicago,United States,2026-04-14T01:52:08.044122,22.6,21.6,75,26.6,Partly cloudy
+Open-Meteo,Toronto,Canada,2026-04-14T01:52:11.318316,14.4,13.9,87,8.2,Partly cloudy
+Open-Meteo,Mexico City,Mexico,2026-04-14T01:52:14.597449,19.3,17.3,51,11.5,Overcast
+Open-Meteo,Buenos Aires,Argentina,2026-04-14T01:54:29.393105,19.0,20.4,90,7.9,Overcast
+Open-Meteo,London,United Kingdom,2026-04-14T01:54:32.641778,8.2,5.9,74,6.1,Clear sky
+Open-Meteo,Berlin,Germany,2026-04-14T01:56:47.374638,10.7,6.9,47,11.8,Overcast
+Open-Meteo,Madrid,Spain,2026-04-14T01:56:50.651597,8.3,6.2,69,3.2,Clear sky
+Open-Meteo,Rome,Italy,2026-04-14T01:56:53.931685,15.5,15.4,82,6.4,Overcast
+Open-Meteo,Cairo,Egypt,2026-04-14T01:57:29.386621,16.3,16.2,77,5.8,Clear sky
+Open-Meteo,Johannesburg,South Africa,2026-04-14T01:59:11.932107,14.3,14.1,91,7.4,Overcast
+Open-Meteo,Dubai,United Arab Emirates,2026-04-14T01:59:15.204850,22.2,25.2,85,4.9,Clear sky
+Open-Meteo,Tokyo,Japan,2026-04-14T02:00:57.789916,14.3,15.4,98,1.3,Overcast
+Open-Meteo,Seoul,South Korea,2026-04-14T02:01:01.139858,18.7,18.0,41,3.6,Partly cloudy
+Open-Meteo,Sydney,Australia,2026-04-14T02:02:43.662963,22.2,22.6,37,2.0,Clear sky
+Open-Meteo,Auckland,New Zealand,2026-04-14T02:05:33.235322,17.7,17.0,81,14.7,Slight rain showers
+Open-Meteo,Beirut,Lebanon,2026-04-14T05:16:25.587473,17.2,16.0,53,3.6,Clear sky
+Open-Meteo,New York,United States,2026-04-14T05:16:28.771174,18.8,18.3,65,8.1,Clear sky
+Open-Meteo,Chicago,United States,2026-04-14T05:18:43.298698,20.8,18.8,69,25.1,Overcast
+Open-Meteo,Toronto,Canada,2026-04-14T05:18:46.465307,11.8,10.9,91,7.5,Overcast
+Open-Meteo,São Paulo,Brazil,2026-04-14T05:21:00.997798,18.7,21.2,94,1.8,Partly cloudy
+Open-Meteo,Buenos Aires,Argentina,2026-04-14T05:21:04.186428,19.0,20.4,88,7.3,Overcast
+Open-Meteo,Paris,France,2026-04-14T05:23:18.775340,4.8,3.3,100,1.9,Fog
+Open-Meteo,Berlin,Germany,2026-04-14T05:23:21.967887,9.6,6.8,54,6.0,Overcast
+Open-Meteo,Rome,Italy,2026-04-14T05:25:04.339820,15.7,15.4,83,8.4,Overcast
+Open-Meteo,Nairobi,Kenya,2026-04-14T05:27:18.956380,16.6,16.5,91,12.7,Overcast
+Open-Meteo,Johannesburg,South Africa,2026-04-14T05:27:22.126301,13.8,13.1,91,9.9,Overcast
+Open-Meteo,Mumbai,India,2026-04-14T05:29:36.658740,29.2,37.0,77,3.9,Mainly clear
+Open-Meteo,Tokyo,Japan,2026-04-14T05:29:39.843826,21.5,21.5,57,5.6,Mainly clear
+Open-Meteo,Temasek,Singapore,2026-04-14T05:31:54.408066,31.4,37.8,70,9.8,Thunderstorm
+Open-Meteo,Sydney,Australia,2026-04-14T05:31:57.579075,23.9,22.4,37,7.7,Clear sky
+Open-Meteo,Auckland,New Zealand,2026-04-14T05:34:46.923164,16.2,15.6,87,12.7,Slight rain showers
+Open-Meteo,Beirut,Lebanon,2026-04-14T07:20:23.197474,19.2,18.8,46,5.8,Clear sky
+Open-Meteo,New York,United States,2026-04-14T07:20:26.399165,17.0,17.4,72,1.5,Clear sky
+Open-Meteo,Chicago,United States,2026-04-14T07:22:40.946694,20.7,18.9,71,24.0,Partly cloudy
+Open-Meteo,Toronto,Canada,2026-04-14T07:22:44.130090,12.9,12.1,92,8.8,Overcast
+Open-Meteo,São Paulo,Brazil,2026-04-14T07:24:58.697387,18.1,20.1,93,2.6,Mainly clear
+Open-Meteo,Buenos Aires,Argentina,2026-04-14T07:25:01.886175,18.7,20.1,91,7.4,Overcast
+Open-Meteo,Paris,France,2026-04-14T07:27:16.427761,6.0,4.7,98,1.5,Fog
+Open-Meteo,Berlin,Germany,2026-04-14T07:27:19.645893,9.6,7.4,59,2.6,Slight rain
+Open-Meteo,Rome,Italy,2026-04-14T07:29:02.630231,17.2,16.4,78,13.2,Overcast
+Open-Meteo,Cairo,Egypt,2026-04-14T07:29:05.827668,20.7,20.3,53,11.4,Clear sky
+Open-Meteo,Nairobi,Kenya,2026-04-14T07:30:17.597949,18.4,17.7,81,16.8,Slight rain showers
+Open-Meteo,Johannesburg,South Africa,2026-04-14T07:31:27.838438,17.4,15.9,76,16.6,Partly cloudy
+Open-Meteo,Dubai,United Arab Emirates,2026-04-14T07:31:31.012899,26.9,29.9,60,15.9,Partly cloudy
+Open-Meteo,Mumbai,India,2026-04-14T07:32:07.009669,29.4,37.6,81,10.5,Clear sky
+Open-Meteo,Seoul,South Korea,2026-04-14T07:34:21.517711,24.2,22.9,31,2.1,Clear sky
+Open-Meteo,Temasek,Singapore,2026-04-14T07:34:24.702329,31.6,37.2,67,7.8,Partly cloudy
+Open-Meteo,Sydney,Australia,2026-04-14T07:34:27.872098,20.3,19.1,55,9.8,Mainly clear
+Open-Meteo,Auckland,New Zealand,2026-04-14T07:37:17.202777,15.4,15.5,89,7.8,Partly cloudy
+Open-Meteo,Beirut,Lebanon,2026-04-14T10:09:05.216547,21.5,21.4,36,9.3,Clear sky
+Open-Meteo,New York,United States,2026-04-14T10:09:08.024284,15.8,15.6,80,6.4,Clear sky
+Open-Meteo,Los Angeles,United States,2026-04-14T10:09:10.853155,11.5,9.6,80,9.3,Clear sky
+Open-Meteo,Toronto,Canada,2026-04-14T10:11:58.850182,11.0,10.0,100,9.1,Fog
+Open-Meteo,Mexico City,Mexico,2026-04-14T10:12:01.688442,13.4,13.2,80,1.6,Mainly clear
+Open-Meteo,São Paulo,Brazil,2026-04-14T10:12:04.496852,17.3,19.0,96,3.9,Overcast
+Open-Meteo,London,United Kingdom,2026-04-14T10:14:52.542496,12.9,9.7,55,13.0,Partly cloudy
+Open-Meteo,Paris,France,2026-04-14T10:14:55.363817,12.5,11.7,65,5.3,Mainly clear
+Open-Meteo,Berlin,Germany,2026-04-14T10:14:58.176482,11.0,8.9,57,2.9,Slight rain
+Open-Meteo,Rome,Italy,2026-04-14T10:17:46.123547,19.8,18.8,66,15.4,Partly cloudy
+Open-Meteo,Cairo,Egypt,2026-04-14T10:17:48.908979,27.3,27.0,29,14.0,Clear sky
+Open-Meteo,Nairobi,Kenya,2026-04-14T10:17:51.718037,21.6,20.8,66,19.8,Overcast
+Open-Meteo,Johannesburg,South Africa,2026-04-14T10:19:00.804071,19.8,18.8,65,17.3,Partly cloudy
+Open-Meteo,Mumbai,India,2026-04-14T10:21:15.041987,30.4,35.6,74,16.6,Clear sky
+Open-Meteo,Tokyo,Japan,2026-04-14T10:21:17.834854,17.1,17.5,81,5.7,Partly cloudy
+Open-Meteo,Seoul,South Korea,2026-04-14T10:21:20.644601,18.9,18.9,61,2.4,Clear sky
+Open-Meteo,Sydney,Australia,2026-04-14T10:23:01.922015,16.2,16.5,79,3.8,Mainly clear
+Open-Meteo,Auckland,New Zealand,2026-04-14T10:25:50.268977,15.3,14.6,90,12.7,Partly cloudy
+Open-Meteo,Beirut,Lebanon,2026-04-14T13:06:46.820018,21.0,19.5,50,12.3,Clear sky
+Open-Meteo,New York,United States,2026-04-14T13:06:50.109051,21.5,22.8,66,1.8,Clear sky
+Open-Meteo,Chicago,United States,2026-04-14T13:09:04.854853,14.4,14.4,96,8.8,Overcast
+Open-Meteo,Toronto,Canada,2026-04-14T13:09:08.262385,13.3,11.8,93,14.8,Overcast
+Open-Meteo,São Paulo,Brazil,2026-04-14T13:11:23.048268,21.3,23.8,73,4.3,Mainly clear
+Open-Meteo,Buenos Aires,Argentina,2026-04-14T13:11:26.340466,21.1,21.9,84,15.3,Overcast
+Open-Meteo,Paris,France,2026-04-14T13:13:41.130560,17.0,15.7,36,5.9,Mainly clear
+Open-Meteo,Berlin,Germany,2026-04-14T13:13:44.430040,12.6,9.9,58,9.4,Slight rain
+Open-Meteo,Rome,Italy,2026-04-14T13:15:59.237980,20.0,18.6,64,17.0,Overcast
+Open-Meteo,Cairo,Egypt,2026-04-14T13:16:02.652632,29.5,27.1,23,13.0,Clear sky
+Open-Meteo,Nairobi,Kenya,2026-04-14T13:17:12.366611,21.3,19.8,65,19.7,Overcast
+Open-Meteo,Dubai,United Arab Emirates,2026-04-14T13:20:06.044152,26.5,24.2,50,27.8,Partly cloudy
+Open-Meteo,Tokyo,Japan,2026-04-14T13:21:48.577016,15.0,15.8,92,3.0,Mainly clear
+Open-Meteo,Seoul,South Korea,2026-04-14T13:21:51.912762,14.7,14.2,72,3.0,Partly cloudy
+Open-Meteo,Temasek,Singapore,2026-04-14T13:23:01.637610,27.8,33.2,81,5.4,Slight rain showers
+Open-Meteo,Melbourne,Australia,2026-04-14T13:25:51.247737,14.1,14.0,85,4.7,Mainly clear
+Open-Meteo,Auckland,New Zealand,2026-04-14T13:25:54.620500,15.0,13.6,87,15.9,Slight rain showers
+Open-Meteo,Beirut,Lebanon,2026-04-14T16:03:18.736240,18.7,17.6,68,13.2,Clear sky
+Open-Meteo,New York,United States,2026-04-14T16:03:21.529184,27.7,28.4,43,14.3,Clear sky
+Open-Meteo,Los Angeles,United States,2026-04-14T16:03:24.342855,15.7,15.3,67,2.3,Clear sky
+Open-Meteo,Toronto,Canada,2026-04-14T16:06:12.252013,16.0,14.9,88,16.5,Overcast
+Open-Meteo,Mexico City,Mexico,2026-04-14T16:06:15.048042,19.3,19.9,53,5.0,Clear sky
+Open-Meteo,São Paulo,Brazil,2026-04-14T16:06:17.875192,25.3,27.1,50,7.2,Mainly clear
+Open-Meteo,London,United Kingdom,2026-04-14T16:09:05.847356,14.4,11.3,62,16.2,Overcast
+Open-Meteo,Paris,France,2026-04-14T16:09:08.644446,17.9,14.5,32,9.7,Partly cloudy
+Open-Meteo,Berlin,Germany,2026-04-14T16:09:11.432867,12.2,9.4,70,13.9,Slight rain
+Open-Meteo,Rome,Italy,2026-04-14T16:11:25.659101,19.1,18.8,68,9.0,Overcast
+Open-Meteo,Nairobi,Kenya,2026-04-14T16:13:39.459942,18.8,18.2,79,15.6,Overcast
+Open-Meteo,Johannesburg,South Africa,2026-04-14T16:13:42.249469,18.2,18.1,67,5.4,Clear sky
+Open-Meteo,Dubai,United Arab Emirates,2026-04-14T16:13:45.043580,25.1,24.0,56,20.7,Overcast
+Open-Meteo,Mumbai,India,2026-04-14T16:14:20.000334,30.2,35.6,74,10.0,Clear sky
+Open-Meteo,Seoul,South Korea,2026-04-14T16:17:08.342003,11.5,10.4,79,3.9,Overcast
+Open-Meteo,Temasek,Singapore,2026-04-14T16:17:11.134075,26.6,31.9,84,3.6,Overcast
+Open-Meteo,Sydney,Australia,2026-04-14T16:17:13.942934,12.0,11.9,95,3.3,Mainly clear
+Open-Meteo,Auckland,New Zealand,2026-04-14T16:20:06.373822,14.7,13.0,86,17.0,Partly cloudy
+Open-Meteo,Beirut,Lebanon,2026-04-14T19:01:39.987741,17.9,17.3,72,10.0,Overcast
+Open-Meteo,New York,United States,2026-04-14T19:01:42.920994,29.9,28.4,34,22.5,Clear sky
+Open-Meteo,Los Angeles,United States,2026-04-14T19:01:45.826785,20.8,22.3,47,4.8,Clear sky
+Open-Meteo,Toronto,Canada,2026-04-14T19:04:34.107563,20.4,19.4,79,24.3,Overcast
+Open-Meteo,Mexico City,Mexico,2026-04-14T19:04:37.018906,24.8,23.8,26,14.6,Clear sky
+Open-Meteo,São Paulo,Brazil,2026-04-14T19:04:39.936785,25.5,25.3,49,9.7,Partly cloudy
+Open-Meteo,London,United Kingdom,2026-04-14T19:07:28.155738,14.3,11.2,58,14.8,Overcast
+Open-Meteo,Paris,France,2026-04-14T19:07:31.074970,16.1,13.1,36,7.2,Clear sky
+Open-Meteo,Berlin,Germany,2026-04-14T19:07:33.974884,11.2,8.5,68,11.0,Overcast
+Open-Meteo,Rome,Italy,2026-04-14T19:09:48.021436,17.3,17.4,75,5.3,Overcast
+Open-Meteo,Cairo,Egypt,2026-04-14T19:09:50.934305,21.6,19.7,46,11.9,Overcast
+Open-Meteo,Nairobi,Kenya,2026-04-14T19:09:53.839568,16.9,17.1,90,10.8,Partly cloudy
+Open-Meteo,Johannesburg,South Africa,2026-04-14T19:11:03.062093,14.9,15.2,87,3.7,Clear sky
+Open-Meteo,Mumbai,India,2026-04-14T19:13:17.112656,30.1,35.2,73,9.4,Clear sky
+Open-Meteo,Tokyo,Japan,2026-04-14T19:13:20.042127,12.7,13.1,99,2.2,Overcast
+Open-Meteo,Seoul,South Korea,2026-04-14T19:13:22.964948,9.7,8.1,77,3.6,Mainly clear
+Open-Meteo,Sydney,Australia,2026-04-14T19:15:36.942862,9.9,9.3,98,3.2,Fog
+Open-Meteo,Melbourne,Australia,2026-04-14T19:15:39.864493,12.6,12.0,85,5.0,Overcast
+Open-Meteo,Auckland,New Zealand,2026-04-14T19:15:42.795245,15.3,13.2,82,19.5,Slight rain showers
+Open-Meteo,Beirut,Lebanon,2026-04-14T21:43:37.334514,17.7,17.1,72,9.3,Mainly clear
+Open-Meteo,New York,United States,2026-04-14T21:43:40.259594,29.5,27.4,37,21.7,Clear sky
+Open-Meteo,Los Angeles,United States,2026-04-14T21:43:43.182644,22.7,22.2,45,16.2,Clear sky
+Open-Meteo,Toronto,Canada,2026-04-14T21:46:31.336411,16.6,14.5,77,19.4,Mainly clear
+Open-Meteo,Mexico City,Mexico,2026-04-14T21:46:34.251139,25.2,22.1,24,14.8,Clear sky
+Open-Meteo,São Paulo,Brazil,2026-04-14T21:46:37.173597,20.4,20.8,78,12.5,Partly cloudy
+Open-Meteo,London,United Kingdom,2026-04-14T21:49:25.554892,14.1,11.2,58,13.3,Overcast
+Open-Meteo,Paris,France,2026-04-14T21:49:28.473349,13.6,10.8,42,5.4,Mainly clear
+Open-Meteo,Berlin,Germany,2026-04-14T21:49:31.364187,8.8,6.9,82,6.4,Clear sky
+Open-Meteo,Rome,Italy,2026-04-14T21:52:20.006773,16.1,16.6,83,3.1,Overcast
+Open-Meteo,Cairo,Egypt,2026-04-14T21:52:22.906927,18.4,17.4,61,8.4,Overcast
+Open-Meteo,Johannesburg,South Africa,2026-04-14T21:54:36.956994,14.0,14.2,89,3.7,Mainly clear
+Open-Meteo,Dubai,United Arab Emirates,2026-04-14T21:54:39.857239,23.8,24.9,74,15.4,Clear sky
+Open-Meteo,Mumbai,India,2026-04-14T21:54:42.847798,29.3,35.0,78,7.3,Mainly clear
+Open-Meteo,Seoul,South Korea,2026-04-14T21:56:56.878435,8.9,7.1,74,3.2,Mainly clear
+Open-Meteo,Temasek,Singapore,2026-04-14T21:56:59.785534,25.6,31.2,89,1.6,Slight rain showers
+Open-Meteo,Sydney,Australia,2026-04-14T21:57:02.682876,11.7,10.7,79,3.8,Fog
+Open-Meteo,Auckland,New Zealand,2026-04-14T21:58:44.514394,17.2,14.1,73,26.2,Slight rain showers
+Open-Meteo,Beirut,Lebanon,2026-04-15T01:45:23.812456,18.0,18.3,69,2.8,Overcast
+Open-Meteo,New York,United States,2026-04-15T01:45:26.633503,25.2,23.0,42,17.7,Partly cloudy
+Open-Meteo,Los Angeles,United States,2026-04-15T01:45:29.437011,17.6,15.8,64,13.8,Clear sky
+Open-Meteo,Toronto,Canada,2026-04-15T01:47:43.238409,11.4,9.8,87,10.1,Clear sky
+Open-Meteo,Mexico City,Mexico,2026-04-15T01:47:46.043021,20.5,17.9,41,12.4,Partly cloudy
+Open-Meteo,São Paulo,Brazil,2026-04-15T01:47:48.855210,18.3,19.9,91,5.6,Partly cloudy
+Open-Meteo,London,United Kingdom,2026-04-15T01:50:05.976917,13.1,11.2,84,13.7,Overcast
+Open-Meteo,Paris,France,2026-04-15T01:50:11.904952,10.3,7.7,62,7.1,Clear sky
+Open-Meteo,Berlin,Germany,2026-04-15T01:51:21.109039,6.1,4.2,86,3.8,Clear sky
+Open-Meteo,Madrid,Spain,2026-04-15T01:51:23.923424,10.1,8.6,77,3.6,Clear sky
+Open-Meteo,Rome,Italy,2026-04-15T01:51:26.759689,14.9,16.0,94,1.5,Overcast
+Open-Meteo,Nairobi,Kenya,2026-04-15T01:53:08.411757,15.8,16.4,95,7.3,Overcast
+Open-Meteo,Johannesburg,South Africa,2026-04-15T01:53:11.219608,13.6,13.5,87,3.2,Overcast
+Open-Meteo,Mumbai,India,2026-04-15T01:55:25.079727,28.8,34.7,81,7.1,Mainly clear
+Open-Meteo,Seoul,South Korea,2026-04-15T01:57:06.726920,16.9,16.9,46,0.4,Clear sky
+Open-Meteo,Temasek,Singapore,2026-04-15T01:57:09.530485,27.4,32.7,84,7.0,Slight rain showers
+Open-Meteo,Sydney,Australia,2026-04-15T01:57:12.334496,23.6,23.3,38,8.2,Clear sky
+Open-Meteo,Auckland,New Zealand,2026-04-15T02:00:12.431343,19.2,15.8,59,26.4,Mainly clear
+Open-Meteo,Beirut,Lebanon,2026-04-15T05:16:38.054885,20.4,21.0,68,5.3,Overcast
+Open-Meteo,New York,United States,2026-04-15T05:16:40.885380,21.6,22.1,64,6.5,Overcast
+Open-Meteo,Los Angeles,United States,2026-04-15T05:16:43.696721,14.3,13.8,76,3.2,Clear sky
+Open-Meteo,Toronto,Canada,2026-04-15T05:19:31.690541,9.5,7.9,93,7.6,Overcast
+Open-Meteo,Mexico City,Mexico,2026-04-15T05:19:34.503125,16.3,14.6,53,6.2,Overcast
+Open-Meteo,São Paulo,Brazil,2026-04-15T05:19:37.311004,17.7,19.3,93,4.6,Partly cloudy
+Open-Meteo,London,United Kingdom,2026-04-15T05:21:51.202409,12.7,10.9,86,13.7,Overcast
+Open-Meteo,Paris,France,2026-04-15T05:21:54.010699,8.9,6.3,69,7.4,Mainly clear
+Open-Meteo,Berlin,Germany,2026-04-15T05:21:56.838852,4.3,2.6,93,0.8,Mainly clear
+Open-Meteo,Rome,Italy,2026-04-15T05:24:45.151931,14.7,15.6,90,0.7,Overcast
+Open-Meteo,Cairo,Egypt,2026-04-15T05:24:47.958423,18.6,18.9,75,6.7,Overcast
+Open-Meteo,Nairobi,Kenya,2026-04-15T05:24:50.784053,17.0,17.3,84,7.2,Overcast
+Open-Meteo,Dubai,United Arab Emirates,2026-04-15T05:27:38.809417,24.4,25.5,68,16.3,Partly cloudy
+Open-Meteo,Mumbai,India,2026-04-15T05:27:41.650325,29.0,36.6,77,4.4,Mainly clear
+Open-Meteo,Tokyo,Japan,2026-04-15T05:27:44.462780,16.9,17.3,78,3.6,Overcast
+Open-Meteo,Temasek,Singapore,2026-04-15T05:29:58.277503,29.3,34.5,75,9.4,Thunderstorm
+Open-Meteo,Sydney,Australia,2026-04-15T05:30:11.554716,24.3,22.8,43,12.3,Mainly clear
+Open-Meteo,Auckland,New Zealand,2026-04-15T05:32:59.958678,17.9,15.2,63,20.1,Mainly clear
+Open-Meteo,Beirut,Lebanon,2026-04-15T07:20:42.206670,23.0,23.8,58,4.6,Overcast
+Open-Meteo,New York,United States,2026-04-15T07:20:45.373382,20.5,21.4,74,7.6,Partly cloudy
+Open-Meteo,Chicago,United States,2026-04-15T07:22:59.961490,14.9,14.9,98,10.1,Overcast
+Open-Meteo,Toronto,Canada,2026-04-15T07:23:03.128559,7.1,3.6,97,18.8,Fog
+Open-Meteo,São Paulo,Brazil,2026-04-15T07:25:17.623425,17.1,18.6,92,2.9,Overcast
+Open-Meteo,Buenos Aires,Argentina,2026-04-15T07:25:20.791745,20.7,23.2,92,7.2,Overcast
+Open-Meteo,Paris,France,2026-04-15T07:27:35.366449,10.4,7.6,61,8.4,Mainly clear
+Open-Meteo,Berlin,Germany,2026-04-15T07:27:38.491285,7.6,6.0,77,1.6,Clear sky
+Open-Meteo,Rome,Italy,2026-04-15T07:29:20.873315,17.0,17.3,78,4.5,Overcast
+Open-Meteo,Nairobi,Kenya,2026-04-15T07:31:35.421902,20.0,19.8,70,14.6,Overcast
+Open-Meteo,Johannesburg,South Africa,2026-04-15T07:31:38.581721,17.4,17.6,75,4.7,Overcast
+Open-Meteo,Dubai,United Arab Emirates,2026-04-15T07:32:48.128560,25.8,27.1,61,23.4,Partly cloudy
+Open-Meteo,Tokyo,Japan,2026-04-15T07:35:37.415666,17.3,17.5,74,4.5,Overcast
+Open-Meteo,Seoul,South Korea,2026-04-15T07:35:40.555078,21.7,21.1,51,6.9,Clear sky
+Open-Meteo,Temasek,Singapore,2026-04-15T07:36:50.731740,29.2,34.3,74,7.8,Slight rain showers
+Open-Meteo,Sydney,Australia,2026-04-15T07:37:26.697287,20.2,19.7,64,10.4,Mainly clear
+Open-Meteo,Auckland,New Zealand,2026-04-15T07:39:41.219449,16.7,14.9,71,15.0,Partly cloudy
+Open-Meteo,Beirut,Lebanon,2026-04-15T10:10:17.490209,24.4,24.5,45,6.2,Overcast
+Open-Meteo,New York,United States,2026-04-15T10:10:20.494998,18.5,19.7,87,6.2,Clear sky
+Open-Meteo,Chicago,United States,2026-04-15T10:12:34.351432,17.8,18.3,86,8.6,Overcast
+Open-Meteo,Toronto,Canada,2026-04-15T10:12:37.181152,7.3,3.2,98,23.4,Heavy rain
+Open-Meteo,Mexico City,Mexico,2026-04-15T10:12:40.029583,13.3,11.5,55,3.3,Partly cloudy
+Open-Meteo,Buenos Aires,Argentina,2026-04-15T10:15:28.029473,20.2,22.7,95,6.6,Overcast
+Open-Meteo,London,United Kingdom,2026-04-15T10:15:30.834243,14.5,12.5,80,15.8,Overcast
+Open-Meteo,Paris,France,2026-04-15T10:15:33.675466,15.4,12.6,51,11.5,Overcast
+Open-Meteo,Madrid,Spain,2026-04-15T10:17:15.316573,18.2,17.9,47,6.4,Clear sky
+Open-Meteo,Rome,Italy,2026-04-15T10:18:24.396250,21.9,22.8,57,6.1,Overcast
+Open-Meteo,Cairo,Egypt,2026-04-15T10:18:27.248782,29.3,30.9,35,7.4,Overcast
+Open-Meteo,Nairobi,Kenya,2026-04-15T10:18:30.063868,21.4,21.7,67,17.9,Slight rain showers
+Open-Meteo,Dubai,United Arab Emirates,2026-04-15T10:20:14.108198,25.9,25.5,59,29.2,Partly cloudy
+Open-Meteo,Mumbai,India,2026-04-15T10:20:17.815566,29.8,35.1,75,14.1,Clear sky
+Open-Meteo,Seoul,South Korea,2026-04-15T10:22:31.636179,16.5,15.9,65,4.0,Clear sky
+Open-Meteo,Temasek,Singapore,2026-04-15T10:22:34.447523,30.1,34.9,68,6.5,Overcast
+Open-Meteo,Sydney,Australia,2026-04-15T10:22:37.263418,18.0,19.3,82,2.9,Partly cloudy
+Open-Meteo,Auckland,New Zealand,2026-04-15T10:25:25.655875,15.4,14.6,84,11.5,Partly cloudy

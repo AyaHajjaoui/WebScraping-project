@@ -2038,41 +2038,41 @@ with explorer_tab:
         )
         style_figure(fig_condition, height=410)
         st.plotly_chart(fig_condition, width="stretch")
-if not city_latest_df.empty:
-    st.subheader("Latest Weather Conditions by Source")
+    if not city_latest_df.empty:
+        st.subheader("Latest Weather Conditions by Source")
 
-    latest_cols = [
-        c for c in [
-            "SourceWebsite",
-            "ScrapeDateTime",
-            "Temperature_C",
-            "FeelsLike_C",
-            "Humidity_%",
-            "WindSpeed_kmh",
-            "Condition",
-            "Comfort Score",
-        ] if c in city_latest_df.columns
-    ]
+        latest_cols = [
+            c for c in [
+                "SourceWebsite",
+                "ScrapeDateTime",
+                "Temperature_C",
+                "FeelsLike_C",
+                "Humidity_%",
+                "WindSpeed_kmh",
+                "Condition",
+                "Comfort Score",
+            ] if c in city_latest_df.columns
+        ]
 
-    display_df = city_latest_df[latest_cols].copy()
+        display_df = city_latest_df[latest_cols].copy()
 
-    # format datetime nicely
-    if "ScrapeDateTime" in display_df.columns:
-        display_df["ScrapeDateTime"] = (
-            pd.to_datetime(display_df["ScrapeDateTime"])
-            .dt.strftime("%Y-%m-%d %H:%M")
-        )
+        # format datetime nicely
+        if "ScrapeDateTime" in display_df.columns:
+            display_df["ScrapeDateTime"] = (
+                pd.to_datetime(display_df["ScrapeDateTime"])
+                .dt.strftime("%Y-%m-%d %H:%M")
+            )
 
-    # rename ONLY for display
-    display_df = display_df.rename(columns={
-        "ScrapeDateTime": "Date"
-    })
+        # rename ONLY for display
+        display_df = display_df.rename(columns={
+            "ScrapeDateTime": "Date"
+        })
 
-    st.dataframe(display_df, use_container_width=True, hide_index=True)
+        st.dataframe(display_df, use_container_width=True, hide_index=True)
 
-    panel_end()
+        panel_end()
 
-    st.divider()
+        st.divider()
 
 with source_tab:
     panel_start("Source Quality", "Audit how each source behaves, where coverage is weak, and which cities show disagreement across providers.")
@@ -2230,7 +2230,7 @@ with planner_tab:
         st.write(f"**Cities that satisfy your target** _{target_label} or better_: **{len(planner_df)}** cities")
         st.dataframe(planner_df, width="stretch", hide_index=True)
 
-    st.subheader("Best Time of Day (if hourly data is available)")
+    st.subheader("Best Hour of the Day")
     best_hour_df = best_hour_analysis(filtered_df)
     if best_hour_df.empty:
         st.info("Not enough timestamp richness to estimate best hour per city.")

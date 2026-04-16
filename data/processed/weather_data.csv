@@ -1,15 +1,15 @@
 SourceWebsite,City,Country,ScrapeDateTime,Temperature_C,FeelsLike_C,Humidity_%,WindSpeed_kmh,Condition
 TimeAndDate,Auckland,New Zealand,2026-02-28 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-02-28 00:00:00+00:00,24.0,33.5,96.0,14.48,
-TimeAndDate,Berlin,Germany,2026-02-28 00:00:00+00:00,16.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-02-28 00:00:00+00:00,16.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-02-28 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-02-28 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-02-28 00:00:00+00:00,25.0,17.0,96.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-02-28 00:00:00+00:00,36.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-02-28 00:00:00+00:00,25.0,27.0,98.0,11.0,
-TimeAndDate,London,United Kingdom,2026-02-28 00:00:00+00:00,20.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-02-28 00:00:00+00:00,25.0,38.5,98.0,11.0,
+TimeAndDate,London,United Kingdom,2026-02-28 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-02-28 00:00:00+00:00,35.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-02-28 00:00:00+00:00,21.0,27.5,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-02-28 00:00:00+00:00,21.0,37.0,100.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-02-28 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-02-28 00:00:00+00:00,26.0,24.0,100.0,11.0,
 TimeAndDate,Mumbai,India,2026-02-28 00:00:00+00:00,35.0,31.0,89.0,3.0,
@@ -25,15 +25,15 @@ TimeAndDate,Tokyo,Japan,2026-02-28 00:00:00+00:00,21.0,8.0,98.0,14.0,
 TimeAndDate,Toronto,Canada,2026-02-28 00:00:00+00:00,13.0,33.0,100.0,14.48,
 TimeAndDate,Auckland,New Zealand,2026-03-01 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-01 00:00:00+00:00,24.0,33.5,96.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-01 00:00:00+00:00,16.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-01 00:00:00+00:00,16.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-01 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-01 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-01 00:00:00+00:00,25.0,17.0,96.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-01 00:00:00+00:00,36.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-01 00:00:00+00:00,25.0,27.0,98.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-01 00:00:00+00:00,20.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-01 00:00:00+00:00,25.0,38.5,98.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-01 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-01 00:00:00+00:00,35.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-01 00:00:00+00:00,21.0,27.5,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-01 00:00:00+00:00,21.0,37.0,100.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-01 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-01 00:00:00+00:00,26.0,24.0,100.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-01 00:00:00+00:00,35.0,31.0,89.0,3.0,
@@ -49,15 +49,15 @@ TimeAndDate,Tokyo,Japan,2026-03-01 00:00:00+00:00,21.0,8.0,98.0,14.0,
 TimeAndDate,Toronto,Canada,2026-03-01 00:00:00+00:00,13.0,33.0,100.0,14.48,
 TimeAndDate,Auckland,New Zealand,2026-03-02 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-02 00:00:00+00:00,24.0,33.5,96.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-02 00:00:00+00:00,16.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-02 00:00:00+00:00,16.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-02 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-02 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-02 00:00:00+00:00,25.0,17.0,96.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-02 00:00:00+00:00,36.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-02 00:00:00+00:00,25.0,27.0,98.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-02 00:00:00+00:00,20.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-02 00:00:00+00:00,25.0,38.5,98.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-02 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-02 00:00:00+00:00,35.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-02 00:00:00+00:00,21.0,27.5,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-02 00:00:00+00:00,21.0,37.0,100.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-02 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-02 00:00:00+00:00,26.0,24.0,100.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-02 00:00:00+00:00,35.0,31.0,89.0,3.0,
@@ -91,15 +91,15 @@ Open-Meteo,Tokyo,Japan,2026-03-03 00:00:00+00:00,10.4,8.6,70.0,4.0,overcast
 Open-Meteo,Toronto,Canada,2026-03-03 00:00:00+00:00,-5.8,-9.9,77.0,6.4,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-03 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-03 00:00:00+00:00,24.0,33.5,96.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-03 00:00:00+00:00,16.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-03 00:00:00+00:00,16.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-03 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-03 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-03 00:00:00+00:00,25.0,17.0,96.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-03 00:00:00+00:00,36.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-03 00:00:00+00:00,25.0,27.0,98.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-03 00:00:00+00:00,20.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-03 00:00:00+00:00,25.0,38.5,98.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-03 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-03 00:00:00+00:00,35.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-03 00:00:00+00:00,21.0,27.5,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-03 00:00:00+00:00,21.0,37.0,100.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-03 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-03 00:00:00+00:00,26.0,24.0,100.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-03 00:00:00+00:00,35.0,31.0,89.0,3.0,
@@ -548,8 +548,8 @@ Open-Meteo,Toronto,Canada,2026-03-04 00:00:00+00:00,-3.7,-7.4,89.0,6.2,clear sky
 TimeAndDate,Auckland,New Zealand,2026-03-04 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-04 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-04 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-04 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-04 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-04 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-04 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-04 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-04 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-04 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -557,14 +557,14 @@ TimeAndDate,Chicago,United States,2026-03-04 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-04 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-04 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-04 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-04 00:00:00+00:00,25.0,27.0,98.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-04 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-04 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-04 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-04 00:00:00+00:00,25.0,38.5,98.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-04 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-04 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-04 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-04 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-04 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-04 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-04 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-04 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-04 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-04 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-04 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-04 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -1024,8 +1024,8 @@ Open-Meteo,Toronto,Canada,2026-03-05 00:00:00+00:00,-3.3,-6.7,72.0,2.4,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-05 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-05 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-05 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-05 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-05 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-05 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-05 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-05 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-05 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-05 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -1033,14 +1033,14 @@ TimeAndDate,Chicago,United States,2026-03-05 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-05 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-05 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-05 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-05 00:00:00+00:00,25.0,27.0,98.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-05 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-05 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-05 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-05 00:00:00+00:00,25.0,38.5,98.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-05 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-05 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-05 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-05 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-05 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-05 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-05 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-05 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-05 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-05 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-05 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-05 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -1499,15 +1499,15 @@ Open-Meteo,Tokyo,Japan,2026-03-06 00:00:00+00:00,5.6,2.4,65.0,6.7,mainly clear
 Open-Meteo,Toronto,Canada,2026-03-06 00:00:00+00:00,0.2,-5.5,81.0,21.9,light drizzle
 TimeAndDate,Auckland,New Zealand,2026-03-06 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-06 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-06 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-06 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-06 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-06 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-06 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-06 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-06 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-06 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-06 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-06 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-06 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-06 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-06 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-06 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-06 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-06 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -1955,15 +1955,15 @@ Open-Meteo,Tokyo,Japan,2026-03-07 00:00:00+00:00,10.8,8.5,84.0,12.7,partly cloud
 Open-Meteo,Toronto,Canada,2026-03-07 00:00:00+00:00,2.2,-0.6,96.0,5.8,light drizzle
 TimeAndDate,Auckland,New Zealand,2026-03-07 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-07 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-07 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-07 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-07 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-07 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-07 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-07 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-07 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-07 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-07 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-07 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-07 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-07 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-07 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-07 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-07 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-07 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -2411,15 +2411,15 @@ Open-Meteo,Tokyo,Japan,2026-03-08 00:00:00+00:00,6.1,1.3,49.0,15.2,light drizzle
 Open-Meteo,Toronto,Canada,2026-03-08 00:00:00+00:00,12.2,9.6,94.0,20.6,light drizzle
 TimeAndDate,Auckland,New Zealand,2026-03-08 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-08 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-08 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-08 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-08 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-08 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-08 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-08 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-08 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-08 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-08 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-08 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-08 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-08 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-08 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-08 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-08 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-08 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -2867,15 +2867,15 @@ Open-Meteo,Tokyo,Japan,2026-03-09 00:00:00+00:00,3.6,-0.2,57.0,7.9,overcast
 Open-Meteo,Toronto,Canada,2026-03-09 00:00:00+00:00,5.3,1.0,72.0,15.7,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-09 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-09 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-09 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-09 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-09 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-09 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-09 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-09 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-09 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-09 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-09 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-09 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-09 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-09 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-09 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-09 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-09 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-09 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -3324,8 +3324,8 @@ Open-Meteo,Toronto,Canada,2026-03-10 00:00:00+00:00,10.0,6.3,64.0,15.1,clear sky
 TimeAndDate,Auckland,New Zealand,2026-03-10 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-10 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-10 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-10 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-10 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-10 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-10 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-10 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-10 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-10 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -3333,14 +3333,14 @@ TimeAndDate,Chicago,United States,2026-03-10 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-10 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-10 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-10 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-10 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-10 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-10 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-10 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-10 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-10 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-10 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-10 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-10 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-10 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-10 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-10 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-10 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-10 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-10 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-10 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-10 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -3800,8 +3800,8 @@ Open-Meteo,Toronto,Canada,2026-03-11 00:00:00+00:00,5.2,0.4,77.0,20.0,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-11 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-11 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-11 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-11 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-11 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-11 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-11 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-11 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-11 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-11 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -3809,14 +3809,14 @@ TimeAndDate,Chicago,United States,2026-03-11 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-11 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-11 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-11 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-11 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-11 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-11 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-11 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-11 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-11 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-11 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-11 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-11 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-11 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-11 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-11 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-11 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-11 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-11 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-11 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-11 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -4276,8 +4276,8 @@ Open-Meteo,Toronto,Canada,2026-03-12 00:00:00+00:00,0.9,-4.9,76.0,22.3,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-12 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-12 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-12 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-12 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-12 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-12 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-12 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-12 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-12 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-12 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -4285,14 +4285,14 @@ TimeAndDate,Chicago,United States,2026-03-12 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-12 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-12 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-12 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-12 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-12 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-12 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-12 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-12 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-12 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-12 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-12 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-12 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-12 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-12 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-12 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-12 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-12 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-12 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-12 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-12 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -4752,8 +4752,8 @@ Open-Meteo,Toronto,Canada,2026-03-13 00:00:00+00:00,-2.9,-6.9,74.0,6.8,clear sky
 TimeAndDate,Auckland,New Zealand,2026-03-13 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-13 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-13 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-13 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-13 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-13 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-13 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-13 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-13 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-13 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -4761,14 +4761,14 @@ TimeAndDate,Chicago,United States,2026-03-13 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-13 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-13 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-13 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-13 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-13 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-13 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-13 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-13 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-13 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-13 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-13 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-13 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-13 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-13 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-13 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-13 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-13 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-13 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-13 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-13 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -5228,8 +5228,8 @@ Open-Meteo,Toronto,Canada,2026-03-14 00:00:00+00:00,1.1,-4.2,86.0,21.2,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-14 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-14 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-14 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-14 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-14 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-14 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-14 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-14 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-14 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-14 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -5237,14 +5237,14 @@ TimeAndDate,Chicago,United States,2026-03-14 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-14 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-14 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-14 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-14 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-14 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-14 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-14 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-14 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-14 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-14 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-14 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-14 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-14 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-14 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-14 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-14 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-14 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-14 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-14 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-14 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -5703,15 +5703,15 @@ Open-Meteo,Tokyo,Japan,2026-03-15 00:00:00+00:00,7.6,4.5,66.0,8.7,clear sky
 Open-Meteo,Toronto,Canada,2026-03-15 00:00:00+00:00,-4.1,-8.1,71.0,5.6,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-15 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-15 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-15 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-15 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-15 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-15 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-15 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-15 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-15 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-15 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-15 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-15 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-15 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-15 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-15 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-15 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-15 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-15 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -6159,15 +6159,15 @@ Open-Meteo,Tokyo,Japan,2026-03-16 00:00:00+00:00,9.8,7.5,68.0,5.9,overcast
 Open-Meteo,Toronto,Canada,2026-03-16 00:00:00+00:00,8.2,3.3,72.0,23.5,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-16 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-16 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-16 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-16 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-16 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-16 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-16 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-16 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-16 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-16 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-16 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-16 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-16 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-16 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-16 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-16 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-16 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-16 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -6615,15 +6615,15 @@ Open-Meteo,Tokyo,Japan,2026-03-17 00:00:00+00:00,10.1,8.8,78.0,2.3,overcast
 Open-Meteo,Toronto,Canada,2026-03-17 00:00:00+00:00,-4.1,-10.5,73.0,22.9,moderate snow
 TimeAndDate,Auckland,New Zealand,2026-03-17 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-17 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-17 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-17 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-17 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-17 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-17 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-17 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-17 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-17 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-17 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-17 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-17 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-17 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-17 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-17 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-17 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-17 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -7072,8 +7072,8 @@ Open-Meteo,Toronto,Canada,2026-03-18 00:00:00+00:00,-8.2,-13.3,62.0,11.0,clear s
 TimeAndDate,Auckland,New Zealand,2026-03-18 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-18 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-18 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-18 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-18 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-18 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-18 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-18 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-18 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-18 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -7081,14 +7081,14 @@ TimeAndDate,Chicago,United States,2026-03-18 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-18 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-18 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-18 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-18 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-18 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-18 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-18 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-18 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-18 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-18 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-18 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-18 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-18 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-18 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-18 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-18 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-18 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-18 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-18 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-18 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -7548,8 +7548,8 @@ Open-Meteo,Toronto,Canada,2026-03-19 00:00:00+00:00,-1.1,-5.4,76.0,10.4,slight s
 TimeAndDate,Auckland,New Zealand,2026-03-19 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-19 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-19 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-19 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-19 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-19 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-19 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-19 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-19 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-19 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -7557,14 +7557,14 @@ TimeAndDate,Chicago,United States,2026-03-19 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-19 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-19 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-19 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-19 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-19 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-19 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-19 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-19 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-19 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-19 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-19 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-19 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-19 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-19 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-19 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-19 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-19 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-19 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-19 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-19 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -8024,8 +8024,8 @@ Open-Meteo,Toronto,Canada,2026-03-20 00:00:00+00:00,-1.0,-4.3,85.0,4.3,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-20 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-20 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-20 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-20 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-20 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-20 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-20 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-20 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-20 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-20 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -8033,14 +8033,14 @@ TimeAndDate,Chicago,United States,2026-03-20 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-20 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-20 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-20 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-20 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-20 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-20 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-20 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-20 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-20 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-20 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-20 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-20 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-20 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-20 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-20 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-20 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-20 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-20 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-20 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-20 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -8500,8 +8500,8 @@ Open-Meteo,Toronto,Canada,2026-03-21 00:00:00+00:00,2.0,-1.4,89.0,9.7,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-21 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-21 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-21 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-21 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-21 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-21 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-21 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-21 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-21 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-21 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -8509,14 +8509,14 @@ TimeAndDate,Chicago,United States,2026-03-21 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-21 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-21 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-21 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-21 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-21 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-21 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-21 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-21 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-21 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-21 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-21 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-21 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-21 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-21 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-21 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-21 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-21 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-21 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-21 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-21 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -8975,15 +8975,15 @@ Open-Meteo,Tokyo,Japan,2026-03-22 00:00:00+00:00,7.8,4.7,62.0,7.8,clear sky
 Open-Meteo,Toronto,Canada,2026-03-22 00:00:00+00:00,0.9,-3.2,89.0,12.5,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-22 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-22 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-22 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-22 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-22 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-22 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-22 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-22 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-22 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-22 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-22 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-22 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-22 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-22 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-22 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-22 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-22 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-22 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -9431,15 +9431,15 @@ Open-Meteo,Tokyo,Japan,2026-03-23 00:00:00+00:00,11.0,9.6,70.0,2.1,overcast
 Open-Meteo,Toronto,Canada,2026-03-23 00:00:00+00:00,1.6,-2.8,84.0,14.8,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-23 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-23 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-23 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-23 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-23 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-23 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-23 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-23 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-23 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-23 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-23 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-23 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-23 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-23 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-23 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-23 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-23 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-23 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -9888,8 +9888,8 @@ Open-Meteo,Toronto,Canada,2026-03-24 00:00:00+00:00,-3.3,-8.5,67.0,13.5,clear sk
 TimeAndDate,Auckland,New Zealand,2026-03-24 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-24 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-24 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-24 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-24 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-24 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-24 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-24 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-24 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-24 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -9897,14 +9897,14 @@ TimeAndDate,Chicago,United States,2026-03-24 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-24 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-24 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-24 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-24 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-24 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-24 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-24 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-24 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-24 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-24 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-24 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-24 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-24 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-24 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-24 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-24 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-24 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-24 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-24 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-24 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -10364,8 +10364,8 @@ Open-Meteo,Toronto,Canada,2026-03-25 00:00:00+00:00,-0.2,-3.8,72.0,6.5,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-25 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-25 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-25 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-25 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-25 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-25 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-25 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-25 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-25 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-25 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -10373,14 +10373,14 @@ TimeAndDate,Chicago,United States,2026-03-25 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-25 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-25 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-25 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-25 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-25 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-25 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-25 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-25 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-25 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-25 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-25 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-25 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-25 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-25 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-25 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-25 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-25 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-25 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-25 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-25 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -10840,8 +10840,8 @@ Open-Meteo,Toronto,Canada,2026-03-26 00:00:00+00:00,2.2,-1.0,85.0,7.2,light driz
 TimeAndDate,Auckland,New Zealand,2026-03-26 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-26 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-26 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-26 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-26 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-26 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-26 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-26 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-26 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-26 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -10849,14 +10849,14 @@ TimeAndDate,Chicago,United States,2026-03-26 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-26 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-26 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-26 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-26 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-26 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-26 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-26 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-26 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-26 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-26 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-26 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-26 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-26 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-26 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-26 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-26 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-26 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-26 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-26 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-26 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -11315,15 +11315,15 @@ Open-Meteo,Tokyo,Japan,2026-03-27 00:00:00+00:00,10.8,9.3,92.0,9.3,light drizzle
 Open-Meteo,Toronto,Canada,2026-03-27 00:00:00+00:00,1.2,-4.4,89.0,23.4,overcast
 TimeAndDate,Auckland,New Zealand,2026-03-27 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-27 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-27 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-27 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-27 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-27 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-03-27 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-27 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-27 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-27 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-27 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-27 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-27 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-27 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-27 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-27 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-27 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-03-27 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -11772,8 +11772,8 @@ Open-Meteo,Toronto,Canada,2026-03-28 00:00:00+00:00,-5.1,-10.3,48.0,11.6,clear s
 TimeAndDate,Auckland,New Zealand,2026-03-28 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-28 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-28 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-28 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-28 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-28 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-28 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-28 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-28 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-28 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -11781,14 +11781,14 @@ TimeAndDate,Chicago,United States,2026-03-28 00:00:00+00:00,25.0,17.0,96.0,20.11
 TimeAndDate,Chicago,United States,2026-03-28 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-28 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-28 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-28 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-28 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-28 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-28 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-28 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-28 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-28 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-28 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-28 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-28 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-28 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-28 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-28 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-28 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-28 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-28 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-28 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -12254,8 +12254,8 @@ TimeAndDate,Auckland,New Zealand,2026-03-29 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-29 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-29 00:00:00+00:00,24.0,33.5,94.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-29 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-29 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-29 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-29 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-29 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-29 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-29 00:00:00+00:00,29.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-29 00:00:00+00:00,30.0,28.0,100.0,15.0,
@@ -12266,14 +12266,14 @@ TimeAndDate,Chicago,United States,2026-03-29 00:00:00+00:00,27.0,17.0,100.0,20.1
 TimeAndDate,Dubai,United Arab Emirates,2026-03-29 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-29 00:00:00+00:00,34.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-29 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-29 00:00:00+00:00,29.0,27.0,94.0,11.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-29 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-29 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-29 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-29 00:00:00+00:00,29.0,38.5,94.0,11.0,
+TimeAndDate,Johannesburg,South Africa,2026-03-29 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-29 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-29 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-29 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-29 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-29 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-29 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-29 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-29 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-29 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-29 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-29 00:00:00+00:00,26.0,24.0,100.0,11.0,
@@ -12861,8 +12861,8 @@ TimeAndDate,Auckland,New Zealand,2026-03-30 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-30 00:00:00+00:00,24.0,33.5,96.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-30 00:00:00+00:00,24.0,33.5,94.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-30 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-30 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-30 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-30 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-30 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-30 00:00:00+00:00,32.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-30 00:00:00+00:00,29.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-30 00:00:00+00:00,30.0,28.0,100.0,15.0,
@@ -12872,13 +12872,13 @@ TimeAndDate,Chicago,United States,2026-03-30 00:00:00+00:00,27.0,17.0,100.0,20.1
 TimeAndDate,Dubai,United Arab Emirates,2026-03-30 00:00:00+00:00,36.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-30 00:00:00+00:00,34.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-30 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-30 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-30 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-30 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-30 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-30 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-30 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-30 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-30 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-30 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-30 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-30 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-30 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-30 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-30 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-30 00:00:00+00:00,25.0,24.0,100.0,11.0,
@@ -13207,12 +13207,12 @@ Open-Meteo,Temasek,Singapore,2026-03-30 12:00:00+00:00,31.7,37.7,59.0,9.0,overca
 Open-Meteo,Tokyo,Japan,2026-03-30 12:00:00+00:00,18.3,17.8,64.0,8.4,overcast
 Open-Meteo,Toronto,Canada,2026-03-30 12:00:00+00:00,12.4,9.6,66.0,12.8,overcast
 TimeAndDate,Beirut,Lebanon,2026-03-30 12:19:16.777393+00:00,12.0,33.5,85.0,14.48,scattered clouds.
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:19:19.148315+00:00,19.444444444444443,14.2,70.0,20.92,showers
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:19:19.156309+00:00,15.0,14.2,70.0,20.92,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:19:19.148315+00:00,19.444444444444443,14.25,70.0,20.92,showers
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:19:19.156309+00:00,15.0,14.25,70.0,20.92,showers early
 TimeAndDate,Beirut,Lebanon,2026-03-30 12:19:37.650169+00:00,12.0,33.5,85.0,14.48,scattered clouds.
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:19:39.786386+00:00,19.444444444444443,14.2,70.0,20.92,showers
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:19:39.792927+00:00,15.0,14.2,70.0,20.92,showers early
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:19:39.800935+00:00,19.444444444444443,14.2,70.0,20.92,showers
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:19:39.786386+00:00,19.444444444444443,14.25,70.0,20.92,showers
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:19:39.792927+00:00,15.0,14.25,70.0,20.92,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:19:39.800935+00:00,19.444444444444443,14.25,70.0,20.92,showers
 TimeAndDate,New York,United States,2026-03-30 12:19:52.614339+00:00,9.0,26.0,100.0,9.66,sunny.
 WeatherUnderground,New York,United States,2026-03-30 12:19:54.215139+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
 WeatherUnderground,New York,United States,2026-03-30 12:19:54.224156+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
@@ -13223,8 +13223,8 @@ TimeAndDate,Chicago,United States,2026-03-30 12:20:01.582943+00:00,11.0,17.0,96.
 WeatherUnderground,Chicago,United States,2026-03-30 12:20:03.187266+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 WeatherUnderground,Chicago,United States,2026-03-30 12:20:03.195261+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 TimeAndDate,Toronto,Canada,2026-03-30 12:20:05.744303+00:00,6.0,33.0,100.0,14.48,passing clouds.
-WeatherUnderground,Toronto,Canada,2026-03-30 12:20:07.529127+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:20:07.539544+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:20:07.529127+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:20:07.539544+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
 TimeAndDate,Mexico City,Mexico,2026-03-30 12:20:09.806379+00:00,10.0,24.0,88.0,11.0,passing clouds.
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:20:11.972547+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:20:11.980544+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
@@ -13236,17 +13236,17 @@ WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:20:19.785615+00:00,25.55
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:20:19.789118+00:00,48.0,23.6,75.0,20.92,partly cloudy
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:20:19.793448+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:20:19.797460+00:00,19.444444444444443,23.6,75.0,11.27,partly cloudy
-TimeAndDate,London,United Kingdom,2026-03-30 12:20:22.413655+00:00,10.0,42.0,88.0,12.87,scattered clouds.
-WeatherUnderground,London,United Kingdom,2026-03-30 12:20:24.407076+00:00,53.0,6.9,78.0,20.92,cloudy
-WeatherUnderground,London,United Kingdom,2026-03-30 12:20:24.415085+00:00,55.0,6.9,78.0,24.14,light rain
+TimeAndDate,London,United Kingdom,2026-03-30 12:20:22.413655+00:00,10.0,42.5,88.0,12.934999999999999,scattered clouds.
+WeatherUnderground,London,United Kingdom,2026-03-30 12:20:24.407076+00:00,53.0,7.0,78.0,20.92,cloudy
+WeatherUnderground,London,United Kingdom,2026-03-30 12:20:24.415085+00:00,55.0,7.0,78.0,24.14,light rain
 TimeAndDate,Paris,France,2026-03-30 12:20:27.999166+00:00,12.0,43.0,94.0,8.05,broken clouds.
 WeatherUnderground,Paris,France,2026-03-30 12:20:30.290835+00:00,13.88888888888889,7.8,79.0,24.14,cloudy
 WeatherUnderground,Paris,France,2026-03-30 12:20:30.292842+00:00,13.88888888888889,7.8,79.0,24.14,cloudy
 WeatherUnderground,Paris,France,2026-03-30 12:20:30.295093+00:00,15.0,7.8,79.0,3.22,partly cloudy
-TimeAndDate,Berlin,Germany,2026-03-30 12:20:32.775685+00:00,7.0,35.0,90.0,9.0,sprinkles. partly sunny.
+TimeAndDate,Berlin,Germany,2026-03-30 12:20:32.775685+00:00,7.0,35.5,87.0,9.0,sprinkles. partly sunny.
 WeatherUnderground,Berlin,Germany,2026-03-30 12:20:35.024563+00:00,45.0,6.9,80.0,12.87,rain shower
 WeatherUnderground,Berlin,Germany,2026-03-30 12:20:35.029572+00:00,15.0,6.9,80.0,3.22,partly cloudy
-TimeAndDate,Madrid,Spain,2026-03-30 12:20:38.098779+00:00,13.0,27.5,94.0,7.0,sunny.
+TimeAndDate,Madrid,Spain,2026-03-30 12:20:38.098779+00:00,13.0,37.0,94.0,7.0,sunny.
 WeatherUnderground,Madrid,Spain,2026-03-30 12:20:39.965994+00:00,18.88888888888889,8.8,59.0,22.53,sunny
 WeatherUnderground,Madrid,Spain,2026-03-30 12:20:39.977457+00:00,18.88888888888889,8.8,59.0,24.14,sunny
 TimeAndDate,Rome,Italy,2026-03-30 12:20:42.838498+00:00,17.0,18.0,94.0,9.0,sunny.
@@ -13254,14 +13254,14 @@ WeatherUnderground,Rome,Italy,2026-03-30 12:20:45.199103+00:00,18.88888888888889
 WeatherUnderground,Rome,Italy,2026-03-30 12:20:45.208365+00:00,19.444444444444443,10.5,73.0,14.48,cloudy
 WeatherUnderground,Rome,Italy,2026-03-30 12:20:45.217154+00:00,19.444444444444443,10.5,73.0,14.48,cloudy
 TimeAndDate,Cairo,Egypt,2026-03-30 12:20:50.855288+00:00,22.0,25.0,88.0,24.0,partly sunny.
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:20:52.481476+00:00,22.22222222222222,21.799999999999997,50.0,17.7,partly cloudy
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:20:52.489485+00:00,15.0,21.799999999999997,50.0,3.22,partly cloudy
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:20:52.497506+00:00,23.33333333333333,21.799999999999997,50.0,16.09,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:20:52.481476+00:00,22.22222222222222,21.9,50.0,17.7,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:20:52.489485+00:00,15.0,21.9,50.0,3.22,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:20:52.497506+00:00,23.33333333333333,21.9,50.0,16.09,partly cloudy
 TimeAndDate,Nairobi,Kenya,2026-03-30 12:20:55.030581+00:00,26.0,20.0,94.0,19.0,partly sunny.
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:20:59.548881+00:00,25.55555555555556,19.0,86.0,20.92,mostly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:20:59.556933+00:00,15.0,19.0,86.0,3.22,partly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:20:59.565152+00:00,25.0,19.0,86.0,17.7,mostly cloudy
-TimeAndDate,Johannesburg,South Africa,2026-03-30 12:21:03.675607+00:00,28.0,27.0,94.0,11.0,scattered clouds.
+TimeAndDate,Johannesburg,South Africa,2026-03-30 12:21:03.675607+00:00,28.0,38.5,94.0,11.0,scattered clouds.
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:21:05.589975+00:00,15.0,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:21:05.598002+00:00,27.77777777777778,23.5,82.0,17.7,partly cloudy
 TimeAndDate,Dubai,United Arab Emirates,2026-03-30 12:21:08.035147+00:00,27.0,26.0,94.0,17.0,sunny.
@@ -13287,17 +13287,17 @@ WeatherUnderground,Sydney,Australia,2026-03-30 12:21:36.128034+00:00,20.0,20.5,8
 WeatherUnderground,Sydney,Australia,2026-03-30 12:21:36.135040+00:00,15.0,20.5,83.0,3.22,partly cloudy
 WeatherUnderground,Sydney,Australia,2026-03-30 12:21:36.136044+00:00,15.0,20.5,83.0,3.22,partly cloudy
 TimeAndDate,Melbourne,Australia,2026-03-30 12:21:38.265841+00:00,18.0,44.0,100.0,19.155,clear.
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:21:39.871852+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:21:39.881905+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:21:39.871852+00:00,15.0,19.9,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:21:39.881905+00:00,15.0,19.9,82.0,9.66,partly cloudy
 TimeAndDate,Auckland,New Zealand,2026-03-30 12:21:42.213398+00:00,19.0,17.0,100.0,6.0,passing clouds.
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:21:55.715719+00:00,18.33333333333333,17.2,79.0,25.75,mostly cloudy
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:21:55.723643+00:00,15.0,17.2,79.0,3.22,partly cloudy
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:21:55.729388+00:00,51.0,17.2,79.0,14.48,fair
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:21:55.731975+00:00,16.666666666666668,17.2,79.0,27.36,partly cloudy
 TimeAndDate,Beirut,Lebanon,2026-03-30 12:21:59.430596+00:00,12.0,33.5,85.0,14.48,scattered clouds.
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:22:00.030190+00:00,19.444444444444443,14.2,70.0,20.92,showers
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:22:00.037199+00:00,15.0,14.2,70.0,3.22,partly cloudy
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:22:00.045206+00:00,19.444444444444443,14.2,70.0,20.92,showers
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:22:00.030190+00:00,19.444444444444443,14.25,70.0,20.92,showers
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:22:00.037199+00:00,15.0,14.25,70.0,3.22,partly cloudy
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:22:00.045206+00:00,19.444444444444443,14.25,70.0,20.92,showers
 TimeAndDate,New York,United States,2026-03-30 12:22:12.478729+00:00,10.0,26.0,100.0,9.66,sunny.
 WeatherUnderground,New York,United States,2026-03-30 12:22:13.536834+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
 WeatherUnderground,New York,United States,2026-03-30 12:22:13.544830+00:00,50.0,6.1,70.0,9.66,fair
@@ -13310,8 +13310,8 @@ TimeAndDate,Chicago,United States,2026-03-30 12:22:17.451711+00:00,12.0,17.0,96.
 WeatherUnderground,Chicago,United States,2026-03-30 12:22:18.302210+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 WeatherUnderground,Chicago,United States,2026-03-30 12:22:18.312129+00:00,25.55555555555556,17.0,85.0,25.75,am clouds/pm sun
 TimeAndDate,Toronto,Canada,2026-03-30 12:22:19.563913+00:00,8.0,33.0,100.0,14.48,overcast.
-WeatherUnderground,Toronto,Canada,2026-03-30 12:22:20.647919+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:22:20.652406+00:00,26.666666666666668,-1.15,77.0,9.66,cloudy
+WeatherUnderground,Toronto,Canada,2026-03-30 12:22:20.647919+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:22:20.652406+00:00,26.666666666666668,-1.1,77.5,9.66,cloudy
 TimeAndDate,Mexico City,Mexico,2026-03-30 12:22:22.046618+00:00,11.0,24.0,88.0,11.0,passing clouds.
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:22:23.316573+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:22:23.324740+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
@@ -13322,18 +13322,18 @@ WeatherUnderground,Sao Paulo,Brazil,2026-03-30 12:22:27.680987+00:00,28.88888888
 TimeAndDate,Buenos Aires,Argentina,2026-03-30 12:22:29.732112+00:00,23.0,28.0,100.0,15.0,fog.
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:22:30.523579+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:22:30.531036+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
-TimeAndDate,London,United Kingdom,2026-03-30 12:22:31.814607+00:00,10.0,42.0,88.0,12.87,scattered clouds.
-WeatherUnderground,London,United Kingdom,2026-03-30 12:22:32.710435+00:00,53.0,6.9,78.0,20.92,cloudy
-WeatherUnderground,London,United Kingdom,2026-03-30 12:22:32.718432+00:00,55.0,6.9,78.0,24.14,light rain
+TimeAndDate,London,United Kingdom,2026-03-30 12:22:31.814607+00:00,10.0,42.5,88.0,12.934999999999999,scattered clouds.
+WeatherUnderground,London,United Kingdom,2026-03-30 12:22:32.710435+00:00,53.0,7.0,78.0,20.92,cloudy
+WeatherUnderground,London,United Kingdom,2026-03-30 12:22:32.718432+00:00,55.0,7.0,78.0,24.14,light rain
 TimeAndDate,Paris,France,2026-03-30 12:22:34.076619+00:00,11.0,43.0,94.0,8.05,broken clouds.
 WeatherUnderground,Paris,France,2026-03-30 12:22:34.952527+00:00,13.88888888888889,7.8,79.0,24.14,cloudy
 WeatherUnderground,Paris,France,2026-03-30 12:22:34.956533+00:00,15.0,7.8,79.0,3.22,partly cloudy
 WeatherUnderground,Paris,France,2026-03-30 12:22:34.964692+00:00,13.88888888888889,7.8,79.0,24.14,cloudy
-TimeAndDate,Berlin,Germany,2026-03-30 12:22:36.473602+00:00,7.0,35.0,90.0,9.0,sprinkles. partly sunny.
+TimeAndDate,Berlin,Germany,2026-03-30 12:22:36.473602+00:00,7.0,35.5,87.0,9.0,sprinkles. partly sunny.
 WeatherUnderground,Berlin,Germany,2026-03-30 12:22:37.149239+00:00,45.0,6.9,80.0,12.87,rain shower
 WeatherUnderground,Berlin,Germany,2026-03-30 12:22:37.160244+00:00,15.0,6.9,80.0,3.22,partly cloudy
 WeatherUnderground,Berlin,Germany,2026-03-30 12:22:37.165515+00:00,48.0,6.9,80.0,14.48,showers
-TimeAndDate,Madrid,Spain,2026-03-30 12:22:38.907508+00:00,15.0,27.5,94.0,7.0,sunny.
+TimeAndDate,Madrid,Spain,2026-03-30 12:22:38.907508+00:00,15.0,37.0,94.0,7.0,sunny.
 WeatherUnderground,Madrid,Spain,2026-03-30 12:22:39.688846+00:00,18.88888888888889,8.8,59.0,22.53,sunny
 WeatherUnderground,Madrid,Spain,2026-03-30 12:22:39.698283+00:00,15.0,8.8,59.0,3.22,partly cloudy
 TimeAndDate,Rome,Italy,2026-03-30 12:22:41.002905+00:00,18.0,18.0,94.0,9.0,passing clouds.
@@ -13344,12 +13344,12 @@ WeatherUnderground,Rome,Italy,2026-03-30 12:22:41.906403+00:00,53.0,10.5,73.0,20
 WeatherUnderground,Rome,Italy,2026-03-30 12:22:41.909300+00:00,15.0,10.5,73.0,3.22,partly cloudy
 WeatherUnderground,Rome,Italy,2026-03-30 12:22:41.915084+00:00,19.444444444444443,10.5,73.0,14.48,cloudy
 TimeAndDate,Cairo,Egypt,2026-03-30 12:22:43.282417+00:00,22.0,25.0,88.0,24.0,partly sunny.
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:22:44.182970+00:00,22.22222222222222,21.799999999999997,50.0,17.7,partly cloudy
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:22:44.191065+00:00,23.33333333333333,21.799999999999997,50.0,16.09,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:22:44.182970+00:00,22.22222222222222,21.9,50.0,17.7,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:22:44.191065+00:00,23.33333333333333,21.9,50.0,16.09,partly cloudy
 TimeAndDate,Nairobi,Kenya,2026-03-30 12:22:45.748440+00:00,26.0,20.0,94.0,19.0,partly sunny.
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:22:48.469040+00:00,25.55555555555556,19.0,86.0,20.92,mostly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:22:48.478419+00:00,25.0,19.0,86.0,17.7,mostly cloudy
-TimeAndDate,Johannesburg,South Africa,2026-03-30 12:22:49.894854+00:00,28.0,27.0,94.0,11.0,scattered clouds.
+TimeAndDate,Johannesburg,South Africa,2026-03-30 12:22:49.894854+00:00,28.0,38.5,94.0,11.0,scattered clouds.
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:22:50.480642+00:00,15.0,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:22:50.482438+00:00,27.77777777777778,23.5,82.0,17.7,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:22:50.482515+00:00,26.666666666666668,23.5,82.0,16.09,fair
@@ -13379,15 +13379,15 @@ WeatherUnderground,Sydney,Australia,2026-03-30 12:23:04.208856+00:00,20.0,20.5,8
 WeatherUnderground,Sydney,Australia,2026-03-30 12:23:04.216553+00:00,15.0,20.5,83.0,3.22,partly cloudy
 WeatherUnderground,Sydney,Australia,2026-03-30 12:23:04.220728+00:00,15.555555555555555,20.5,83.0,9.66,mostly cloudy
 TimeAndDate,Melbourne,Australia,2026-03-30 12:23:05.969469+00:00,18.0,44.0,100.0,19.155,clear.
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:23:06.788724+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:23:06.796737+00:00,14.444444444444445,20.049999999999997,82.0,12.87,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:23:06.799942+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:23:06.788724+00:00,15.0,19.9,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:23:06.796737+00:00,14.444444444444445,19.9,82.0,12.87,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:23:06.799942+00:00,15.0,19.9,82.0,9.66,partly cloudy
 TimeAndDate,Auckland,New Zealand,2026-03-30 12:23:08.090742+00:00,19.0,17.0,100.0,6.0,passing clouds.
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:23:08.910959+00:00,18.33333333333333,17.2,79.0,25.75,mostly cloudy
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:23:08.918954+00:00,15.0,17.2,79.0,3.22,partly cloudy
 TimeAndDate,Beirut,Lebanon,2026-03-30 12:23:10.756142+00:00,12.0,33.5,85.0,14.48,scattered clouds.
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:23:11.321378+00:00,19.444444444444443,14.2,70.0,20.92,showers
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:23:11.333825+00:00,19.444444444444443,14.2,70.0,20.92,showers
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:23:11.321378+00:00,19.444444444444443,14.25,70.0,20.92,showers
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:23:11.333825+00:00,19.444444444444443,14.25,70.0,20.92,showers
 TimeAndDate,New York,United States,2026-03-30 12:23:24.158886+00:00,10.0,26.0,100.0,9.66,sunny.
 WeatherUnderground,New York,United States,2026-03-30 12:23:24.941898+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
 WeatherUnderground,New York,United States,2026-03-30 12:23:24.949409+00:00,15.0,6.1,70.0,3.22,partly cloudy
@@ -13400,8 +13400,8 @@ TimeAndDate,Chicago,United States,2026-03-30 12:23:28.719324+00:00,12.0,17.0,96.
 WeatherUnderground,Chicago,United States,2026-03-30 12:23:29.918017+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 WeatherUnderground,Chicago,United States,2026-03-30 12:23:29.925028+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 TimeAndDate,Toronto,Canada,2026-03-30 12:23:31.258677+00:00,8.0,33.0,100.0,14.48,overcast.
-WeatherUnderground,Toronto,Canada,2026-03-30 12:23:32.694037+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:23:32.700088+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:23:32.694037+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:23:32.700088+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
 TimeAndDate,Mexico City,Mexico,2026-03-30 12:23:34.177260+00:00,11.0,24.0,88.0,11.0,passing clouds.
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:23:37.619372+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:23:37.620461+00:00,26.666666666666668,15.8,55.0,9.66,cloudy
@@ -13413,17 +13413,17 @@ TimeAndDate,Buenos Aires,Argentina,2026-03-30 12:23:40.940736+00:00,23.0,28.0,10
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:23:41.813560+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:23:41.819123+00:00,15.0,23.6,75.0,3.22,partly cloudy
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:23:41.821637+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
-TimeAndDate,London,United Kingdom,2026-03-30 12:23:43.411602+00:00,10.0,42.0,88.0,12.87,scattered clouds.
-WeatherUnderground,London,United Kingdom,2026-03-30 12:23:44.015708+00:00,53.0,6.9,78.0,20.92,cloudy
-WeatherUnderground,London,United Kingdom,2026-03-30 12:23:44.023713+00:00,54.0,6.9,78.0,22.53,showers
-WeatherUnderground,London,United Kingdom,2026-03-30 12:23:44.025625+00:00,55.0,6.9,78.0,24.14,light rain
+TimeAndDate,London,United Kingdom,2026-03-30 12:23:43.411602+00:00,10.0,42.5,88.0,12.934999999999999,scattered clouds.
+WeatherUnderground,London,United Kingdom,2026-03-30 12:23:44.015708+00:00,53.0,7.0,78.0,20.92,cloudy
+WeatherUnderground,London,United Kingdom,2026-03-30 12:23:44.023713+00:00,54.0,7.0,78.0,22.53,showers
+WeatherUnderground,London,United Kingdom,2026-03-30 12:23:44.025625+00:00,55.0,7.0,78.0,24.14,light rain
 TimeAndDate,Paris,France,2026-03-30 12:23:45.846821+00:00,11.0,43.0,94.0,8.05,broken clouds.
 WeatherUnderground,Paris,France,2026-03-30 12:23:47.052247+00:00,13.88888888888889,7.8,79.0,24.14,cloudy
 WeatherUnderground,Paris,France,2026-03-30 12:23:47.058794+00:00,15.0,7.8,79.0,3.22,partly cloudy
-TimeAndDate,Berlin,Germany,2026-03-30 12:23:48.306833+00:00,7.0,35.0,90.0,9.0,sprinkles. partly sunny.
+TimeAndDate,Berlin,Germany,2026-03-30 12:23:48.306833+00:00,7.0,35.5,87.0,9.0,sprinkles. partly sunny.
 WeatherUnderground,Berlin,Germany,2026-03-30 12:23:48.999453+00:00,45.0,6.9,80.0,12.87,rain shower
 WeatherUnderground,Berlin,Germany,2026-03-30 12:23:49.007450+00:00,15.0,6.9,80.0,3.22,partly cloudy
-TimeAndDate,Madrid,Spain,2026-03-30 12:23:50.667047+00:00,15.0,27.5,94.0,7.0,sunny.
+TimeAndDate,Madrid,Spain,2026-03-30 12:23:50.667047+00:00,15.0,37.0,94.0,7.0,sunny.
 WeatherUnderground,Madrid,Spain,2026-03-30 12:23:51.276603+00:00,18.88888888888889,8.8,59.0,22.53,sunny
 WeatherUnderground,Madrid,Spain,2026-03-30 12:23:51.284607+00:00,18.88888888888889,8.8,59.0,24.14,sunny
 TimeAndDate,Rome,Italy,2026-03-30 12:23:52.627926+00:00,18.0,18.0,94.0,9.0,passing clouds.
@@ -13431,12 +13431,12 @@ WeatherUnderground,Rome,Italy,2026-03-30 12:23:53.426309+00:00,18.88888888888889
 WeatherUnderground,Rome,Italy,2026-03-30 12:23:53.436123+00:00,19.444444444444443,10.5,73.0,14.48,cloudy
 WeatherUnderground,Rome,Italy,2026-03-30 12:23:53.442676+00:00,15.0,10.5,73.0,3.22,partly cloudy
 TimeAndDate,Cairo,Egypt,2026-03-30 12:23:55.614861+00:00,22.0,25.0,88.0,24.0,partly sunny.
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:23:56.305690+00:00,22.22222222222222,21.799999999999997,50.0,17.7,partly cloudy
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:23:56.313687+00:00,19.444444444444443,21.799999999999997,50.0,11.27,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:23:56.305690+00:00,22.22222222222222,21.9,50.0,17.7,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:23:56.313687+00:00,19.444444444444443,21.9,50.0,11.27,partly cloudy
 TimeAndDate,Nairobi,Kenya,2026-03-30 12:23:57.733978+00:00,26.0,20.0,94.0,19.0,partly sunny.
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:23:58.363722+00:00,25.55555555555556,19.0,86.0,20.92,mostly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:23:58.372205+00:00,15.0,19.0,86.0,3.22,partly cloudy
-TimeAndDate,Johannesburg,South Africa,2026-03-30 12:23:59.811598+00:00,28.0,27.0,94.0,11.0,scattered clouds.
+TimeAndDate,Johannesburg,South Africa,2026-03-30 12:23:59.811598+00:00,28.0,38.5,94.0,11.0,scattered clouds.
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:24:00.772245+00:00,15.0,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:24:00.780166+00:00,15.0,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:24:00.788243+00:00,27.77777777777778,23.5,82.0,17.7,partly cloudy
@@ -13466,17 +13466,17 @@ TimeAndDate,Sydney,Australia,2026-03-30 12:24:16.335737+00:00,21.0,20.5,100.0,9.
 WeatherUnderground,Sydney,Australia,2026-03-30 12:24:17.065976+00:00,20.0,20.5,83.0,6.44,cloudy
 WeatherUnderground,Sydney,Australia,2026-03-30 12:24:17.073973+00:00,15.0,20.5,83.0,3.22,partly cloudy
 TimeAndDate,Melbourne,Australia,2026-03-30 12:24:18.496646+00:00,18.0,44.0,100.0,19.155,clear.
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:24:19.507145+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:24:19.515142+00:00,14.444444444444445,20.049999999999997,82.0,12.87,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:24:19.519729+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:24:19.523241+00:00,18.33333333333333,20.049999999999997,82.0,11.27,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:24:19.507145+00:00,15.0,19.9,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:24:19.515142+00:00,14.444444444444445,19.9,82.0,12.87,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:24:19.519729+00:00,15.0,19.9,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:24:19.523241+00:00,18.33333333333333,19.9,82.0,11.27,partly cloudy
 TimeAndDate,Auckland,New Zealand,2026-03-30 12:24:21.026074+00:00,19.0,17.0,100.0,6.0,passing clouds.
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:24:21.807897+00:00,18.33333333333333,17.2,79.0,25.75,mostly cloudy
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:24:21.810470+00:00,15.0,17.2,79.0,3.22,partly cloudy
 TimeAndDate,Beirut,Lebanon,2026-03-30 12:24:23.371033+00:00,12.0,33.5,85.0,14.48,scattered clouds.
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:24:24.668515+00:00,15.0,14.2,70.0,19.31,showers early
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:24:24.671077+00:00,15.0,14.2,70.0,3.22,partly cloudy
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:24:24.676626+00:00,15.0,14.2,70.0,19.31,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:24:24.668515+00:00,15.0,14.25,70.0,19.31,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:24:24.671077+00:00,15.0,14.25,70.0,3.22,partly cloudy
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:24:24.676626+00:00,15.0,14.25,70.0,19.31,showers early
 TimeAndDate,New York,United States,2026-03-30 12:24:37.640942+00:00,10.0,26.0,100.0,9.66,sunny.
 WeatherUnderground,New York,United States,2026-03-30 12:24:38.282442+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
 WeatherUnderground,New York,United States,2026-03-30 12:24:38.288592+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
@@ -13490,8 +13490,8 @@ TimeAndDate,Chicago,United States,2026-03-30 12:24:42.392023+00:00,12.0,17.0,96.
 WeatherUnderground,Chicago,United States,2026-03-30 12:24:43.846546+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 WeatherUnderground,Chicago,United States,2026-03-30 12:24:43.855642+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 TimeAndDate,Toronto,Canada,2026-03-30 12:24:45.786607+00:00,8.0,33.0,100.0,14.48,overcast.
-WeatherUnderground,Toronto,Canada,2026-03-30 12:24:46.605915+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:24:46.610921+00:00,53.0,-1.15,77.0,11.27,cloudy
+WeatherUnderground,Toronto,Canada,2026-03-30 12:24:46.605915+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:24:46.610921+00:00,53.0,-1.1,77.5,11.27,cloudy
 TimeAndDate,Mexico City,Mexico,2026-03-30 12:24:48.071344+00:00,11.0,24.0,88.0,11.0,passing clouds.
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:24:49.405933+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:24:49.411438+00:00,26.666666666666668,15.8,55.0,9.66,cloudy
@@ -13503,32 +13503,32 @@ WeatherUnderground,Sao Paulo,Brazil,2026-03-30 12:24:51.456070+00:00,28.88888888
 TimeAndDate,Buenos Aires,Argentina,2026-03-30 12:24:52.882199+00:00,23.0,28.0,100.0,15.0,fog.
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:24:54.140139+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:24:54.148664+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
-TimeAndDate,London,United Kingdom,2026-03-30 12:24:55.389071+00:00,10.0,42.0,88.0,12.87,scattered clouds.
-WeatherUnderground,London,United Kingdom,2026-03-30 12:24:56.052216+00:00,53.0,6.9,78.0,20.92,cloudy
-WeatherUnderground,London,United Kingdom,2026-03-30 12:24:56.060387+00:00,55.0,6.9,78.0,24.14,light rain
+TimeAndDate,London,United Kingdom,2026-03-30 12:24:55.389071+00:00,10.0,42.5,88.0,12.934999999999999,scattered clouds.
+WeatherUnderground,London,United Kingdom,2026-03-30 12:24:56.052216+00:00,53.0,7.0,78.0,20.92,cloudy
+WeatherUnderground,London,United Kingdom,2026-03-30 12:24:56.060387+00:00,55.0,7.0,78.0,24.14,light rain
 TimeAndDate,Paris,France,2026-03-30 12:24:57.939216+00:00,11.0,43.0,94.0,8.05,broken clouds.
 WeatherUnderground,Paris,France,2026-03-30 12:24:58.841430+00:00,13.88888888888889,7.8,79.0,24.14,cloudy
 WeatherUnderground,Paris,France,2026-03-30 12:24:58.849436+00:00,15.0,7.8,79.0,3.22,partly cloudy
-TimeAndDate,Berlin,Germany,2026-03-30 12:25:00.221617+00:00,7.0,35.0,90.0,9.0,sprinkles. partly sunny.
+TimeAndDate,Berlin,Germany,2026-03-30 12:25:00.221617+00:00,7.0,35.5,87.0,9.0,sprinkles. partly sunny.
 WeatherUnderground,Berlin,Germany,2026-03-30 12:25:00.762220+00:00,45.0,6.9,80.0,12.87,rain shower
 WeatherUnderground,Berlin,Germany,2026-03-30 12:25:00.770240+00:00,15.0,6.9,80.0,3.22,partly cloudy
 WeatherUnderground,Berlin,Germany,2026-03-30 12:25:00.775862+00:00,48.0,6.9,80.0,14.48,showers
 WeatherUnderground,Berlin,Germany,2026-03-30 12:25:00.776209+00:00,45.0,6.9,80.0,12.87,rain shower
 WeatherUnderground,Berlin,Germany,2026-03-30 12:25:00.776287+00:00,48.0,6.9,80.0,14.48,showers
-TimeAndDate,Madrid,Spain,2026-03-30 12:25:02.587976+00:00,15.0,27.5,94.0,7.0,sunny.
+TimeAndDate,Madrid,Spain,2026-03-30 12:25:02.587976+00:00,15.0,37.0,94.0,7.0,sunny.
 WeatherUnderground,Madrid,Spain,2026-03-30 12:25:03.198850+00:00,18.88888888888889,8.8,59.0,22.53,sunny
 WeatherUnderground,Madrid,Spain,2026-03-30 12:25:03.206769+00:00,18.88888888888889,8.8,59.0,24.14,sunny
 TimeAndDate,Rome,Italy,2026-03-30 12:25:04.582539+00:00,18.0,18.0,94.0,9.0,passing clouds.
 WeatherUnderground,Rome,Italy,2026-03-30 12:25:05.343207+00:00,18.88888888888889,10.5,73.0,12.87,fair
 WeatherUnderground,Rome,Italy,2026-03-30 12:25:05.351228+00:00,15.0,10.5,73.0,3.22,partly cloudy
 TimeAndDate,Cairo,Egypt,2026-03-30 12:25:06.986456+00:00,22.0,25.0,88.0,24.0,partly sunny.
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:25:07.873688+00:00,22.22222222222222,21.799999999999997,50.0,17.7,partly cloudy
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:25:07.875693+00:00,22.77777777777778,21.799999999999997,50.0,14.48,mostly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:25:07.873688+00:00,22.22222222222222,21.9,50.0,17.7,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:25:07.875693+00:00,22.77777777777778,21.9,50.0,14.48,mostly cloudy
 TimeAndDate,Nairobi,Kenya,2026-03-30 12:25:10.285905+00:00,26.0,20.0,94.0,19.0,partly sunny.
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:25:11.177128+00:00,25.55555555555556,19.0,86.0,20.92,mostly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:25:11.185136+00:00,15.0,19.0,86.0,3.22,partly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:25:11.187645+00:00,25.0,19.0,86.0,17.7,mostly cloudy
-TimeAndDate,Johannesburg,South Africa,2026-03-30 12:25:13.180141+00:00,28.0,27.0,94.0,11.0,scattered clouds.
+TimeAndDate,Johannesburg,South Africa,2026-03-30 12:25:13.180141+00:00,28.0,38.5,94.0,11.0,scattered clouds.
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:25:14.224016+00:00,15.0,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:25:14.233076+00:00,27.77777777777778,23.5,82.0,17.7,partly cloudy
 TimeAndDate,Dubai,United Arab Emirates,2026-03-30 12:25:15.571078+00:00,27.0,26.0,94.0,17.0,sunny.
@@ -13555,14 +13555,14 @@ WeatherUnderground,Sydney,Australia,2026-03-30 12:25:39.292207+00:00,20.0,20.5,8
 WeatherUnderground,Sydney,Australia,2026-03-30 12:25:39.295214+00:00,15.0,20.5,83.0,3.22,partly cloudy
 WeatherUnderground,Sydney,Australia,2026-03-30 12:25:39.303273+00:00,15.555555555555555,20.5,83.0,9.66,mostly cloudy
 TimeAndDate,Melbourne,Australia,2026-03-30 12:25:41.133727+00:00,18.0,44.0,100.0,19.155,clear.
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:25:41.999338+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:25:42.009036+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:25:41.999338+00:00,15.0,19.9,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:25:42.009036+00:00,15.0,19.9,82.0,9.66,partly cloudy
 TimeAndDate,Auckland,New Zealand,2026-03-30 12:25:43.466660+00:00,19.0,17.0,100.0,6.0,passing clouds.
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:25:44.242526+00:00,18.33333333333333,17.2,79.0,25.75,mostly cloudy
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:25:44.246532+00:00,16.666666666666668,17.2,79.0,27.36,partly cloudy
 TimeAndDate,Beirut,Lebanon,2026-03-30 12:25:45.721176+00:00,12.0,33.5,85.0,14.48,scattered clouds.
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:25:46.496084+00:00,15.0,14.2,70.0,19.31,showers early
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:25:46.504088+00:00,15.0,14.2,70.0,19.31,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:25:46.496084+00:00,15.0,14.25,70.0,19.31,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:25:46.504088+00:00,15.0,14.25,70.0,19.31,showers early
 TimeAndDate,New York,United States,2026-03-30 12:25:58.660298+00:00,10.0,26.0,100.0,9.66,sunny.
 WeatherUnderground,New York,United States,2026-03-30 12:25:59.482105+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
 WeatherUnderground,New York,United States,2026-03-30 12:25:59.490116+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
@@ -13575,9 +13575,9 @@ TimeAndDate,Chicago,United States,2026-03-30 12:26:03.278886+00:00,12.0,17.0,96.
 WeatherUnderground,Chicago,United States,2026-03-30 12:26:04.546775+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 WeatherUnderground,Chicago,United States,2026-03-30 12:26:04.554781+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 TimeAndDate,Toronto,Canada,2026-03-30 12:26:06.035319+00:00,8.0,33.0,100.0,14.48,overcast.
-WeatherUnderground,Toronto,Canada,2026-03-30 12:26:07.082960+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:26:07.090958+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:26:07.093782+00:00,48.0,-1.15,77.0,20.92,partly cloudy
+WeatherUnderground,Toronto,Canada,2026-03-30 12:26:07.082960+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:26:07.090958+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:26:07.093782+00:00,48.0,-1.1,77.5,20.92,partly cloudy
 TimeAndDate,Mexico City,Mexico,2026-03-30 12:26:08.523087+00:00,11.0,24.0,88.0,11.0,passing clouds.
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:26:09.600788+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:26:09.610608+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
@@ -13592,17 +13592,17 @@ TimeAndDate,Buenos Aires,Argentina,2026-03-30 12:26:13.884933+00:00,23.0,28.0,10
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:26:14.558649+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:26:14.566657+00:00,23.88888888888889,23.6,75.0,14.48,mist
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:26:14.571205+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
-TimeAndDate,London,United Kingdom,2026-03-30 12:26:15.958947+00:00,10.0,42.0,88.0,12.87,scattered clouds.
-WeatherUnderground,London,United Kingdom,2026-03-30 12:26:16.946855+00:00,52.0,6.9,78.0,17.7,light rain
-WeatherUnderground,London,United Kingdom,2026-03-30 12:26:16.954859+00:00,55.0,6.9,78.0,22.53,light rain
-WeatherUnderground,London,United Kingdom,2026-03-30 12:26:16.955865+00:00,49.0,6.9,78.0,20.92,partly cloudy
+TimeAndDate,London,United Kingdom,2026-03-30 12:26:15.958947+00:00,10.0,42.5,88.0,12.934999999999999,scattered clouds.
+WeatherUnderground,London,United Kingdom,2026-03-30 12:26:16.946855+00:00,52.0,7.0,78.0,17.7,light rain
+WeatherUnderground,London,United Kingdom,2026-03-30 12:26:16.954859+00:00,55.0,7.0,78.0,22.53,light rain
+WeatherUnderground,London,United Kingdom,2026-03-30 12:26:16.955865+00:00,49.0,7.0,78.0,20.92,partly cloudy
 TimeAndDate,Paris,France,2026-03-30 12:26:19.400371+00:00,11.0,43.0,94.0,8.05,broken clouds.
 WeatherUnderground,Paris,France,2026-03-30 12:26:21.868900+00:00,14.444444444444445,7.8,79.0,24.14,cloudy
 WeatherUnderground,Paris,France,2026-03-30 12:26:21.876899+00:00,15.0,7.8,79.0,3.22,partly cloudy
-TimeAndDate,Berlin,Germany,2026-03-30 12:26:25.396771+00:00,7.0,35.0,90.0,9.0,sprinkles. partly sunny.
+TimeAndDate,Berlin,Germany,2026-03-30 12:26:25.396771+00:00,7.0,35.5,87.0,9.0,sprinkles. partly sunny.
 WeatherUnderground,Berlin,Germany,2026-03-30 12:26:27.532043+00:00,45.0,6.9,80.0,12.87,rain shower
 WeatherUnderground,Berlin,Germany,2026-03-30 12:26:27.540541+00:00,15.0,6.9,80.0,3.22,partly cloudy
-TimeAndDate,Madrid,Spain,2026-03-30 12:26:30.281143+00:00,15.0,27.5,94.0,7.0,sunny.
+TimeAndDate,Madrid,Spain,2026-03-30 12:26:30.281143+00:00,15.0,37.0,94.0,7.0,sunny.
 WeatherUnderground,Madrid,Spain,2026-03-30 12:26:32.371601+00:00,18.88888888888889,8.8,59.0,22.53,sunny
 WeatherUnderground,Madrid,Spain,2026-03-30 12:26:32.380051+00:00,15.0,8.8,59.0,3.22,partly cloudy
 WeatherUnderground,Madrid,Spain,2026-03-30 12:26:32.388076+00:00,18.88888888888889,8.8,59.0,24.14,sunny
@@ -13611,13 +13611,13 @@ WeatherUnderground,Rome,Italy,2026-03-30 12:26:37.823086+00:00,18.88888888888889
 WeatherUnderground,Rome,Italy,2026-03-30 12:26:37.829279+00:00,51.0,10.5,73.0,14.48,fair
 WeatherUnderground,Rome,Italy,2026-03-30 12:26:37.831284+00:00,49.0,10.5,73.0,20.92,partly cloudy
 TimeAndDate,Cairo,Egypt,2026-03-30 12:26:40.157918+00:00,22.0,25.0,88.0,24.0,partly sunny.
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:26:42.689625+00:00,22.22222222222222,21.799999999999997,50.0,17.7,partly cloudy
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:26:42.697299+00:00,23.33333333333333,21.799999999999997,50.0,16.09,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:26:42.689625+00:00,22.22222222222222,21.9,50.0,17.7,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:26:42.697299+00:00,23.33333333333333,21.9,50.0,16.09,partly cloudy
 TimeAndDate,Nairobi,Kenya,2026-03-30 12:26:46.529858+00:00,26.0,20.0,94.0,19.0,partly sunny.
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:26:49.837969+00:00,25.0,19.0,86.0,17.7,mostly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:26:49.846385+00:00,15.0,19.0,86.0,3.22,partly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:26:49.854384+00:00,25.0,19.0,86.0,17.7,mostly cloudy
-TimeAndDate,Johannesburg,South Africa,2026-03-30 12:26:56.516320+00:00,28.0,27.0,94.0,11.0,scattered clouds.
+TimeAndDate,Johannesburg,South Africa,2026-03-30 12:26:56.516320+00:00,28.0,38.5,94.0,11.0,scattered clouds.
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:26:59.671494+00:00,15.0,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:26:59.679491+00:00,15.0,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:26:59.680182+00:00,27.77777777777778,23.5,82.0,17.7,partly cloudy
@@ -13648,15 +13648,15 @@ WeatherUnderground,Sydney,Australia,2026-03-30 12:27:30.833406+00:00,15.0,20.5,8
 WeatherUnderground,Sydney,Australia,2026-03-30 12:27:30.838422+00:00,49.0,20.5,83.0,20.92,partly cloudy
 WeatherUnderground,Sydney,Australia,2026-03-30 12:27:30.846438+00:00,15.555555555555555,20.5,83.0,9.66,mostly cloudy
 TimeAndDate,Melbourne,Australia,2026-03-30 12:27:33.957837+00:00,18.0,44.0,100.0,19.155,clear.
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:27:36.273208+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:27:36.282390+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:27:36.273208+00:00,15.0,19.9,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:27:36.282390+00:00,15.0,19.9,82.0,9.66,partly cloudy
 TimeAndDate,Auckland,New Zealand,2026-03-30 12:27:38.899831+00:00,19.0,17.0,100.0,6.0,passing clouds.
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:27:41.468377+00:00,18.33333333333333,17.2,79.0,25.75,mostly cloudy
 TimeAndDate,Beirut,Lebanon,2026-03-30 12:27:44.767777+00:00,12.0,33.5,85.0,14.48,scattered clouds.
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:27:45.678329+00:00,15.0,14.2,70.0,19.31,showers early
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:27:45.683187+00:00,15.0,14.2,70.0,3.22,partly cloudy
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:27:45.683691+00:00,19.444444444444443,14.2,70.0,20.92,showers
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:27:45.686695+00:00,15.0,14.2,70.0,3.22,partly cloudy
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:27:45.678329+00:00,15.0,14.25,70.0,19.31,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:27:45.683187+00:00,15.0,14.25,70.0,3.22,partly cloudy
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:27:45.683691+00:00,19.444444444444443,14.25,70.0,20.92,showers
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:27:45.686695+00:00,15.0,14.25,70.0,3.22,partly cloudy
 TimeAndDate,New York,United States,2026-03-30 12:27:59.119173+00:00,10.0,26.0,100.0,9.66,sunny.
 WeatherUnderground,New York,United States,2026-03-30 12:28:00.671580+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
 WeatherUnderground,New York,United States,2026-03-30 12:28:00.679618+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
@@ -13667,9 +13667,9 @@ TimeAndDate,Chicago,United States,2026-03-30 12:28:05.484778+00:00,12.0,17.0,96.
 WeatherUnderground,Chicago,United States,2026-03-30 12:28:11.031772+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 WeatherUnderground,Chicago,United States,2026-03-30 12:28:11.035134+00:00,25.55555555555556,17.0,85.0,25.75,am clouds/pm sun
 TimeAndDate,Toronto,Canada,2026-03-30 12:28:12.481792+00:00,8.0,33.0,100.0,14.48,overcast.
-WeatherUnderground,Toronto,Canada,2026-03-30 12:28:13.668071+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:28:13.674082+00:00,26.666666666666668,-1.15,77.0,9.66,cloudy
-WeatherUnderground,Toronto,Canada,2026-03-30 12:28:13.682089+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:28:13.668071+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:28:13.674082+00:00,26.666666666666668,-1.1,77.5,9.66,cloudy
+WeatherUnderground,Toronto,Canada,2026-03-30 12:28:13.682089+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
 TimeAndDate,Mexico City,Mexico,2026-03-30 12:28:15.271144+00:00,11.0,24.0,88.0,11.0,passing clouds.
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:28:16.197225+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:28:16.205230+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
@@ -13684,16 +13684,16 @@ WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:28:20.529912+00:00,25.55
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:28:20.533665+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:28:20.533793+00:00,23.88888888888889,23.6,75.0,14.48,mist
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:28:20.537473+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
-TimeAndDate,London,United Kingdom,2026-03-30 12:28:22.183681+00:00,10.0,42.0,88.0,12.87,scattered clouds.
-WeatherUnderground,London,United Kingdom,2026-03-30 12:28:23.224141+00:00,52.0,6.9,78.0,17.7,light rain
-WeatherUnderground,London,United Kingdom,2026-03-30 12:28:23.232153+00:00,55.0,6.9,78.0,22.53,light rain
-WeatherUnderground,London,United Kingdom,2026-03-30 12:28:23.235087+00:00,54.0,6.9,78.0,22.53,few showers
+TimeAndDate,London,United Kingdom,2026-03-30 12:28:22.183681+00:00,10.0,42.5,88.0,12.934999999999999,scattered clouds.
+WeatherUnderground,London,United Kingdom,2026-03-30 12:28:23.224141+00:00,52.0,7.0,78.0,17.7,light rain
+WeatherUnderground,London,United Kingdom,2026-03-30 12:28:23.232153+00:00,55.0,7.0,78.0,22.53,light rain
+WeatherUnderground,London,United Kingdom,2026-03-30 12:28:23.235087+00:00,54.0,7.0,78.0,22.53,few showers
 TimeAndDate,Paris,France,2026-03-30 12:28:24.835795+00:00,11.0,43.0,94.0,8.05,broken clouds.
 WeatherUnderground,Paris,France,2026-03-30 12:28:25.588742+00:00,14.444444444444445,7.8,79.0,24.14,cloudy
-TimeAndDate,Berlin,Germany,2026-03-30 12:28:27.108494+00:00,7.0,35.0,90.0,9.0,sprinkles. partly sunny.
+TimeAndDate,Berlin,Germany,2026-03-30 12:28:27.108494+00:00,7.0,35.5,87.0,9.0,sprinkles. partly sunny.
 WeatherUnderground,Berlin,Germany,2026-03-30 12:28:27.725574+00:00,45.0,6.9,80.0,12.87,rain shower
 WeatherUnderground,Berlin,Germany,2026-03-30 12:28:27.733603+00:00,48.0,6.9,80.0,14.48,showers
-TimeAndDate,Madrid,Spain,2026-03-30 12:28:30.408761+00:00,15.0,27.5,94.0,7.0,sunny.
+TimeAndDate,Madrid,Spain,2026-03-30 12:28:30.408761+00:00,15.0,37.0,94.0,7.0,sunny.
 WeatherUnderground,Madrid,Spain,2026-03-30 12:28:31.210228+00:00,18.88888888888889,8.8,59.0,22.53,sunny
 WeatherUnderground,Madrid,Spain,2026-03-30 12:28:31.213737+00:00,15.0,8.8,59.0,3.22,partly cloudy
 WeatherUnderground,Madrid,Spain,2026-03-30 12:28:31.221743+00:00,18.88888888888889,8.8,59.0,24.14,sunny
@@ -13702,13 +13702,13 @@ WeatherUnderground,Rome,Italy,2026-03-30 12:28:33.748600+00:00,18.88888888888889
 WeatherUnderground,Rome,Italy,2026-03-30 12:28:33.756955+00:00,15.0,10.5,73.0,3.22,partly cloudy
 WeatherUnderground,Rome,Italy,2026-03-30 12:28:33.764961+00:00,18.33333333333333,10.5,73.0,14.48,partly cloudy
 TimeAndDate,Cairo,Egypt,2026-03-30 12:28:35.369062+00:00,22.0,25.0,88.0,24.0,partly sunny.
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:28:37.031083+00:00,22.22222222222222,21.799999999999997,50.0,17.7,partly cloudy
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:28:37.039078+00:00,15.0,21.799999999999997,50.0,3.22,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:28:37.031083+00:00,22.22222222222222,21.9,50.0,17.7,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:28:37.039078+00:00,15.0,21.9,50.0,3.22,partly cloudy
 TimeAndDate,Nairobi,Kenya,2026-03-30 12:28:38.406242+00:00,26.0,20.0,94.0,19.0,partly sunny.
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:28:39.638144+00:00,25.0,19.0,86.0,17.7,mostly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:28:39.646462+00:00,15.0,19.0,86.0,3.22,partly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:28:39.654664+00:00,25.0,19.0,86.0,17.7,mostly cloudy
-TimeAndDate,Johannesburg,South Africa,2026-03-30 12:28:41.171627+00:00,28.0,27.0,94.0,11.0,scattered clouds.
+TimeAndDate,Johannesburg,South Africa,2026-03-30 12:28:41.171627+00:00,28.0,38.5,94.0,11.0,scattered clouds.
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:28:41.955923+00:00,15.0,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:28:41.963927+00:00,26.666666666666668,23.5,82.0,16.09,fair
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:28:41.970120+00:00,27.77777777777778,23.5,82.0,17.7,partly cloudy
@@ -13734,17 +13734,17 @@ TimeAndDate,Sydney,Australia,2026-03-30 12:28:55.607918+00:00,21.0,20.5,100.0,9.
 WeatherUnderground,Sydney,Australia,2026-03-30 12:28:56.879914+00:00,20.0,20.5,83.0,6.44,cloudy
 WeatherUnderground,Sydney,Australia,2026-03-30 12:28:56.888118+00:00,15.555555555555555,20.5,83.0,9.66,mostly cloudy
 TimeAndDate,Melbourne,Australia,2026-03-30 12:28:58.659464+00:00,18.0,44.0,100.0,19.155,clear.
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:28:59.677001+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:28:59.685447+00:00,14.444444444444445,20.049999999999997,82.0,12.87,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:28:59.686174+00:00,49.0,20.049999999999997,82.0,20.92,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:28:59.687130+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:28:59.677001+00:00,15.0,19.9,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:28:59.685447+00:00,14.444444444444445,19.9,82.0,12.87,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:28:59.686174+00:00,49.0,19.9,82.0,20.92,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:28:59.687130+00:00,15.0,19.9,82.0,9.66,partly cloudy
 TimeAndDate,Auckland,New Zealand,2026-03-30 12:29:01.740979+00:00,19.0,17.0,100.0,6.0,passing clouds.
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:29:02.883577+00:00,18.33333333333333,17.2,79.0,25.75,mostly cloudy
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:29:02.891573+00:00,15.0,17.2,79.0,3.22,partly cloudy
 TimeAndDate,Beirut,Lebanon,2026-03-30 12:29:05.320894+00:00,12.0,33.5,85.0,14.48,scattered clouds.
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:29:07.307897+00:00,15.0,14.2,70.0,19.31,showers early
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:29:07.316395+00:00,19.444444444444443,14.2,70.0,20.92,showers
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:29:07.321548+00:00,15.0,14.2,70.0,19.31,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:29:07.307897+00:00,15.0,14.25,70.0,19.31,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:29:07.316395+00:00,19.444444444444443,14.25,70.0,20.92,showers
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:29:07.321548+00:00,15.0,14.25,70.0,19.31,showers early
 TimeAndDate,New York,United States,2026-03-30 12:29:20.560055+00:00,10.0,26.0,100.0,9.66,sunny.
 WeatherUnderground,New York,United States,2026-03-30 12:29:22.307190+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
 WeatherUnderground,New York,United States,2026-03-30 12:29:22.315196+00:00,21.11111111111111,6.1,70.0,20.92,mostly cloudy
@@ -13755,10 +13755,10 @@ TimeAndDate,Chicago,United States,2026-03-30 12:29:27.884488+00:00,12.0,17.0,96.
 WeatherUnderground,Chicago,United States,2026-03-30 12:29:29.655648+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 WeatherUnderground,Chicago,United States,2026-03-30 12:29:29.663688+00:00,25.55555555555556,17.0,85.0,25.75,am clouds/pm sun
 TimeAndDate,Toronto,Canada,2026-03-30 12:29:31.683434+00:00,8.0,33.0,100.0,14.48,overcast.
-WeatherUnderground,Toronto,Canada,2026-03-30 12:29:33.162475+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:29:33.170483+00:00,26.666666666666668,-1.15,77.0,9.66,cloudy
-WeatherUnderground,Toronto,Canada,2026-03-30 12:29:33.172597+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:29:33.176958+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:29:33.162475+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:29:33.170483+00:00,26.666666666666668,-1.1,77.5,9.66,cloudy
+WeatherUnderground,Toronto,Canada,2026-03-30 12:29:33.172597+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:29:33.176958+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
 TimeAndDate,Mexico City,Mexico,2026-03-30 12:29:34.827440+00:00,11.0,24.0,88.0,11.0,passing clouds.
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:29:36.473611+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:29:36.476203+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
@@ -13772,17 +13772,17 @@ TimeAndDate,Buenos Aires,Argentina,2026-03-30 12:29:42.378921+00:00,23.0,28.0,10
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:29:43.826069+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:29:43.834075+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:29:43.842072+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
-TimeAndDate,London,United Kingdom,2026-03-30 12:29:45.557892+00:00,10.0,42.0,88.0,12.87,scattered clouds.
-WeatherUnderground,London,United Kingdom,2026-03-30 12:29:46.923235+00:00,52.0,6.9,78.0,17.7,light rain
-WeatherUnderground,London,United Kingdom,2026-03-30 12:29:46.931121+00:00,55.0,6.9,78.0,22.53,light rain
+TimeAndDate,London,United Kingdom,2026-03-30 12:29:45.557892+00:00,10.0,42.5,88.0,12.934999999999999,scattered clouds.
+WeatherUnderground,London,United Kingdom,2026-03-30 12:29:46.923235+00:00,52.0,7.0,78.0,17.7,light rain
+WeatherUnderground,London,United Kingdom,2026-03-30 12:29:46.931121+00:00,55.0,7.0,78.0,22.53,light rain
 TimeAndDate,Paris,France,2026-03-30 12:29:48.647370+00:00,11.0,43.0,94.0,8.05,broken clouds.
 WeatherUnderground,Paris,France,2026-03-30 12:29:50.180978+00:00,14.444444444444445,7.8,79.0,24.14,cloudy
 WeatherUnderground,Paris,France,2026-03-30 12:29:50.190091+00:00,15.0,7.8,79.0,3.22,partly cloudy
-TimeAndDate,Berlin,Germany,2026-03-30 12:29:51.542200+00:00,7.0,35.0,90.0,9.0,sprinkles. partly sunny.
+TimeAndDate,Berlin,Germany,2026-03-30 12:29:51.542200+00:00,7.0,35.5,87.0,9.0,sprinkles. partly sunny.
 WeatherUnderground,Berlin,Germany,2026-03-30 12:29:52.417046+00:00,45.0,6.9,80.0,12.87,rain shower
 WeatherUnderground,Berlin,Germany,2026-03-30 12:29:52.423688+00:00,15.0,6.9,80.0,3.22,partly cloudy
 WeatherUnderground,Berlin,Germany,2026-03-30 12:29:52.425196+00:00,48.0,6.9,80.0,14.48,showers
-TimeAndDate,Madrid,Spain,2026-03-30 12:29:53.917490+00:00,15.0,27.5,94.0,7.0,sunny.
+TimeAndDate,Madrid,Spain,2026-03-30 12:29:53.917490+00:00,15.0,37.0,94.0,7.0,sunny.
 WeatherUnderground,Madrid,Spain,2026-03-30 12:29:54.611837+00:00,18.88888888888889,8.8,59.0,22.53,sunny
 WeatherUnderground,Madrid,Spain,2026-03-30 12:29:54.619844+00:00,18.88888888888889,8.8,59.0,24.14,sunny
 TimeAndDate,Rome,Italy,2026-03-30 12:29:55.949858+00:00,18.0,18.0,94.0,9.0,passing clouds.
@@ -13790,13 +13790,13 @@ WeatherUnderground,Rome,Italy,2026-03-30 12:29:56.998648+00:00,18.88888888888889
 WeatherUnderground,Rome,Italy,2026-03-30 12:29:57.006658+00:00,19.444444444444443,10.5,73.0,11.27,partly cloudy
 WeatherUnderground,Rome,Italy,2026-03-30 12:29:57.013667+00:00,18.33333333333333,10.5,73.0,14.48,partly cloudy
 TimeAndDate,Cairo,Egypt,2026-03-30 12:29:58.828428+00:00,22.0,25.0,88.0,24.0,partly sunny.
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:29:59.507420+00:00,22.22222222222222,21.799999999999997,50.0,17.7,partly cloudy
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:29:59.513228+00:00,15.0,21.799999999999997,50.0,3.22,partly cloudy
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:29:59.516277+00:00,23.33333333333333,21.799999999999997,50.0,16.09,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:29:59.507420+00:00,22.22222222222222,21.9,50.0,17.7,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:29:59.513228+00:00,15.0,21.9,50.0,3.22,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:29:59.516277+00:00,23.33333333333333,21.9,50.0,16.09,partly cloudy
 TimeAndDate,Nairobi,Kenya,2026-03-30 12:30:01.023081+00:00,26.0,20.0,94.0,19.0,partly sunny.
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:30:01.694380+00:00,25.0,19.0,86.0,17.7,mostly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:30:01.702365+00:00,25.0,19.0,86.0,17.7,mostly cloudy
-TimeAndDate,Johannesburg,South Africa,2026-03-30 12:30:03.227455+00:00,28.0,27.0,94.0,11.0,scattered clouds.
+TimeAndDate,Johannesburg,South Africa,2026-03-30 12:30:03.227455+00:00,28.0,38.5,94.0,11.0,scattered clouds.
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:30:03.882352+00:00,15.0,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:30:03.890358+00:00,52.0,23.5,82.0,20.92,cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:30:03.891693+00:00,27.77777777777778,23.5,82.0,17.7,partly cloudy
@@ -13820,15 +13820,15 @@ TimeAndDate,Sydney,Australia,2026-03-30 12:30:17.966709+00:00,21.0,20.5,100.0,9.
 WeatherUnderground,Sydney,Australia,2026-03-30 12:30:18.715036+00:00,20.0,20.5,83.0,6.44,cloudy
 WeatherUnderground,Sydney,Australia,2026-03-30 12:30:18.725141+00:00,15.555555555555555,20.5,83.0,9.66,mostly cloudy
 TimeAndDate,Melbourne,Australia,2026-03-30 12:30:20.525114+00:00,18.0,44.0,100.0,19.155,clear.
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:30:21.414209+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:30:21.425308+00:00,14.444444444444445,20.049999999999997,82.0,12.87,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:30:21.430318+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:30:21.414209+00:00,15.0,19.9,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:30:21.425308+00:00,14.444444444444445,19.9,82.0,12.87,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:30:21.430318+00:00,15.0,19.9,82.0,9.66,partly cloudy
 TimeAndDate,Auckland,New Zealand,2026-03-30 12:30:22.827976+00:00,19.0,17.0,100.0,6.0,passing clouds.
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:30:24.396482+00:00,18.33333333333333,17.2,79.0,25.75,mostly cloudy
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:30:24.408769+00:00,16.666666666666668,17.2,79.0,27.36,partly cloudy
 TimeAndDate,Beirut,Lebanon,2026-03-30 12:30:25.847258+00:00,12.0,33.5,85.0,14.48,scattered clouds.
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:30:26.484534+00:00,15.0,14.2,70.0,19.31,showers early
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:30:26.492205+00:00,15.0,14.2,70.0,19.31,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:30:26.484534+00:00,15.0,14.25,70.0,19.31,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:30:26.492205+00:00,15.0,14.25,70.0,19.31,showers early
 TimeAndDate,New York,United States,2026-03-30 12:30:39.504007+00:00,10.0,26.0,100.0,9.66,sunny.
 WeatherUnderground,New York,United States,2026-03-30 12:30:40.630959+00:00,21.11111111111111,6.1,70.0,19.31,partly cloudy
 WeatherUnderground,New York,United States,2026-03-30 12:30:40.638965+00:00,21.11111111111111,6.1,70.0,19.31,partly cloudy
@@ -13844,10 +13844,10 @@ WeatherUnderground,Chicago,United States,2026-03-30 12:30:45.659810+00:00,15.0,1
 WeatherUnderground,Chicago,United States,2026-03-30 12:30:45.659995+00:00,51.0,17.0,85.0,14.48,fair
 WeatherUnderground,Chicago,United States,2026-03-30 12:30:45.663040+00:00,25.55555555555556,17.0,85.0,25.75,am clouds/pm sun
 TimeAndDate,Toronto,Canada,2026-03-30 12:30:47.623005+00:00,8.0,33.0,100.0,14.48,overcast.
-WeatherUnderground,Toronto,Canada,2026-03-30 12:30:49.040511+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:30:49.043507+00:00,26.666666666666668,-1.15,77.0,9.66,cloudy
-WeatherUnderground,Toronto,Canada,2026-03-30 12:30:49.047128+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:30:49.055255+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:30:49.040511+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:30:49.043507+00:00,26.666666666666668,-1.1,77.5,9.66,cloudy
+WeatherUnderground,Toronto,Canada,2026-03-30 12:30:49.047128+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:30:49.055255+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
 TimeAndDate,Mexico City,Mexico,2026-03-30 12:30:50.553060+00:00,11.0,24.0,88.0,11.0,passing clouds.
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:30:51.571425+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:30:51.578018+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
@@ -13857,17 +13857,17 @@ WeatherUnderground,Sao Paulo,Brazil,2026-03-30 12:30:53.885071+00:00,28.88888888
 TimeAndDate,Buenos Aires,Argentina,2026-03-30 12:30:55.381592+00:00,23.0,28.0,100.0,15.0,fog.
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:30:56.279725+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:30:56.288232+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
-TimeAndDate,London,United Kingdom,2026-03-30 12:30:57.983493+00:00,10.0,42.0,88.0,12.87,scattered clouds.
-WeatherUnderground,London,United Kingdom,2026-03-30 12:30:58.846438+00:00,52.0,6.9,78.0,20.92,cloudy
-WeatherUnderground,London,United Kingdom,2026-03-30 12:30:58.854438+00:00,54.0,6.9,78.0,22.53,partly cloudy
+TimeAndDate,London,United Kingdom,2026-03-30 12:30:57.983493+00:00,10.0,42.5,88.0,12.934999999999999,scattered clouds.
+WeatherUnderground,London,United Kingdom,2026-03-30 12:30:58.846438+00:00,52.0,7.0,78.0,20.92,cloudy
+WeatherUnderground,London,United Kingdom,2026-03-30 12:30:58.854438+00:00,54.0,7.0,78.0,22.53,partly cloudy
 TimeAndDate,Paris,France,2026-03-30 12:31:00.485447+00:00,11.0,43.0,94.0,8.05,broken clouds.
 WeatherUnderground,Paris,France,2026-03-30 12:31:02.079711+00:00,14.444444444444445,7.8,79.0,24.14,cloudy
 WeatherUnderground,Paris,France,2026-03-30 12:31:02.087720+00:00,15.0,7.8,79.0,3.22,partly cloudy
 WeatherUnderground,Paris,France,2026-03-30 12:31:02.096230+00:00,14.444444444444445,7.8,79.0,24.14,cloudy
-TimeAndDate,Berlin,Germany,2026-03-30 12:31:03.976554+00:00,7.0,35.0,90.0,9.0,sprinkles. partly sunny.
+TimeAndDate,Berlin,Germany,2026-03-30 12:31:03.976554+00:00,7.0,35.5,87.0,9.0,sprinkles. partly sunny.
 WeatherUnderground,Berlin,Germany,2026-03-30 12:31:04.533493+00:00,45.0,6.9,80.0,12.87,rain shower
 WeatherUnderground,Berlin,Germany,2026-03-30 12:31:04.541495+00:00,48.0,6.9,80.0,14.48,showers
-TimeAndDate,Madrid,Spain,2026-03-30 12:31:06.234325+00:00,15.0,27.5,94.0,7.0,sunny.
+TimeAndDate,Madrid,Spain,2026-03-30 12:31:06.234325+00:00,15.0,37.0,94.0,7.0,sunny.
 WeatherUnderground,Madrid,Spain,2026-03-30 12:31:08.124091+00:00,18.88888888888889,8.8,59.0,22.53,sunny
 WeatherUnderground,Madrid,Spain,2026-03-30 12:31:08.132084+00:00,53.0,8.8,59.0,11.27,cloudy
 WeatherUnderground,Madrid,Spain,2026-03-30 12:31:08.132397+00:00,18.88888888888889,8.8,59.0,24.14,sunny
@@ -13876,11 +13876,11 @@ WeatherUnderground,Rome,Italy,2026-03-30 12:31:10.461505+00:00,18.88888888888889
 WeatherUnderground,Rome,Italy,2026-03-30 12:31:10.462014+00:00,18.33333333333333,10.5,73.0,14.48,partly cloudy
 WeatherUnderground,Rome,Italy,2026-03-30 12:31:10.465099+00:00,15.0,10.5,73.0,3.22,partly cloudy
 TimeAndDate,Cairo,Egypt,2026-03-30 12:31:12.128803+00:00,22.0,25.0,88.0,24.0,partly sunny.
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:31:13.562656+00:00,22.22222222222222,21.799999999999997,50.0,17.7,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:31:13.562656+00:00,22.22222222222222,21.9,50.0,17.7,partly cloudy
 TimeAndDate,Nairobi,Kenya,2026-03-30 12:31:15.216586+00:00,26.0,20.0,94.0,19.0,partly sunny.
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:31:16.261872+00:00,25.0,19.0,86.0,17.7,mostly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:31:16.267378+00:00,15.0,19.0,86.0,3.22,partly cloudy
-TimeAndDate,Johannesburg,South Africa,2026-03-30 12:31:18.096796+00:00,28.0,27.0,94.0,11.0,scattered clouds.
+TimeAndDate,Johannesburg,South Africa,2026-03-30 12:31:18.096796+00:00,28.0,38.5,94.0,11.0,scattered clouds.
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:31:19.332167+00:00,15.0,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:31:19.340165+00:00,19.444444444444443,23.5,82.0,11.27,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:31:19.346224+00:00,26.666666666666668,23.5,82.0,16.09,fair
@@ -13909,14 +13909,14 @@ WeatherUnderground,Sydney,Australia,2026-03-30 12:31:37.062938+00:00,20.0,20.5,8
 WeatherUnderground,Sydney,Australia,2026-03-30 12:31:37.068450+00:00,15.0,20.5,83.0,3.22,partly cloudy
 WeatherUnderground,Sydney,Australia,2026-03-30 12:31:37.072250+00:00,15.555555555555555,20.5,83.0,9.66,mostly cloudy
 TimeAndDate,Melbourne,Australia,2026-03-30 12:31:38.544193+00:00,18.0,44.0,100.0,19.155,clear.
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:31:40.047125+00:00,15.0,20.049999999999997,82.0,9.66,partly cloudy
-WeatherUnderground,Melbourne,Australia,2026-03-30 12:31:40.051131+00:00,14.444444444444445,20.049999999999997,82.0,12.87,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:31:40.047125+00:00,15.0,19.9,82.0,9.66,partly cloudy
+WeatherUnderground,Melbourne,Australia,2026-03-30 12:31:40.051131+00:00,14.444444444444445,19.9,82.0,12.87,partly cloudy
 TimeAndDate,Auckland,New Zealand,2026-03-30 12:31:43.729978+00:00,19.0,17.0,100.0,6.0,passing clouds.
 WeatherUnderground,Auckland,New Zealand,2026-03-30 12:31:44.552493+00:00,18.33333333333333,17.2,79.0,25.75,mostly cloudy
 TimeAndDate,Beirut,Lebanon,2026-03-30 12:31:45.995188+00:00,12.0,33.5,85.0,14.48,scattered clouds.
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:31:46.803960+00:00,15.0,14.2,70.0,19.31,showers early
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:31:46.811969+00:00,15.0,14.2,70.0,3.22,partly cloudy
-WeatherUnderground,Beirut,Lebanon,2026-03-30 12:31:46.819973+00:00,15.0,14.2,70.0,19.31,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:31:46.803960+00:00,15.0,14.25,70.0,19.31,showers early
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:31:46.811969+00:00,15.0,14.25,70.0,3.22,partly cloudy
+WeatherUnderground,Beirut,Lebanon,2026-03-30 12:31:46.819973+00:00,15.0,14.25,70.0,19.31,showers early
 TimeAndDate,New York,United States,2026-03-30 12:31:59.872963+00:00,10.0,26.0,100.0,9.66,sunny.
 WeatherUnderground,New York,United States,2026-03-30 12:32:00.601248+00:00,21.11111111111111,6.1,70.0,19.31,partly cloudy
 WeatherUnderground,New York,United States,2026-03-30 12:32:00.609259+00:00,21.11111111111111,6.1,70.0,19.31,partly cloudy
@@ -13926,8 +13926,8 @@ TimeAndDate,Chicago,United States,2026-03-30 12:32:04.647920+00:00,12.0,17.0,96.
 WeatherUnderground,Chicago,United States,2026-03-30 12:32:05.532403+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 WeatherUnderground,Chicago,United States,2026-03-30 12:32:05.537412+00:00,24.444444444444443,17.0,85.0,24.14,am clouds/pm sun
 TimeAndDate,Toronto,Canada,2026-03-30 12:32:07.099601+00:00,8.0,33.0,100.0,14.48,overcast.
-WeatherUnderground,Toronto,Canada,2026-03-30 12:32:07.755851+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
-WeatherUnderground,Toronto,Canada,2026-03-30 12:32:07.764772+00:00,27.22222222222222,-1.15,77.0,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:32:07.755851+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
+WeatherUnderground,Toronto,Canada,2026-03-30 12:32:07.764772+00:00,27.22222222222222,-1.1,77.5,11.27,scattered thunderstorms
 TimeAndDate,Mexico City,Mexico,2026-03-30 12:32:09.556405+00:00,11.0,24.0,88.0,11.0,passing clouds.
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:32:10.221632+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
 WeatherUnderground,Mexico City,Mexico,2026-03-30 12:32:10.229627+00:00,27.22222222222222,15.8,55.0,11.27,scattered thunderstorms
@@ -13938,17 +13938,17 @@ WeatherUnderground,Sao Paulo,Brazil,2026-03-30 12:32:12.727986+00:00,28.88888888
 TimeAndDate,Buenos Aires,Argentina,2026-03-30 12:32:14.872128+00:00,23.0,28.0,100.0,15.0,fog.
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:32:15.969886+00:00,25.55555555555556,23.6,75.0,16.09,am drizzle
 WeatherUnderground,Buenos Aires,Argentina,2026-03-30 12:32:15.982004+00:00,49.0,23.6,75.0,20.92,partly cloudy
-TimeAndDate,London,United Kingdom,2026-03-30 12:32:17.587501+00:00,10.0,42.0,88.0,12.87,scattered clouds.
-WeatherUnderground,London,United Kingdom,2026-03-30 12:32:18.154629+00:00,52.0,6.9,78.0,20.92,cloudy
-WeatherUnderground,London,United Kingdom,2026-03-30 12:32:18.162628+00:00,54.0,6.9,78.0,22.53,showers
+TimeAndDate,London,United Kingdom,2026-03-30 12:32:17.587501+00:00,10.0,42.5,88.0,12.934999999999999,scattered clouds.
+WeatherUnderground,London,United Kingdom,2026-03-30 12:32:18.154629+00:00,52.0,7.0,78.0,20.92,cloudy
+WeatherUnderground,London,United Kingdom,2026-03-30 12:32:18.162628+00:00,54.0,7.0,78.0,22.53,showers
 TimeAndDate,Paris,France,2026-03-30 12:32:20.422417+00:00,11.0,43.0,94.0,8.05,broken clouds.
 WeatherUnderground,Paris,France,2026-03-30 12:32:21.823235+00:00,14.444444444444445,7.8,79.0,24.14,cloudy
 WeatherUnderground,Paris,France,2026-03-30 12:32:21.831258+00:00,14.444444444444445,7.8,79.0,24.14,cloudy
-TimeAndDate,Berlin,Germany,2026-03-30 12:32:23.282222+00:00,7.0,35.0,90.0,9.0,sprinkles. partly sunny.
+TimeAndDate,Berlin,Germany,2026-03-30 12:32:23.282222+00:00,7.0,35.5,87.0,9.0,sprinkles. partly sunny.
 WeatherUnderground,Berlin,Germany,2026-03-30 12:32:24.022042+00:00,45.0,6.9,80.0,12.87,rain shower
 WeatherUnderground,Berlin,Germany,2026-03-30 12:32:24.022968+00:00,53.0,6.9,80.0,11.27,cloudy
 WeatherUnderground,Berlin,Germany,2026-03-30 12:32:24.029997+00:00,45.0,6.9,80.0,16.09,rain
-TimeAndDate,Madrid,Spain,2026-03-30 12:32:25.653808+00:00,15.0,27.5,94.0,7.0,sunny.
+TimeAndDate,Madrid,Spain,2026-03-30 12:32:25.653808+00:00,15.0,37.0,94.0,7.0,sunny.
 WeatherUnderground,Madrid,Spain,2026-03-30 12:32:26.599699+00:00,18.88888888888889,8.8,59.0,22.53,sunny
 WeatherUnderground,Madrid,Spain,2026-03-30 12:32:26.603710+00:00,14.444444444444445,8.8,59.0,3.22,partly cloudy
 WeatherUnderground,Madrid,Spain,2026-03-30 12:32:26.606717+00:00,18.33333333333333,8.8,59.0,22.53,sunny
@@ -13956,12 +13956,12 @@ TimeAndDate,Rome,Italy,2026-03-30 12:32:28.044539+00:00,18.0,18.0,94.0,9.0,passi
 WeatherUnderground,Rome,Italy,2026-03-30 12:32:29.525624+00:00,18.88888888888889,10.5,73.0,12.87,fair
 WeatherUnderground,Rome,Italy,2026-03-30 12:32:29.532734+00:00,14.444444444444445,10.5,73.0,3.22,partly cloudy
 TimeAndDate,Cairo,Egypt,2026-03-30 12:32:31.178384+00:00,22.0,25.0,88.0,24.0,partly sunny.
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:32:31.901099+00:00,22.22222222222222,21.799999999999997,50.0,17.7,partly cloudy
-WeatherUnderground,Cairo,Egypt,2026-03-30 12:32:31.911110+00:00,14.444444444444445,21.799999999999997,50.0,3.22,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:32:31.901099+00:00,22.22222222222222,21.9,50.0,17.7,partly cloudy
+WeatherUnderground,Cairo,Egypt,2026-03-30 12:32:31.911110+00:00,14.444444444444445,21.9,50.0,3.22,partly cloudy
 TimeAndDate,Nairobi,Kenya,2026-03-30 12:32:36.278773+00:00,26.0,20.0,94.0,19.0,partly sunny.
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:32:41.387937+00:00,25.0,19.0,86.0,17.7,mostly cloudy
 WeatherUnderground,Nairobi,Kenya,2026-03-30 12:32:41.400100+00:00,25.0,19.0,86.0,17.7,mostly cloudy
-TimeAndDate,Johannesburg,South Africa,2026-03-30 12:32:46.567022+00:00,28.0,27.0,94.0,11.0,scattered clouds.
+TimeAndDate,Johannesburg,South Africa,2026-03-30 12:32:46.567022+00:00,28.0,38.5,94.0,11.0,scattered clouds.
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:32:48.536893+00:00,14.444444444444445,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:32:48.544914+00:00,14.444444444444445,23.5,82.0,3.22,partly cloudy
 WeatherUnderground,Johannesburg,South Africa,2026-03-30 12:32:48.550445+00:00,27.22222222222222,23.5,82.0,16.09,fair
@@ -14417,8 +14417,8 @@ Open-Meteo,Toronto,Canada,2026-03-31 00:00:00+00:00,10.4,8.0,91.0,14.2,moderate 
 TimeAndDate,Auckland,New Zealand,2026-03-31 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-03-31 00:00:00+00:00,24.0,33.5,94.0,14.48,
 TimeAndDate,Beirut,Lebanon,2026-03-31 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-03-31 00:00:00+00:00,16.0,35.0,100.0,9.0,
-TimeAndDate,Berlin,Germany,2026-03-31 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-31 00:00:00+00:00,16.0,35.5,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-03-31 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-31 00:00:00+00:00,29.0,28.0,100.0,15.0,
 TimeAndDate,Buenos Aires,Argentina,2026-03-31 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-03-31 00:00:00+00:00,27.0,25.0,88.0,24.0,
@@ -14426,13 +14426,13 @@ TimeAndDate,Chicago,United States,2026-03-31 00:00:00+00:00,27.0,17.0,93.0,20.11
 TimeAndDate,Chicago,United States,2026-03-31 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-31 00:00:00+00:00,34.0,26.0,94.0,17.0,
 TimeAndDate,Dubai,United Arab Emirates,2026-03-31 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-03-31 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-03-31 00:00:00+00:00,20.0,42.0,100.0,12.87,
-TimeAndDate,London,United Kingdom,2026-03-31 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-03-31 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-03-31 00:00:00+00:00,20.0,42.5,100.0,12.934999999999999,
+TimeAndDate,London,United Kingdom,2026-03-31 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-03-31 00:00:00+00:00,35.0,20.0,97.0,11.0,
 TimeAndDate,Los Angeles,United States,2026-03-31 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-03-31 00:00:00+00:00,21.0,27.5,100.0,7.0,
-TimeAndDate,Madrid,Spain,2026-03-31 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-31 00:00:00+00:00,21.0,37.0,100.0,7.0,
+TimeAndDate,Madrid,Spain,2026-03-31 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-03-31 00:00:00+00:00,31.0,44.0,100.0,19.155,
 TimeAndDate,Melbourne,Australia,2026-03-31 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-03-31 00:00:00+00:00,25.0,24.0,100.0,11.0,
@@ -15193,15 +15193,15 @@ Open-Meteo,Tokyo,Japan,2026-04-01 00:00:00+00:00,16.1,16.2,90.0,9.1,overcast
 Open-Meteo,Toronto,Canada,2026-04-01 00:00:00+00:00,12.0,10.5,95.0,12.5,overcast
 TimeAndDate,Auckland,New Zealand,2026-04-01 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-04-01 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-04-01 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-04-01 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-04-01 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-04-01 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-04-01 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-04-01 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-04-01 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-04-01 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-04-01 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-04-01 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-04-01 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-04-01 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-04-01 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-04-01 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-04-01 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-04-01 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -16485,15 +16485,15 @@ Open-Meteo,Tokyo,Japan,2026-04-02 00:00:00+00:00,10.3,8.3,97.0,13.6,moderate rai
 Open-Meteo,Toronto,Canada,2026-04-02 00:00:00+00:00,1.4,-3.4,77.0,15.6,overcast
 TimeAndDate,Auckland,New Zealand,2026-04-02 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-04-02 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-04-02 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-04-02 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-04-02 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-04-02 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-04-02 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-04-02 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-04-02 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-04-02 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-04-02 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-04-02 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-04-02 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-04-02 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-04-02 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-04-02 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-04-02 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-04-02 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -17050,15 +17050,15 @@ Open-Meteo,Tokyo,Japan,2026-04-03 00:00:00+00:00,8.7,5.3,61.0,10.3,clear sky
 Open-Meteo,Toronto,Canada,2026-04-03 00:00:00+00:00,4.3,1.6,100.0,9.8,overcast
 TimeAndDate,Auckland,New Zealand,2026-04-03 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-04-03 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-04-03 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-04-03 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-04-03 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-04-03 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-04-03 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-04-03 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-04-03 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-04-03 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-04-03 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-04-03 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-04-03 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-04-03 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-04-03 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-04-03 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-04-03 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-04-03 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -17506,15 +17506,15 @@ Open-Meteo,Tokyo,Japan,2026-04-04 00:00:00+00:00,12.2,10.5,84.0,10.6,overcast
 Open-Meteo,Toronto,Canada,2026-04-04 00:00:00+00:00,4.6,1.2,77.0,9.3,mainly clear
 TimeAndDate,Auckland,New Zealand,2026-04-04 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-04-04 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-04-04 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-04-04 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-04-04 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-04-04 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-04-04 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-04-04 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-04-04 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-04-04 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-04-04 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-04-04 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-04-04 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-04-04 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-04-04 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-04-04 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-04-04 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-04-04 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -17962,15 +17962,15 @@ Open-Meteo,Tokyo,Japan,2026-04-05 00:00:00+00:00,16.8,15.3,94.0,23.5,slight rain
 Open-Meteo,Toronto,Canada,2026-04-05 00:00:00+00:00,6.8,3.9,95.0,13.5,slight rain
 TimeAndDate,Auckland,New Zealand,2026-04-05 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-04-05 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-04-05 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-04-05 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-04-05 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-04-05 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-04-05 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-04-05 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-04-05 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-04-05 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-04-05 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-04-05 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-04-05 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-04-05 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-04-05 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-04-05 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-04-05 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-04-05 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -18418,15 +18418,15 @@ Open-Meteo,Tokyo,Japan,2026-04-06 00:00:00+00:00,16.8,17.5,87.0,5.2,overcast
 Open-Meteo,Toronto,Canada,2026-04-06 00:00:00+00:00,1.4,-3.9,68.0,18.0,overcast
 TimeAndDate,Auckland,New Zealand,2026-04-06 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-04-06 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-04-06 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-04-06 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-04-06 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-04-06 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-04-06 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-04-06 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-04-06 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-04-06 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-04-06 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-04-06 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-04-06 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-04-06 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-04-06 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-04-06 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-04-06 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-04-06 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -18874,15 +18874,15 @@ Open-Meteo,Tokyo,Japan,2026-04-07 00:00:00+00:00,16.2,15.6,75.0,8.4,overcast
 Open-Meteo,Toronto,Canada,2026-04-07 00:00:00+00:00,0.6,-2.7,88.0,7.4,heavy snow
 TimeAndDate,Auckland,New Zealand,2026-04-07 00:00:00+00:00,27.0,17.0,100.0,6.0,
 TimeAndDate,Beirut,Lebanon,2026-04-07 00:00:00+00:00,21.0,33.5,85.0,14.48,
-TimeAndDate,Berlin,Germany,2026-04-07 00:00:00+00:00,18.0,35.0,100.0,9.0,
+TimeAndDate,Berlin,Germany,2026-04-07 00:00:00+00:00,18.0,35.5,100.0,9.0,
 TimeAndDate,Buenos Aires,Argentina,2026-04-07 00:00:00+00:00,30.0,28.0,100.0,15.0,
 TimeAndDate,Cairo,Egypt,2026-04-07 00:00:00+00:00,27.0,25.0,88.0,24.0,
 TimeAndDate,Chicago,United States,2026-04-07 00:00:00+00:00,27.0,17.0,100.0,20.115000000000002,
 TimeAndDate,Dubai,United Arab Emirates,2026-04-07 00:00:00+00:00,33.0,26.0,94.0,17.0,
-TimeAndDate,Johannesburg,South Africa,2026-04-07 00:00:00+00:00,26.0,27.0,99.0,11.0,
-TimeAndDate,London,United Kingdom,2026-04-07 00:00:00+00:00,26.0,42.0,100.0,12.87,
+TimeAndDate,Johannesburg,South Africa,2026-04-07 00:00:00+00:00,26.0,38.5,99.0,11.0,
+TimeAndDate,London,United Kingdom,2026-04-07 00:00:00+00:00,26.0,42.5,100.0,12.934999999999999,
 TimeAndDate,Los Angeles,United States,2026-04-07 00:00:00+00:00,30.0,20.0,97.0,11.0,
-TimeAndDate,Madrid,Spain,2026-04-07 00:00:00+00:00,25.0,27.5,94.0,7.0,
+TimeAndDate,Madrid,Spain,2026-04-07 00:00:00+00:00,25.0,37.0,94.0,7.0,
 TimeAndDate,Melbourne,Australia,2026-04-07 00:00:00+00:00,28.0,44.0,100.0,19.155,
 TimeAndDate,Mexico City,Mexico,2026-04-07 00:00:00+00:00,27.0,24.0,88.0,11.0,
 TimeAndDate,Mumbai,India,2026-04-07 00:00:00+00:00,34.0,31.0,89.0,3.0,
@@ -20728,3 +20728,28 @@ TimeAndDate,Berlin,Germany,2026-04-16 05:41:40.202809+00:00,45.0,43.0,76.0,4.83,
 TimeAndDate,Madrid,Spain,2026-04-16 05:41:42.293234+00:00,52.0,51.0,62.0,4.83,passing clouds.
 TimeAndDate,Rome,Italy,2026-04-16 05:41:44.435010+00:00,54.0,52.0,94.0,9.66,passing clouds.
 TimeAndDate,Johannesburg,South Africa,2026-04-16 05:41:50.774982+00:00,58.0,57.0,93.0,11.27,overcast.
+Open-Meteo,Beirut,Lebanon,2026-04-16 07:21:38.892504+00:00,24.9,26.0,52.0,4.0,overcast
+Open-Meteo,New York,United States,2026-04-16 07:21:42.025923+00:00,22.7,23.7,63.0,5.6,overcast
+Open-Meteo,Chicago,United States,2026-04-16 07:23:56.549375+00:00,15.2,16.0,95.0,4.9,overcast
+Open-Meteo,Toronto,Canada,2026-04-16 07:23:59.685217+00:00,12.9,13.3,100.0,3.1,fog
+Open-Meteo,São Paulo,Brazil,2026-04-16 07:26:49.057540+00:00,16.9,18.9,97.0,1.8,fog
+Open-Meteo,Buenos Aires,Argentina,2026-04-16 07:26:52.209647+00:00,20.2,22.3,97.0,11.0,slight rain
+Open-Meteo,London,United Kingdom,2026-04-16 07:26:55.377770+00:00,11.9,9.3,81.0,15.8,overcast
+Open-Meteo,Berlin,Germany,2026-04-16 07:29:09.860613+00:00,11.0,8.7,56.0,3.8,overcast
+Open-Meteo,Madrid,Spain,2026-04-16 07:29:13.019980+00:00,11.6,9.7,62.0,3.9,clear sky
+Open-Meteo,Cairo,Egypt,2026-04-16 07:31:28.115762+00:00,26.6,27.9,39.0,3.9,clear sky
+Open-Meteo,Nairobi,Kenya,2026-04-16 07:31:31.310907+00:00,20.2,20.4,72.0,15.0,partly cloudy
+Open-Meteo,Johannesburg,South Africa,2026-04-16 07:31:34.471120+00:00,18.0,17.7,67.0,7.6,clear sky
+Open-Meteo,Mumbai,India,2026-04-16 07:33:48.925258+00:00,28.7,35.8,74.0,9.3,mainly clear
+Open-Meteo,Tokyo,Japan,2026-04-16 07:33:52.051438+00:00,17.0,15.7,64.0,9.7,clear sky
+Open-Meteo,Temasek,Singapore,2026-04-16 07:36:07.092681+00:00,31.4,36.2,67.0,10.7,slight rain showers
+Open-Meteo,Sydney,Australia,2026-04-16 07:36:10.291876+00:00,25.2,25.5,44.0,2.9,partly cloudy
+Open-Meteo,Melbourne,Australia,2026-04-16 07:37:20.375938+00:00,20.9,19.6,59.0,14.6,overcast
+Open-Meteo,Auckland,New Zealand,2026-04-16 07:38:29.863717+00:00,15.9,13.5,65.0,15.1,partly cloudy
+TimeAndDate,Toronto,Canada,2026-04-16 07:39:11.102069+00:00,54.0,53.0,100.0,4.83,fog.
+TimeAndDate,London,United Kingdom,2026-04-16 07:39:19.673236+00:00,54.0,51.0,82.0,14.48,broken clouds.
+TimeAndDate,Paris,France,2026-04-16 07:39:21.862636+00:00,48.0,44.0,100.0,16.09,sunny.
+TimeAndDate,Berlin,Germany,2026-04-16 07:39:23.959335+00:00,55.0,55.0,55.0,3.22,sunny.
+TimeAndDate,Madrid,Spain,2026-04-16 07:39:26.075394+00:00,57.0,57.0,51.0,1.61,sunny.
+TimeAndDate,Rome,Italy,2026-04-16 07:39:28.228770+00:00,57.0,57.0,100.0,1.61,sunny.
+TimeAndDate,Johannesburg,South Africa,2026-04-16 07:39:34.572385+00:00,60.0,60.0,85.0,20.92,fog.

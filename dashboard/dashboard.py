@@ -1737,9 +1737,6 @@ overview_tab, explorer_tab, source_tab, planner_tab, ai_tab, analytics_tab, all_
 
 with overview_tab:
     panel_start("Overview", "Use this view as the project command center for current rankings, alerts, and country-level summaries.")
-    st.markdown('<div class="section-note">Operational alerts from the current filtered dataset</div>', unsafe_allow_html=True)
-    for alert in alerts:
-        st.markdown(f'<div class="alert-card">{alert}</div>', unsafe_allow_html=True)
 
     left, right = st.columns([1.2, 1])
 
@@ -1915,6 +1912,11 @@ with overview_tab:
             )
             style_figure(fig_country, height=420)
             st.plotly_chart(fig_country, use_container_width=True)
+    
+    st.markdown('<div class="section-note">Operational alerts from the current filtered dataset</div>', unsafe_allow_html=True)
+    for alert in alerts:
+        st.markdown(f'<div class="alert-card">{alert}</div>', unsafe_allow_html=True)
+
     panel_end()
 with explorer_tab:
     panel_start("City Explorer", "Inspect one city deeply, compare sources, and review the latest raw observations behind its ranking.")

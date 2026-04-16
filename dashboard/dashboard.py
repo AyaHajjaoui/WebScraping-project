@@ -2342,13 +2342,27 @@ with analytics_tab:
         eda_left, eda_right = st.columns(2)
         with eda_left:
             if "Country" in ranking_df.columns and "Comfort Score" in ranking_df.columns and not country_summary_df.empty:
+                df_plot = country_summary_df.head(10).sort_values("Avg Comfort Score", ascending=False).copy()
+                df_plot["Cities"] = df_plot["Cities"].astype(int)
+                df_plot["# Cities"] = df_plot["Cities"].astype(str)
+
+                blue_shades = {
+                    "1": "#AED6F1",
+                    "2": "#5DADE2",
+                    "3": "#2E86C1",
+                    "4": "#1A5276",
+                    "5": "#0B2545",
+                }
+
                 fig_country_eda = px.bar(
-                    country_summary_df.head(12),
+                    df_plot,
                     x="Country",
                     y="Avg Comfort Score",
-                    title="Average Comfort Score by Country",
-                    color="Cities",
-                    color_continuous_scale=[PALETTE["accent_soft"], PALETTE["teal"]],
+                    color="# Cities",
+                    title="Comfort Score by Country & Cities Covered",
+                    text_auto=True,
+                    color_discrete_map=blue_shades,
+                    category_orders={"# Cities": ["1", "2", "3", "4", "5"]},
                 )
                 style_figure(fig_country_eda, height=380)
                 st.plotly_chart(fig_country_eda, width="stretch")

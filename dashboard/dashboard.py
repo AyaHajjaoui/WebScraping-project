@@ -1541,6 +1541,10 @@ if "dashboard_filters_initialized" not in st.session_state:
     st.session_state.min_comfort = 0
     st.session_state.top_n = default_top_n
     st.session_state.sort_option = "Comfort Score (High to Low)"
+    st.session_state.ml_computed = False
+    st.session_state.ml_results = pd.DataFrame()
+    st.session_state.ml_best_model = "Not yet computed"
+    st.session_state.ml_importance = pd.DataFrame()
 
 st.sidebar.header("Dashboard Filters")
 
@@ -1686,14 +1690,9 @@ all_cities_table = build_all_cities_table(filtered_df, ranking_df)
 summary_report_df = load_summary_report()
 condition_analysis_df = load_condition_analysis()
 
-# ⚠️ LAZY LOAD - Only compute ML when user visits Analytics tab
-ml_results_df, ml_best_model, ml_importance_df = run_ml_analysis_dashboard()
-if ml_results_df is None:
-    ml_results_df = pd.DataFrame()
-if ml_importance_df is None:
-    ml_importance_df = pd.DataFrame()
-if ml_best_model is None:
-    ml_best_model = "Unavailable"
+ml_results_df = st.session_state.get("ml_results", pd.DataFrame())
+ml_best_model = st.session_state.get("ml_best_model", "Not yet computed")
+ml_importance_df = st.session_state.get("ml_importance", pd.DataFrame())
 
 eda_snapshot_df = build_eda_snapshot(filtered_df, ranking_df)
 
@@ -2389,6 +2388,27 @@ with analytics_tab:
 
     with ml_subtab:
         st.subheader("Prediction Quality")
+        
+        # Lazy-load ML analysis only when user visits this tab
+        if not st.session_state.get("ml_computed", False):
+            with st.spinner("🔄 Training prediction models... (this may take 30-60 seconds on first load)"):
+                ml_results, ml_best, ml_importance = run_ml_analysis_dashboard()
+                if ml_results is None:
+                    ml_results = pd.DataFrame()
+                if ml_importance is None:
+                    ml_importance = pd.DataFrame()
+                if ml_best is None:
+                    ml_best = "Unavailable"
+                
+                st.session_state.ml_results = ml_results
+                st.session_state.ml_best_model = ml_best
+                st.session_state.ml_importance = ml_importance
+                st.session_state.ml_computed = True
+        
+        ml_results_df = st.session_state.get("ml_results", pd.DataFrame())
+        ml_best_model = st.session_state.get("ml_best_model", "Unavailable")
+        ml_importance_df = st.session_state.get("ml_importance", pd.DataFrame())
+        
         if ml_results_df is None or ml_results_df.empty:
             st.info("Prediction results are unavailable or there is not enough data to train the models.")
         else:

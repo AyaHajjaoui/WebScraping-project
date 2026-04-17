@@ -1,3 +1,4 @@
+from multiprocessing import pool
 import os
 import re
 import importlib.util
@@ -870,30 +871,34 @@ def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> lis
 
     pool = []
 
-    # 🌡️ Temperature alerts
+    # Temperature alerts
     if "Avg Temperature_C" in ranking_df.columns:
         hot_cities = ranking_df[ranking_df["Avg Temperature_C"] >= 32]["City"].dropna().head(5).tolist()
         if hot_cities:
             city_list = ", ".join(hot_cities)
             pool.append(f"High heat detected in: {city_list}.")
             pool.append(f"Rising temperatures affecting {len(hot_cities)} cities.")
-            pool.append(f"Hot weather conditions reported in multiple locations.")
+            pool.append(f"Hot weather conditions reported in: {city_list}.")            
             pool.append(f"Extreme warmth expected in: {city_list}.")
 
-    # 💧 Humidity alerts
+    # Humidity alerts
     if "Avg Humidity_%" in ranking_df.columns:
         humid_cities = ranking_df[ranking_df["Avg Humidity_%"] >= 80]["City"].dropna().head(5).tolist()
         if humid_cities:
             city_list = ", ".join(humid_cities)
             pool.append(f"Very humid conditions in: {city_list}.")
             pool.append(f"Sticky air conditions affecting {len(humid_cities)} cities.")
-            pool.append(f"High moisture levels detected across regions.")
+            pool.append(f"High moisture levels detected in: {city_list}.")
 
-    # ⚠️ Travel risk alerts
+    # Travel risk alerts
     if "Travel Recommendation" in ranking_df.columns:
         avoid_count = int((ranking_df["Travel Recommendation"] == "Avoid").sum())
         if avoid_count > 0:
-            pool.append(f"{avoid_count} cities are currently classified as 'Avoid'.")
+            avoid_cities = ranking_df[ranking_df["Travel Recommendation"] == "Avoid"]["City"].dropna().head(5).tolist()
+
+        if avoid_cities:
+            city_list = ", ".join(avoid_cities)
+            pool.append(f"Travel warnings active in: {city_list}.")
             pool.append(f"Travel warnings active in {avoid_count} destinations.")
             pool.append(f"Several regions flagged as unsafe for travel.")
 
@@ -1664,7 +1669,6 @@ if filtered_df.empty:
     st.warning("No records match current filters. Try lowering constraints.")
     st.stop()
 
-# ESSENTIAL computations (always needed)
 ranking_df = build_city_ranking(filtered_df)
 ranking_df = apply_sort(ranking_df, sort_option)
 insights = get_high_level_insights(ranking_df)
@@ -1736,6 +1740,10 @@ overview_tab, explorer_tab, source_tab, planner_tab, ai_tab, analytics_tab, all_
 
 with overview_tab:
     panel_start("Overview", "Use this view as the project command center for current rankings, alerts, and country-level summaries.")
+
+    st.markdown('<div class="section-note">Operational alerts from the current filtered dataset</div>', unsafe_allow_html=True)
+    for alert in alerts:
+        st.markdown(f'<div class="alert-card">{alert}</div>', unsafe_allow_html=True)
 
     left, right = st.columns([1.2, 1])
 
@@ -1813,7 +1821,6 @@ with overview_tab:
 
     style_figure(fig_comfort, height=CHART_HEIGHT)
 
-    # ✅ NOW actually full width
     st.plotly_chart(fig_comfort, use_container_width=True)
     st.divider()
 
@@ -1911,10 +1918,6 @@ with overview_tab:
             )
             style_figure(fig_country, height=420)
             st.plotly_chart(fig_country, use_container_width=True)
-    
-    st.markdown('<div class="section-note">Operational alerts from the current filtered dataset</div>', unsafe_allow_html=True)
-    for alert in alerts:
-        st.markdown(f'<div class="alert-card">{alert}</div>', unsafe_allow_html=True)
 
     panel_end()
 with explorer_tab:

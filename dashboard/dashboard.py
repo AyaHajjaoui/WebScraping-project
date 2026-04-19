@@ -489,16 +489,6 @@ def get_high_level_insights(_ranking: pd.DataFrame) -> dict:
     return insights
 
 
-def get_data_freshness(_df: pd.DataFrame) -> str:
-    """Human-readable freshness summary for the dataset."""
-    df = _df.copy()
-    if "ScrapeDateTime" in df.columns and df["ScrapeDateTime"].notna().any():
-        return str(df["ScrapeDateTime"].max())
-    if "Date" in df.columns and df["Date"].notna().any():
-        return str(df["Date"].max().date())
-    return "Unknown"
-
-
 def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
     """Generate practical travel tips based on city averages."""
     tips = []
@@ -864,18 +854,6 @@ def build_eda_snapshot(_weather_df: pd.DataFrame, _ranking_df: pd.DataFrame) -> 
     return pd.DataFrame(rows)
 
 
-def format_timestamp_label(value: str) -> str:
-    """Format dataset freshness into a compact readable label."""
-    try:
-        dt = pd.to_datetime(value)
-    except Exception:
-        return str(value)
-
-    if pd.isna(dt):
-        return "Unknown"
-    return dt.strftime("%d %b %Y, %H:%M")
-
-
 def build_score_band_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
     """Bucket comfort scores into simple bands for overview distribution."""
     ranking_df = _ranking_df.copy()
@@ -896,7 +874,7 @@ def build_score_band_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_source_health_summary(_df: pd.DataFrame) -> pd.DataFrame:
-    """Summarize source coverage, freshness, and average conditions."""
+    """Summarize source coverage and average conditions."""
     df = _df.copy()
     if df.empty or "SourceWebsite" not in df.columns:
         return pd.DataFrame()
@@ -914,16 +892,6 @@ def build_source_health_summary(_df: pd.DataFrame) -> pd.DataFrame:
             .reset_index()
         )
         source_summary = source_summary.merge(country_counts, on="SourceWebsite", how="left")
-
-    if "ScrapeDateTime" in df.columns:
-        latest_scrape = (
-            df.groupby("SourceWebsite")["ScrapeDateTime"]
-            .max()
-            .rename("Latest Update")
-            .reset_index()
-        )
-        latest_scrape["Latest Update"] = pd.to_datetime(latest_scrape["Latest Update"], errors="coerce").dt.strftime("%d %b %Y, %H:%M")
-        source_summary = source_summary.merge(latest_scrape, on="SourceWebsite", how="left")
 
     for metric in ["Temperature_C", "Humidity_%", "WindSpeed_kmh", "Comfort Score"]:
         if metric in df.columns:
@@ -987,7 +955,7 @@ def build_country_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_all_cities_table(_filtered_df: pd.DataFrame, _ranking_df: pd.DataFrame) -> pd.DataFrame:
-    """Create an operational all-cities table with freshness and source coverage."""
+    """Create an operational all-cities table with source coverage."""
     filtered_df = _filtered_df.copy()
     ranking_df = _ranking_df.copy()
     if ranking_df.empty:
@@ -1012,16 +980,6 @@ def build_all_cities_table(_filtered_df: pd.DataFrame, _ranking_df: pd.DataFrame
             .reset_index()
         )
         details = details.merge(source_counts, on="City", how="left")
-
-    if "ScrapeDateTime" in filtered_df.columns:
-        freshness = (
-            filtered_df.groupby("City")["ScrapeDateTime"]
-            .max()
-            .rename("Last Updated")
-            .reset_index()
-        )
-        details = details.merge(freshness, on="City", how="left")
-        details["Last Updated"] = pd.to_datetime(details["Last Updated"], errors="coerce").dt.strftime("%d %b %Y, %H:%M")
 
     return details
 
@@ -1849,14 +1807,12 @@ if filtered_df.empty:
 ranking_df = build_city_ranking(filtered_df)
 ranking_df = apply_sort(ranking_df, sort_option)
 insights = get_high_level_insights(ranking_df)
-last_updated = get_data_freshness(filtered_df)
 snapshot_df = filter_latest_per_city_source(filtered_df)
 snapshot_ranking_df = build_city_ranking(snapshot_df)
 source_health_df = build_source_health_summary(filtered_df)
 source_health_display_df = prepare_display_df(
     source_health_df,
     [
-        "Latest Update",
         "Avg Temp (C)",
         "Avg Humidity (%)",
         "Avg Wind (km/h)",
@@ -1889,7 +1845,6 @@ city_count = ranking_df["City"].nunique() if "City" in ranking_df.columns else 0
 record_count = len(filtered_df)
 snapshot_city_count = snapshot_ranking_df["City"].nunique() if "City" in snapshot_ranking_df.columns and not snapshot_ranking_df.empty else 0
 country_count = ranking_df["Country"].nunique() if "Country" in ranking_df.columns else 0
-last_updated_label = format_timestamp_label(last_updated)
 top_city_options = ranking_df["City"].head(min(top_n, len(ranking_df))).tolist()
 compare_default = top_city_options[: min(3, len(top_city_options))]
 
@@ -1898,7 +1853,6 @@ active_filters = [
     f'<span class="active-filter">{len(selected_sources)} sources</span>',
     f'<span class="active-filter">{record_count} records</span>',
     f'<span class="active-filter">Comfort >= {min_comfort}</span>',
-    f'<span class="active-filter">Updated {last_updated_label}</span>',
 ]
 if use_latest_only:
     active_filters.append('<span class="active-filter">Latest records only</span>')
@@ -1912,7 +1866,7 @@ with c2:
 with c3:
     metric_tile("Average comfort", f"{avg_comfort:.1f}" if pd.notna(avg_comfort) else "N/A", "Across filtered cities")
 with c4:
-    metric_tile("Coverage", f"{int(city_count)} cities - {int(country_count)} countries", f"Freshness: {last_updated_label}")
+    metric_tile("Coverage", f"{int(city_count)} cities - {int(country_count)} countries", "Across current filters")
 
 overview_tab, explorer_tab, source_tab, planner_tab, ai_tab, analytics_tab, all_cities_tab = st.tabs(
     ["Overview", "City Explorer", "Source Quality", "Trip Planner", "AI Recommender", "Insights Center", "All Cities"]
@@ -2678,7 +2632,7 @@ with analytics_tab:
     panel_end()
 
 with all_cities_tab:
-    panel_start("All Cities", "Use this table as the operational dataset view: search, slice, and export city-level results with freshness and source coverage.")
+    panel_start("All Cities", "Use this table as the operational dataset view: search, slice, and export city-level results with source coverage.")
     st.subheader("All Filtered Cities")
 
     search_col, filter_col1, filter_col2 = st.columns([1.2, 1, 1])

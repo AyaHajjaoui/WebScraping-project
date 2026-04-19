@@ -1,4 +1,3 @@
-from multiprocessing import pool
 import os
 import re
 import importlib.util
@@ -6,7 +5,6 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 import random
-import pandas as pd
 
 
 COLORS = {
@@ -32,6 +30,12 @@ def load_data(path: str) -> pd.DataFrame:
         return pd.read_csv(path)
     except Exception:
         return pd.DataFrame()
+
+
+@st.cache_data(show_spinner=False)
+def load_and_prepare_data(path: str = DATA_PATH) -> pd.DataFrame:
+    """Read and preprocess the dashboard dataset once per file change."""
+    return clean_data(load_data(path))
 
 
 PLACEHOLDER_NA_VALUES = {"", "-", "N/A", "NA", "None", "nan", "null"}
@@ -144,8 +148,10 @@ def travel_recommendation(score: float) -> str:
     return "Avoid"
 
 
-def clean_data(df: pd.DataFrame) -> pd.DataFrame:
+@st.cache_data(show_spinner=False)
+def clean_data(_df: pd.DataFrame) -> pd.DataFrame:
     """Normalize columns and compute comfort metrics."""
+    df = _df.copy()
     if df.empty:
         return df
 
@@ -205,8 +211,10 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     return data
 
 
-def filter_latest_per_city_source(df: pd.DataFrame) -> pd.DataFrame:
+@st.cache_data(show_spinner=False)
+def filter_latest_per_city_source(_df: pd.DataFrame) -> pd.DataFrame:
     """Keep most recent row for each city/source pair."""
+    df = _df.copy()
     if df.empty or "City" not in df.columns or "SourceWebsite" not in df.columns:
         return df
 
@@ -219,8 +227,79 @@ def filter_latest_per_city_source(df: pd.DataFrame) -> pd.DataFrame:
     return temp.drop_duplicates(subset=["City", "SourceWebsite"], keep="last")
 
 
-def build_city_ranking(df: pd.DataFrame) -> pd.DataFrame:
+@st.cache_data(show_spinner=False)
+def get_filter_options(_weather_df: pd.DataFrame) -> tuple[list[str], list[str], list[str]]:
+    """Build reusable filter option lists from the prepared dataset."""
+    weather_df = _weather_df.copy()
+    city_options = sorted(weather_df["City"].dropna().unique().tolist()) if "City" in weather_df.columns else []
+    country_options = sorted(weather_df["Country"].dropna().unique().tolist()) if "Country" in weather_df.columns else []
+    source_options = (
+        sorted(weather_df["SourceWebsite"].dropna().unique().tolist())
+        if "SourceWebsite" in weather_df.columns
+        else []
+    )
+    return city_options, country_options, source_options
+
+
+@st.cache_data(show_spinner=False)
+def get_city_options(
+    _df: pd.DataFrame,
+    selected_countries: tuple[str, ...],
+    selected_sources: tuple[str, ...],
+) -> list[str]:
+    """Return city options for the sidebar based on country/source filters."""
+    df = _df.copy()
+    if df.empty or "City" not in df.columns:
+        return []
+
+    city_pool_df = df
+    if selected_countries and "Country" in city_pool_df.columns:
+        city_pool_df = city_pool_df[city_pool_df["Country"].isin(selected_countries)]
+
+    if selected_sources and "SourceWebsite" in city_pool_df.columns:
+        city_pool_df = city_pool_df[city_pool_df["SourceWebsite"].isin(selected_sources)]
+
+    return sorted(city_pool_df["City"].dropna().unique().tolist())
+
+
+@st.cache_data(show_spinner=False)
+def apply_dashboard_filters(
+    _df: pd.DataFrame,
+    selected_countries: tuple[str, ...],
+    selected_cities: tuple[str, ...],
+    selected_sources: tuple[str, ...],
+    use_latest_only: bool,
+    min_comfort: int,
+) -> pd.DataFrame:
+    """Apply dashboard filters once and reuse the result across the app."""
+    df = _df.copy()
+    if df.empty:
+        return df
+
+    filtered_df = df
+
+    if selected_countries and "Country" in filtered_df.columns:
+        filtered_df = filtered_df[filtered_df["Country"].isin(selected_countries)]
+
+    if selected_cities and "City" in filtered_df.columns:
+        filtered_df = filtered_df[filtered_df["City"].isin(selected_cities)]
+
+    if selected_sources and "SourceWebsite" in filtered_df.columns:
+        filtered_df = filtered_df[filtered_df["SourceWebsite"].isin(selected_sources)]
+
+    if use_latest_only:
+        filtered_df = filter_latest_per_city_source(filtered_df)
+
+    if "Comfort Score" in filtered_df.columns:
+        filtered_df = filtered_df[filtered_df["Comfort Score"] >= min_comfort]
+
+    return filtered_df
+
+
+@st.cache_data(show_spinner=False)
+def build_city_ranking(_df: pd.DataFrame) -> pd.DataFrame:
     """Build city-level aggregation used by KPI cards and tables."""
+    df = _df.copy()
     if df.empty or "City" not in df.columns:
         return pd.DataFrame()
 
@@ -284,8 +363,10 @@ def build_city_ranking(df: pd.DataFrame) -> pd.DataFrame:
     return ranking[cols]
 
 
-def build_source_summary(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+@st.cache_data(show_spinner=False)
+def build_source_summary(_df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Return temperature by source, wind by source, and city disagreement table."""
+    df = _df.copy()
     temp_by_source = pd.DataFrame()
     wind_by_source = pd.DataFrame()
     disagreement = pd.DataFrame()
@@ -327,8 +408,10 @@ def build_source_summary(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, 
     return temp_by_source, wind_by_source, disagreement
 
 
-def best_hour_analysis(df: pd.DataFrame) -> pd.DataFrame:
+@st.cache_data(show_spinner=False)
+def best_hour_analysis(_df: pd.DataFrame) -> pd.DataFrame:
     """Find best hour by city when timestamp detail is sufficient."""
+    df = _df.copy()
     if df.empty or "ScrapeDateTime" not in df.columns or "Comfort Score" not in df.columns:
         return pd.DataFrame()
 
@@ -370,8 +453,10 @@ def apply_sort(ranking: pd.DataFrame, option: str) -> pd.DataFrame:
     return ranking
 
 
-def get_high_level_insights(ranking: pd.DataFrame) -> dict:
+@st.cache_data(show_spinner=False)
+def get_high_level_insights(_ranking: pd.DataFrame) -> dict:
     """Create practical quick insights from ranking table."""
+    ranking = _ranking.copy()
     insights = {
         "best_city": "N/A",
         "worst_city": "N/A",
@@ -413,8 +498,10 @@ def get_high_level_insights(ranking: pd.DataFrame) -> dict:
     return insights
 
 
-def get_data_freshness(df: pd.DataFrame) -> str:
+@st.cache_data(show_spinner=False)
+def get_data_freshness(_df: pd.DataFrame) -> str:
     """Human-readable freshness summary for the dataset."""
+    df = _df.copy()
     if "ScrapeDateTime" in df.columns and df["ScrapeDateTime"].notna().any():
         return str(df["ScrapeDateTime"].max())
     if "Date" in df.columns and df["Date"].notna().any():
@@ -665,8 +752,11 @@ def run_ml_analysis_dashboard(data_path: str = DATA_PATH) -> tuple[pd.DataFrame,
     return results_df, str(best_model_name), importance_df
 
 
-def build_eda_snapshot(weather_df: pd.DataFrame, ranking_df: pd.DataFrame) -> pd.DataFrame:
+@st.cache_data(show_spinner=False)
+def build_eda_snapshot(_weather_df: pd.DataFrame, _ranking_df: pd.DataFrame) -> pd.DataFrame:
     """Create compact EDA metrics for dashboard display."""
+    weather_df = _weather_df.copy()
+    ranking_df = _ranking_df.copy()
     if weather_df.empty:
         return pd.DataFrame()
 
@@ -701,8 +791,10 @@ def format_timestamp_label(value: str) -> str:
     return dt.strftime("%d %b %Y, %H:%M")
 
 
-def build_score_band_summary(ranking_df: pd.DataFrame) -> pd.DataFrame:
+@st.cache_data(show_spinner=False)
+def build_score_band_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
     """Bucket comfort scores into simple bands for overview distribution."""
+    ranking_df = _ranking_df.copy()
     if ranking_df.empty or "Comfort Score" not in ranking_df.columns:
         return pd.DataFrame()
 
@@ -719,8 +811,10 @@ def build_score_band_summary(ranking_df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def build_source_health_summary(df: pd.DataFrame) -> pd.DataFrame:
+@st.cache_data(show_spinner=False)
+def build_source_health_summary(_df: pd.DataFrame) -> pd.DataFrame:
     """Summarize source coverage, freshness, and average conditions."""
+    df = _df.copy()
     if df.empty or "SourceWebsite" not in df.columns:
         return pd.DataFrame()
 
@@ -782,8 +876,10 @@ def build_source_health_summary(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def build_country_summary(ranking_df: pd.DataFrame) -> pd.DataFrame:
+@st.cache_data(show_spinner=False)
+def build_country_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
     """Aggregate average comfort and city counts by country."""
+    ranking_df = _ranking_df.copy()
     if ranking_df.empty or "Country" not in ranking_df.columns:
         return pd.DataFrame()
 
@@ -808,8 +904,11 @@ def build_country_summary(ranking_df: pd.DataFrame) -> pd.DataFrame:
     return country_summary.sort_values(["Avg Comfort Score", "Cities"], ascending=[False, False])
 
 
-def build_all_cities_table(filtered_df: pd.DataFrame, ranking_df: pd.DataFrame) -> pd.DataFrame:
+@st.cache_data(show_spinner=False)
+def build_all_cities_table(_filtered_df: pd.DataFrame, _ranking_df: pd.DataFrame) -> pd.DataFrame:
     """Create an operational all-cities table with freshness and source coverage."""
+    filtered_df = _filtered_df.copy()
+    ranking_df = _ranking_df.copy()
     if ranking_df.empty:
         return pd.DataFrame()
 
@@ -846,8 +945,10 @@ def build_all_cities_table(filtered_df: pd.DataFrame, ranking_df: pd.DataFrame) 
     return details
 
 
-def build_source_coverage_matrix(df: pd.DataFrame) -> pd.DataFrame:
+@st.cache_data(show_spinner=False)
+def build_source_coverage_matrix(_df: pd.DataFrame) -> pd.DataFrame:
     """Pivot city/source coverage counts for a compact reliability matrix."""
+    df = _df.copy()
     if df.empty or not all(c in df.columns for c in ["City", "SourceWebsite"]):
         return pd.DataFrame()
 
@@ -863,6 +964,29 @@ def build_source_coverage_matrix(df: pd.DataFrame) -> pd.DataFrame:
     )
     return coverage
 
+
+@st.cache_data(show_spinner=False)
+def filter_all_cities_table(
+    _all_cities_df: pd.DataFrame,
+    city_query: str,
+    recommendation_filter: tuple[str, ...],
+    country_filter_quick: tuple[str, ...],
+) -> pd.DataFrame:
+    """Apply the All Cities tab filters to the prepared city table."""
+    all_cities_df = _all_cities_df.copy()
+
+    if city_query and "City" in all_cities_df.columns:
+        all_cities_df = all_cities_df[
+            all_cities_df["City"].astype(str).str.contains(city_query, case=False, na=False)
+        ]
+    if recommendation_filter and "Travel Recommendation" in all_cities_df.columns:
+        all_cities_df = all_cities_df[all_cities_df["Travel Recommendation"].isin(recommendation_filter)]
+    if country_filter_quick and "Country" in all_cities_df.columns:
+        all_cities_df = all_cities_df[all_cities_df["Country"].isin(country_filter_quick)]
+
+    return all_cities_df
+
+
 def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> list[str]:
     """Generate randomized but meaningful dashboard alerts."""
 
@@ -877,7 +1001,7 @@ def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> lis
         if hot_cities:
             city_list = ", ".join(hot_cities)
             pool.append(f"High heat detected in: {city_list}.")
-            pool.append(f"Rising temperatures affecting {len(hot_cities)} cities.")
+            pool.append(f"Rising temperatures affecting: {city_list}.")
             pool.append(f"Hot weather conditions reported in: {city_list}.")            
             pool.append(f"Extreme warmth expected in: {city_list}.")
 
@@ -887,7 +1011,7 @@ def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> lis
         if humid_cities:
             city_list = ", ".join(humid_cities)
             pool.append(f"Very humid conditions in: {city_list}.")
-            pool.append(f"Sticky air conditions affecting {len(humid_cities)} cities.")
+            pool.append(f"Sticky air conditions affecting: {city_list}.")
             pool.append(f"High moisture levels detected in: {city_list}.")
 
     # Travel risk alerts
@@ -899,7 +1023,7 @@ def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> lis
         if avoid_cities:
             city_list = ", ".join(avoid_cities)
             pool.append(f"Travel warnings active in: {city_list}.")
-            pool.append(f"Travel warnings active in {avoid_count} destinations.")
+            pool.append(f"Travel warnings active for: {city_list}.")
             pool.append(f"Several regions flagged as unsafe for travel.")
 
     if (
@@ -913,7 +1037,7 @@ def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> lis
         if volatile:
             city_list = ", ".join(volatile)
             pool.append(f"Conflicting temperature data in: {city_list}.")
-            pool.append(f"Source disagreement detected across {len(volatile)} cities.")
+            pool.append(f"Source disagreement detected across: {city_list}.")
             pool.append(f"Inconsistent readings found in multiple sources.")
 
     # fallback safety net
@@ -1509,30 +1633,15 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-raw_df = load_data(DATA_PATH)
-if raw_df.empty:
+weather_df = load_and_prepare_data(DATA_PATH)
+if weather_df.empty:
     st.error(
         f"Could not load processed weather data from `{DATA_PATH}`. "
         "Please make sure the file exists and contains data."
     )
     st.stop()
 
-weather_df = clean_data(raw_df)
-if weather_df.empty:
-    st.error("Dataset is empty after cleaning. Please inspect your processed CSV.")
-    st.stop()
-
-city_options = sorted(weather_df["City"].dropna().unique().tolist()) if "City" in weather_df.columns else []
-country_options = (
-    sorted(weather_df["Country"].dropna().unique().tolist())
-    if "Country" in weather_df.columns
-    else []
-)
-source_options = (
-    sorted(weather_df["SourceWebsite"].dropna().unique().tolist())
-    if "SourceWebsite" in weather_df.columns
-    else []
-)
+city_options, country_options, source_options = get_filter_options(weather_df)
 default_top_n = max(5, min(25, len(city_options))) if city_options else 5
 
 if "dashboard_filters_initialized" not in st.session_state:
@@ -1550,6 +1659,7 @@ if "dashboard_filters_initialized" not in st.session_state:
     st.session_state.ml_results = pd.DataFrame()
     st.session_state.ml_best_model = "Not yet computed"
     st.session_state.ml_importance = pd.DataFrame()
+    st.session_state.ai_submitted_request = "I want a cool, dry city with good comfort for walking outside."
 
 st.sidebar.header("Dashboard Filters")
 
@@ -1566,24 +1676,39 @@ if st.sidebar.button("Reset filters", width="stretch"):
     st.session_state.sort_option = "Comfort Score (High to Low)"
     st.rerun()
 
+selected_countries = st.session_state.get("country_filter", [])
+selected_sources = st.session_state.get("source_filter", [])
+use_latest_only = st.session_state.get("use_latest_only", False)
+
 with st.sidebar.expander("Coverage", expanded=False):
-    selected_countries = st.multiselect(
-        "Countries",
-        country_options,
-        key="country_filter",
-        help="Limit the dashboard to one or more countries.",
-    )
-    selected_sources = st.multiselect(
-        "Sources",
-        source_options,
-        key="source_filter",
-        help="Compare only the weather providers you want to keep in view.",
-    )
-    use_latest_only = st.checkbox(
-        "Use latest record per city/source",
-        key="use_latest_only",
-        help="Good for a current snapshot instead of historical rows.",
-    )
+    with st.form("coverage_filters_form"):
+        selected_countries_input = st.multiselect(
+            "Countries",
+            country_options,
+            default=selected_countries,
+            help="Limit the dashboard to one or more countries.",
+        )
+        selected_sources_input = st.multiselect(
+            "Sources",
+            source_options,
+            default=selected_sources,
+            help="Compare only the weather providers you want to keep in view.",
+        )
+        use_latest_only_input = st.checkbox(
+            "Use latest record per city/source",
+            value=use_latest_only,
+            help="Good for a current snapshot instead of historical rows.",
+        )
+        apply_coverage_filters = st.form_submit_button("Apply coverage filters")
+
+    if apply_coverage_filters:
+        st.session_state.country_filter = selected_countries_input
+        st.session_state.source_filter = selected_sources_input
+        st.session_state.use_latest_only = use_latest_only_input
+        selected_countries = selected_countries_input
+        selected_sources = selected_sources_input
+        use_latest_only = use_latest_only_input
+        st.rerun()
 
 with st.sidebar.expander("Cities", expanded=False):
     city_scope = st.radio(
@@ -1593,18 +1718,10 @@ with st.sidebar.expander("Cities", expanded=False):
         help="Keep all cities visible or manually pick a subset.",
     )
 
-    city_pool_df = weather_df.copy()
-
-    if selected_countries and "Country" in city_pool_df.columns:
-        city_pool_df = city_pool_df[city_pool_df["Country"].isin(selected_countries)]
-
-    if selected_sources and "SourceWebsite" in city_pool_df.columns:
-        city_pool_df = city_pool_df[city_pool_df["SourceWebsite"].isin(selected_sources)]
-
-    filtered_city_options = (
-        sorted(city_pool_df["City"].dropna().unique().tolist())
-        if "City" in city_pool_df.columns
-        else []
+    filtered_city_options = get_city_options(
+        weather_df,
+        tuple(selected_countries),
+        tuple(selected_sources),
     )
 
     if city_scope == "Choose cities":
@@ -1647,23 +1764,14 @@ with st.sidebar.expander("Thresholds & ranking", expanded=False):
         key="sort_option",
     )
 
-filtered_df = weather_df.copy()
-
-if selected_countries and "Country" in filtered_df.columns:
-    filtered_df = filtered_df[filtered_df["Country"].isin(selected_countries)]
-
-if selected_cities:
-    filtered_df = filtered_df[filtered_df["City"].isin(selected_cities)]
-
-if selected_sources:
-    filtered_df = filtered_df[filtered_df["SourceWebsite"].isin(selected_sources)]
-
-
-if use_latest_only:
-    filtered_df = filter_latest_per_city_source(filtered_df)
-
-if "Comfort Score" in filtered_df.columns:
-    filtered_df = filtered_df[filtered_df["Comfort Score"] >= min_comfort]
+filtered_df = apply_dashboard_filters(
+    weather_df,
+    tuple(selected_countries),
+    tuple(selected_cities),
+    tuple(selected_sources),
+    use_latest_only,
+    min_comfort,
+)
 
 if filtered_df.empty:
     st.warning("No records match current filters. Try lowering constraints.")
@@ -1924,11 +2032,18 @@ with explorer_tab:
     panel_start("City Explorer", "Inspect one city deeply, compare sources, and review the latest raw observations behind its ranking.")
     st.subheader("City-Level Weather Explorer")
 
+    explorer_city_options = ranking_df["City"].tolist() if "City" in ranking_df.columns else []
+    if explorer_city_options:
+        current_explorer_city = st.session_state.get("explorer_selected_city")
+        if current_explorer_city not in explorer_city_options:
+            st.session_state.explorer_selected_city = explorer_city_options[0]
+
     default_city = ranking_df.iloc[0]["City"] if not ranking_df.empty else None
     selected_city = st.selectbox(
         "Select one city to inspect",
-        options=ranking_df["City"].tolist(),
+        options=explorer_city_options,
         index=0 if default_city is not None else None,
+        key="explorer_selected_city",
     )
 
     city_df = filtered_df[filtered_df["City"] == selected_city].copy()
@@ -2293,9 +2408,12 @@ with ai_tab:
         key="ai_trip_request",
         placeholder="Example: I want a warm beach city with low wind and good comfort.",
     )
+    if st.button("Search recommendations", key="ai_recommend_submit"):
+        st.session_state.ai_submitted_request = ai_request
 
-    ai_rec_df = build_ai_recommendations(ranking_df, best_hour_df, ai_request, top_k=5)
-    st.markdown(build_ai_summary(ai_request, ai_rec_df))
+    submitted_ai_request = st.session_state.get("ai_submitted_request", ai_request)
+    ai_rec_df = build_ai_recommendations(ranking_df, best_hour_df, submitted_ai_request, top_k=5)
+    st.markdown(build_ai_summary(submitted_ai_request, ai_rec_df))
 
     if ai_rec_df.empty:
         st.info("No AI recommendation could be generated from the current data and filters.")
@@ -2513,7 +2631,6 @@ with all_cities_tab:
     panel_start("All Cities", "Use this table as the operational dataset view: search, slice, and export city-level results with freshness and source coverage.")
     st.subheader("All Filtered Cities")
 
-    all_cities_df = all_cities_table.copy()
     search_col, filter_col1, filter_col2 = st.columns([1.2, 1, 1])
     with search_col:
         city_query = st.text_input("Search cities", placeholder="Type a city name", key="all_cities_search")
@@ -2528,14 +2645,12 @@ with all_cities_tab:
             options=sorted(ranking_df["Country"].dropna().unique().tolist()) if "Country" in ranking_df.columns else [],
         )
 
-    if city_query and "City" in all_cities_df.columns:
-        all_cities_df = all_cities_df[
-            all_cities_df["City"].astype(str).str.contains(city_query, case=False, na=False)
-        ]
-    if recommendation_filter and "Travel Recommendation" in all_cities_df.columns:
-        all_cities_df = all_cities_df[all_cities_df["Travel Recommendation"].isin(recommendation_filter)]
-    if country_filter_quick and "Country" in all_cities_df.columns:
-        all_cities_df = all_cities_df[all_cities_df["Country"].isin(country_filter_quick)]
+    all_cities_df = filter_all_cities_table(
+        all_cities_table,
+        city_query,
+        tuple(recommendation_filter),
+        tuple(country_filter_quick),
+    )
 
     if all_cities_df.empty:
         st.info("No cities match the current filters/search.")

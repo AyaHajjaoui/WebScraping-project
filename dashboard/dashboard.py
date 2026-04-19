@@ -148,7 +148,6 @@ def travel_recommendation(score: float) -> str:
     return "Avoid"
 
 
-@st.cache_data(show_spinner=False)
 def clean_data(_df: pd.DataFrame) -> pd.DataFrame:
     """Normalize columns and compute comfort metrics."""
     df = _df.copy()
@@ -211,7 +210,6 @@ def clean_data(_df: pd.DataFrame) -> pd.DataFrame:
     return data
 
 
-@st.cache_data(show_spinner=False)
 def filter_latest_per_city_source(_df: pd.DataFrame) -> pd.DataFrame:
     """Keep most recent row for each city/source pair."""
     df = _df.copy()
@@ -227,7 +225,6 @@ def filter_latest_per_city_source(_df: pd.DataFrame) -> pd.DataFrame:
     return temp.drop_duplicates(subset=["City", "SourceWebsite"], keep="last")
 
 
-@st.cache_data(show_spinner=False)
 def get_filter_options(_weather_df: pd.DataFrame) -> tuple[list[str], list[str], list[str]]:
     """Build reusable filter option lists from the prepared dataset."""
     weather_df = _weather_df.copy()
@@ -241,7 +238,6 @@ def get_filter_options(_weather_df: pd.DataFrame) -> tuple[list[str], list[str],
     return city_options, country_options, source_options
 
 
-@st.cache_data(show_spinner=False)
 def get_city_options(
     _df: pd.DataFrame,
     selected_countries: tuple[str, ...],
@@ -262,7 +258,6 @@ def get_city_options(
     return sorted(city_pool_df["City"].dropna().unique().tolist())
 
 
-@st.cache_data(show_spinner=False)
 def apply_dashboard_filters(
     _df: pd.DataFrame,
     selected_countries: tuple[str, ...],
@@ -296,7 +291,6 @@ def apply_dashboard_filters(
     return filtered_df
 
 
-@st.cache_data(show_spinner=False)
 def build_city_ranking(_df: pd.DataFrame) -> pd.DataFrame:
     """Build city-level aggregation used by KPI cards and tables."""
     df = _df.copy()
@@ -363,7 +357,6 @@ def build_city_ranking(_df: pd.DataFrame) -> pd.DataFrame:
     return ranking[cols]
 
 
-@st.cache_data(show_spinner=False)
 def build_source_summary(_df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Return temperature by source, wind by source, and city disagreement table."""
     df = _df.copy()
@@ -408,7 +401,6 @@ def build_source_summary(_df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame,
     return temp_by_source, wind_by_source, disagreement
 
 
-@st.cache_data(show_spinner=False)
 def best_hour_analysis(_df: pd.DataFrame) -> pd.DataFrame:
     """Find best hour by city when timestamp detail is sufficient."""
     df = _df.copy()
@@ -453,7 +445,6 @@ def apply_sort(ranking: pd.DataFrame, option: str) -> pd.DataFrame:
     return ranking
 
 
-@st.cache_data(show_spinner=False)
 def get_high_level_insights(_ranking: pd.DataFrame) -> dict:
     """Create practical quick insights from ranking table."""
     ranking = _ranking.copy()
@@ -498,7 +489,6 @@ def get_high_level_insights(_ranking: pd.DataFrame) -> dict:
     return insights
 
 
-@st.cache_data(show_spinner=False)
 def get_data_freshness(_df: pd.DataFrame) -> str:
     """Human-readable freshness summary for the dataset."""
     df = _df.copy()
@@ -706,7 +696,10 @@ def load_summary_report(path: str = SUMMARY_REPORT_PATH) -> pd.DataFrame:
 @st.cache_data(show_spinner=False)
 def load_condition_analysis(path: str = CONDITION_ANALYSIS_PATH) -> pd.DataFrame:
     """Load saved normalized-condition analysis output."""
-    return make_arrow_compatible(load_data(path))
+    df = load_data(path)
+    if "ScrapeDateTime" in df.columns:
+        df["ScrapeDateTime"] = parse_datetime(df["ScrapeDateTime"])
+    return make_arrow_compatible(df)
 
 
 @st.cache_data(show_spinner=False)
@@ -752,7 +745,99 @@ def run_ml_analysis_dashboard(data_path: str = DATA_PATH) -> tuple[pd.DataFrame,
     return results_df, str(best_model_name), importance_df
 
 
-@st.cache_data(show_spinner=False)
+def run_ml_analysis_dashboard_from_df(_df: pd.DataFrame) -> tuple[pd.DataFrame, str, pd.DataFrame]:
+    """Run ML analysis against the currently filtered dashboard dataframe."""
+    df = _df.copy()
+    ml_module = load_analysis_module("analysis_ml_dashboard", os.path.join("analysis", "ml_analysis.py"))
+    if ml_module is None:
+        return pd.DataFrame(), "Unavailable", pd.DataFrame()
+
+    X, y = ml_module.prepare_features(df)
+    if len(X) < 10:
+        return pd.DataFrame(), "Not enough data", pd.DataFrame()
+
+    X_train, X_test, y_train, y_test = ml_module.train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+    results_df, best_model_name, best_pipeline = ml_module.train_and_evaluate_models(
+        X_train, X_test, y_train, y_test
+    )
+    if results_df is None:
+        results_df = pd.DataFrame()
+    else:
+        results_df = make_arrow_compatible(results_df.copy().round(4))
+
+    importance_df = pd.DataFrame()
+    if best_pipeline is None:
+        return results_df, str(best_model_name), importance_df
+
+    model = best_pipeline.named_steps["model"]
+    preprocessor = best_pipeline.named_steps["preprocessor"]
+    if hasattr(model, "feature_importances_"):
+        feature_names = preprocessor.get_feature_names_out()
+        importance_df = (
+            pd.DataFrame({"Feature": feature_names, "Importance": model.feature_importances_})
+            .sort_values("Importance", ascending=False)
+            .head(12)
+            .reset_index(drop=True)
+        )
+        importance_df["Importance"] = importance_df["Importance"].round(4)
+        importance_df = make_arrow_compatible(importance_df)
+
+    return results_df, str(best_model_name), importance_df
+
+
+def build_filtered_summary_report(_df: pd.DataFrame) -> pd.DataFrame:
+    """Build a compact summary table from the current filtered dashboard scope."""
+    df = _df.copy()
+    if df.empty:
+        return pd.DataFrame(columns=["Metric", "Value"])
+
+    rows = [{"Metric": "TotalRows", "Value": len(df)}]
+
+    if "SourceWebsite" in df.columns:
+        for source, count in df["SourceWebsite"].value_counts().items():
+            rows.append({"Metric": f"RowsBySource:{source}", "Value": int(count)})
+
+    if "Country" in df.columns:
+        rows.append({"Metric": "UniqueCountries", "Value": int(df["Country"].nunique())})
+
+    if "City" in df.columns:
+        rows.append({"Metric": "UniqueCities", "Value": int(df["City"].nunique())})
+
+    if "Comfort Score" in df.columns:
+        rows.append(
+            {
+                "Metric": "AverageComfortScore",
+                "Value": round(pd.to_numeric(df["Comfort Score"], errors="coerce").mean(), 2),
+            }
+        )
+
+    return pd.DataFrame(rows)
+
+
+def filter_condition_analysis_by_scope(
+    _condition_df: pd.DataFrame,
+    _filtered_weather_df: pd.DataFrame,
+) -> pd.DataFrame:
+    """Restrict condition-analysis rows to the same current dashboard scope."""
+    condition_df = _condition_df.copy()
+    filtered_weather_df = _filtered_weather_df.copy()
+
+    if condition_df.empty or filtered_weather_df.empty:
+        return pd.DataFrame()
+
+    shared_cols = [
+        col for col in ["City", "Country", "SourceWebsite", "ScrapeDateTime"]
+        if col in condition_df.columns and col in filtered_weather_df.columns
+    ]
+    if not shared_cols:
+        return condition_df
+
+    scope_keys = filtered_weather_df[shared_cols].drop_duplicates()
+    return condition_df.merge(scope_keys, on=shared_cols, how="inner")
+
+
 def build_eda_snapshot(_weather_df: pd.DataFrame, _ranking_df: pd.DataFrame) -> pd.DataFrame:
     """Create compact EDA metrics for dashboard display."""
     weather_df = _weather_df.copy()
@@ -791,7 +876,6 @@ def format_timestamp_label(value: str) -> str:
     return dt.strftime("%d %b %Y, %H:%M")
 
 
-@st.cache_data(show_spinner=False)
 def build_score_band_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
     """Bucket comfort scores into simple bands for overview distribution."""
     ranking_df = _ranking_df.copy()
@@ -811,7 +895,6 @@ def build_score_band_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-@st.cache_data(show_spinner=False)
 def build_source_health_summary(_df: pd.DataFrame) -> pd.DataFrame:
     """Summarize source coverage, freshness, and average conditions."""
     df = _df.copy()
@@ -876,7 +959,6 @@ def build_source_health_summary(_df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-@st.cache_data(show_spinner=False)
 def build_country_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
     """Aggregate average comfort and city counts by country."""
     ranking_df = _ranking_df.copy()
@@ -904,7 +986,6 @@ def build_country_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
     return country_summary.sort_values(["Avg Comfort Score", "Cities"], ascending=[False, False])
 
 
-@st.cache_data(show_spinner=False)
 def build_all_cities_table(_filtered_df: pd.DataFrame, _ranking_df: pd.DataFrame) -> pd.DataFrame:
     """Create an operational all-cities table with freshness and source coverage."""
     filtered_df = _filtered_df.copy()
@@ -945,7 +1026,6 @@ def build_all_cities_table(_filtered_df: pd.DataFrame, _ranking_df: pd.DataFrame
     return details
 
 
-@st.cache_data(show_spinner=False)
 def build_source_coverage_matrix(_df: pd.DataFrame) -> pd.DataFrame:
     """Pivot city/source coverage counts for a compact reliability matrix."""
     df = _df.copy()
@@ -965,7 +1045,6 @@ def build_source_coverage_matrix(_df: pd.DataFrame) -> pd.DataFrame:
     return coverage
 
 
-@st.cache_data(show_spinner=False)
 def filter_all_cities_table(
     _all_cities_df: pd.DataFrame,
     city_query: str,
@@ -1017,6 +1096,7 @@ def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> lis
     # Travel risk alerts
     if "Travel Recommendation" in ranking_df.columns:
         avoid_count = int((ranking_df["Travel Recommendation"] == "Avoid").sum())
+        avoid_cities = []
         if avoid_count > 0:
             avoid_cities = ranking_df[ranking_df["Travel Recommendation"] == "Avoid"]["City"].dropna().head(5).tolist()
 
@@ -1681,34 +1761,23 @@ selected_sources = st.session_state.get("source_filter", [])
 use_latest_only = st.session_state.get("use_latest_only", False)
 
 with st.sidebar.expander("Coverage", expanded=False):
-    with st.form("coverage_filters_form"):
-        selected_countries_input = st.multiselect(
-            "Countries",
-            country_options,
-            default=selected_countries,
-            help="Limit the dashboard to one or more countries.",
-        )
-        selected_sources_input = st.multiselect(
-            "Sources",
-            source_options,
-            default=selected_sources,
-            help="Compare only the weather providers you want to keep in view.",
-        )
-        use_latest_only_input = st.checkbox(
-            "Use latest record per city/source",
-            value=use_latest_only,
-            help="Good for a current snapshot instead of historical rows.",
-        )
-        apply_coverage_filters = st.form_submit_button("Apply coverage filters")
-
-    if apply_coverage_filters:
-        st.session_state.country_filter = selected_countries_input
-        st.session_state.source_filter = selected_sources_input
-        st.session_state.use_latest_only = use_latest_only_input
-        selected_countries = selected_countries_input
-        selected_sources = selected_sources_input
-        use_latest_only = use_latest_only_input
-        st.rerun()
+    selected_countries = st.multiselect(
+        "Countries",
+        country_options,
+        key="country_filter",
+        help="Limit the dashboard to one or more countries.",
+    )
+    selected_sources = st.multiselect(
+        "Sources",
+        source_options,
+        key="source_filter",
+        help="Compare only the weather providers you want to keep in view.",
+    )
+    use_latest_only = st.checkbox(
+        "Use latest record per city/source",
+        key="use_latest_only",
+        help="Good for a current snapshot instead of historical rows.",
+    )
 
 with st.sidebar.expander("Cities", expanded=False):
     city_scope = st.radio(
@@ -1799,8 +1868,11 @@ country_summary_df = build_country_summary(ranking_df)
 temp_by_source, wind_by_source, disagreement = build_source_summary(filtered_df)
 alerts = build_alerts(ranking_df, disagreement)
 all_cities_table = build_all_cities_table(filtered_df, ranking_df)
-summary_report_df = load_summary_report()
-condition_analysis_df = load_condition_analysis()
+summary_report_df = build_filtered_summary_report(filtered_df)
+condition_analysis_df = filter_condition_analysis_by_scope(
+    load_condition_analysis(),
+    filtered_df,
+)
 
 ml_results_df = st.session_state.get("ml_results", pd.DataFrame())
 ml_best_model = st.session_state.get("ml_best_model", "Not yet computed")
@@ -2509,26 +2581,8 @@ with analytics_tab:
 
     with ml_subtab:
         st.subheader("Prediction Quality")
-        
-        # Lazy-load ML analysis only when user visits this tab
-        if not st.session_state.get("ml_computed", False):
-            with st.spinner("🔄 Training prediction models... (this may take 30-60 seconds on first load)"):
-                ml_results, ml_best, ml_importance = run_ml_analysis_dashboard()
-                if ml_results is None:
-                    ml_results = pd.DataFrame()
-                if ml_importance is None:
-                    ml_importance = pd.DataFrame()
-                if ml_best is None:
-                    ml_best = "Unavailable"
-                
-                st.session_state.ml_results = ml_results
-                st.session_state.ml_best_model = ml_best
-                st.session_state.ml_importance = ml_importance
-                st.session_state.ml_computed = True
-        
-        ml_results_df = st.session_state.get("ml_results", pd.DataFrame())
-        ml_best_model = st.session_state.get("ml_best_model", "Unavailable")
-        ml_importance_df = st.session_state.get("ml_importance", pd.DataFrame())
+        with st.spinner("🔄 Training prediction models... (this may take 30-60 seconds on first load)"):
+            ml_results_df, ml_best_model, ml_importance_df = run_ml_analysis_dashboard_from_df(filtered_df)
         
         if ml_results_df is None or ml_results_df.empty:
             st.info("Prediction results are unavailable or there is not enough data to train the models.")
@@ -2569,10 +2623,6 @@ with analytics_tab:
             st.info("Weather-language analysis output is not available.")
         else:
             nlp_df = condition_analysis_df.copy()
-            if selected_cities and "City" in nlp_df.columns:
-                nlp_df = nlp_df[nlp_df["City"].isin(selected_cities)]
-            if selected_sources and "SourceWebsite" in nlp_df.columns:
-                nlp_df = nlp_df[nlp_df["SourceWebsite"].isin(selected_sources)]
 
             normalized_counts = (
                 nlp_df["NormalizedCondition"]

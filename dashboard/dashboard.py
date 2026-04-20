@@ -2514,7 +2514,13 @@ with ai_tab:
 
 with analytics_tab:
     panel_start("Insights Center", "Use these views to understand the data, compare recommendation classes, and review how weather descriptions are written.")
-    eda_subtab, ml_subtab, nlp_subtab = st.tabs(["EDA", "ML", "NLP"])
+    eda_subtab, ml_subtab, nlp_subtab = st.tabs(
+        [
+            "Exploratory Data Analysis",
+            "Machine Learning",
+            "Natural Language Processing",
+        ]
+    )
 
     with eda_subtab:
         st.subheader("EDA")

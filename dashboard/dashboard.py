@@ -1,6 +1,7 @@
 import os
 import re
 import importlib.util
+import hashlib
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -79,9 +80,123 @@ def prepare_display_df(df: pd.DataFrame, na_columns: list[str] | None = None) ->
     return display_df
 
 
-@st.cache_resource(show_spinner=False)
+def dataframe_fingerprint(df: pd.DataFrame) -> str:
+    """Build a stable fingerprint so expensive ML work only reruns when data changes."""
+    if df is None or df.empty:
+        return "empty"
+
+    safe_df = df.copy()
+    safe_df = safe_df.reindex(sorted(safe_df.columns), axis=1)
+    hashed = pd.util.hash_pandas_object(safe_df, index=True).values.tobytes()
+    return hashlib.sha256(hashed).hexdigest()
+
+
+@st.cache_resource(
+    show_spinner="Training models (first run only)...",
+    hash_funcs={pd.DataFrame: dataframe_fingerprint},
+)
+def train_models(df: pd.DataFrame) -> dict[str, object]:
+    """
+    Train the classification workflow once for a given dataframe and reuse it across reruns.
+
+    This cached resource handles:
+    - preprocessing
+    - stratified train/test split
+    - baseline training
+    - tuned/final model training
+    - metric computation
+    - confusion matrix and class report generation
+    - feature importance extraction
+    """
+    df_local = df.copy()
+    ml_module = load_analysis_module("analysis_ml_dashboard", os.path.join("analysis", "ml_analysis.py"))
+    empty_result = {
+        "comparison_df": pd.DataFrame(),
+        "baseline_comparison_df": pd.DataFrame(),
+        "experiment_flow_df": pd.DataFrame(),
+        "preprocessing_summary_df": pd.DataFrame(),
+        "tuning_summary_df": pd.DataFrame(),
+        "best_model_name": "Unavailable",
+        "feature_importance_df": pd.DataFrame(),
+        "feature_importance_text": "Classification results are unavailable.",
+        "class_distribution_df": pd.DataFrame(),
+        "classification_report_df": pd.DataFrame(),
+        "class_metric_chart_df": pd.DataFrame(),
+        "confusion_matrix_df": pd.DataFrame(),
+        "confusion_pairs_df": pd.DataFrame(),
+        "confusion_summary": "Classification results are unavailable.",
+        "bias_summary": "Classification results are unavailable.",
+        "final_model_reasoning": "Classification results are unavailable.",
+        "best_pipeline": None,
+        "feature_frame": pd.DataFrame(),
+    }
+    if ml_module is None:
+        return empty_result
+
+    prepared = ml_module.prepare_features(df_local)
+    if not isinstance(prepared, tuple) or len(prepared) != 4:
+        empty_result["best_model_name"] = "Module reload needed"
+        empty_result["bias_summary"] = (
+            "The ML analysis module returned an outdated result shape. "
+            "Please rerun the dashboard so the latest classification module is loaded."
+        )
+        return empty_result
+
+    X, y, _, class_distribution_df = prepared
+    min_rows = int(getattr(ml_module, "MIN_TRAINING_ROWS", 20))
+    if len(X) < min_rows or y.nunique() < 2:
+        empty_result["best_model_name"] = "Not enough data"
+        empty_result["bias_summary"] = "There are not enough rows or classes to train a classification model."
+        empty_result["class_distribution_df"] = make_arrow_compatible(class_distribution_df.copy())
+        empty_result["feature_frame"] = X.copy()
+        return empty_result
+
+    class_counts = y.value_counts()
+    if not class_counts.empty and int(class_counts.min()) < 2:
+        empty_result["best_model_name"] = "Class imbalance too severe"
+        empty_result["bias_summary"] = "At least one class has fewer than two rows, so a stratified train/test split would not be reliable."
+        empty_result["class_distribution_df"] = make_arrow_compatible(class_distribution_df.copy())
+        empty_result["feature_frame"] = X.copy()
+        return empty_result
+
+    X_train, X_test, y_train, y_test = ml_module.train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y
+    )
+    comparison_df, best_model_name, best_pipeline, best_artifacts = ml_module.train_and_evaluate_models(
+        X_train, X_test, y_train, y_test, class_distribution_df=class_distribution_df
+    )
+    feature_importance_df = ml_module.get_feature_importance(best_pipeline)
+    feature_importance_text = ml_module.summarize_feature_importance(feature_importance_df)
+
+    return {
+        "comparison_df": make_arrow_compatible(comparison_df.copy().round(4)),
+        "baseline_comparison_df": make_arrow_compatible(best_artifacts["baseline_comparison_df"].copy().round(4)),
+        "experiment_flow_df": make_arrow_compatible(best_artifacts["experiment_flow_df"].copy().round(4)),
+        "preprocessing_summary_df": make_arrow_compatible(best_artifacts["preprocessing_summary_df"].copy()),
+        "tuning_summary_df": make_arrow_compatible(best_artifacts["tuning_summary_df"].copy().round(4)),
+        "best_model_name": str(best_model_name),
+        "feature_importance_df": make_arrow_compatible(feature_importance_df.copy().round(4)),
+        "feature_importance_text": str(feature_importance_text),
+        "class_distribution_df": make_arrow_compatible(class_distribution_df.copy()),
+        "classification_report_df": make_arrow_compatible(best_artifacts["classification_report_df"].copy().round(4)),
+        "class_metric_chart_df": make_arrow_compatible(best_artifacts["class_metric_chart_df"].copy().round(4)),
+        "confusion_matrix_df": make_arrow_compatible(best_artifacts["confusion_matrix_df"].copy()),
+        "confusion_pairs_df": make_arrow_compatible(best_artifacts["confusion_pairs_df"].copy()),
+        "confusion_summary": str(best_artifacts["confusion_summary"]),
+        "bias_summary": str(best_artifacts["bias_summary"]),
+        "final_model_reasoning": str(best_artifacts["final_model_reasoning"]),
+        "best_pipeline": best_pipeline,
+        "feature_frame": X.copy(),
+    }
+
+
 def load_analysis_module(module_name: str, relative_path: str):
-    """Load a local analysis module by file path."""
+    """Load a local analysis module by file path.
+
+    This is intentionally not cached because the analysis modules change during
+    development, and Streamlit resource caching can keep an older module object
+    alive after the file has been refactored.
+    """
     module_path = os.path.join(BASE_DIR, relative_path)
     if not os.path.exists(module_path):
         return None
@@ -693,88 +808,15 @@ def load_condition_analysis(path: str = CONDITION_ANALYSIS_PATH) -> pd.DataFrame
 
 
 @st.cache_data(show_spinner=False)
-def run_ml_analysis_dashboard(data_path: str = DATA_PATH) -> tuple[pd.DataFrame, str, pd.DataFrame]:
-    """Run ML analysis module and return model comparison, best model, and top feature importances."""
-    ml_module = load_analysis_module("analysis_ml_dashboard", os.path.join("analysis", "ml_analysis.py"))
-    if ml_module is None:
-        return pd.DataFrame(), "Unavailable", pd.DataFrame()
-
-    df = ml_module.load_data(data_path)
-    X, y = ml_module.prepare_features(df)
-    if len(X) < 10:
-        return pd.DataFrame(), "Not enough data", pd.DataFrame()
-
-    X_train, X_test, y_train, y_test = ml_module.train_test_split(
-        X, y, test_size=0.2, random_state=42
-    )
-    results_df, best_model_name, best_pipeline = ml_module.train_and_evaluate_models(
-        X_train, X_test, y_train, y_test
-    )
-    if results_df is None:
-        results_df = pd.DataFrame()
-    else:
-        results_df = make_arrow_compatible(results_df.copy().round(4))
-
-    importance_df = pd.DataFrame()
-    if best_pipeline is None:
-        return results_df, str(best_model_name), importance_df
-
-    model = best_pipeline.named_steps["model"]
-    preprocessor = best_pipeline.named_steps["preprocessor"]
-    if hasattr(model, "feature_importances_"):
-        feature_names = preprocessor.get_feature_names_out()
-        importance_df = (
-            pd.DataFrame({"Feature": feature_names, "Importance": model.feature_importances_})
-            .sort_values("Importance", ascending=False)
-            .head(12)
-            .reset_index(drop=True)
-        )
-        importance_df["Importance"] = importance_df["Importance"].round(4)
-        importance_df = make_arrow_compatible(importance_df)
-
-    return results_df, str(best_model_name), importance_df
+def run_ml_analysis_dashboard(data_path: str = DATA_PATH) -> dict[str, object]:
+    """Run classification analysis from disk and return dashboard-safe summary artifacts."""
+    df = load_data(data_path)
+    return train_models(df)
 
 
-def run_ml_analysis_dashboard_from_df(_df: pd.DataFrame) -> tuple[pd.DataFrame, str, pd.DataFrame]:
-    """Run ML analysis against the currently filtered dashboard dataframe."""
-    df = _df.copy()
-    ml_module = load_analysis_module("analysis_ml_dashboard", os.path.join("analysis", "ml_analysis.py"))
-    if ml_module is None:
-        return pd.DataFrame(), "Unavailable", pd.DataFrame()
-
-    X, y = ml_module.prepare_features(df)
-    if len(X) < 10:
-        return pd.DataFrame(), "Not enough data", pd.DataFrame()
-
-    X_train, X_test, y_train, y_test = ml_module.train_test_split(
-        X, y, test_size=0.2, random_state=42
-    )
-    results_df, best_model_name, best_pipeline = ml_module.train_and_evaluate_models(
-        X_train, X_test, y_train, y_test
-    )
-    if results_df is None:
-        results_df = pd.DataFrame()
-    else:
-        results_df = make_arrow_compatible(results_df.copy().round(4))
-
-    importance_df = pd.DataFrame()
-    if best_pipeline is None:
-        return results_df, str(best_model_name), importance_df
-
-    model = best_pipeline.named_steps["model"]
-    preprocessor = best_pipeline.named_steps["preprocessor"]
-    if hasattr(model, "feature_importances_"):
-        feature_names = preprocessor.get_feature_names_out()
-        importance_df = (
-            pd.DataFrame({"Feature": feature_names, "Importance": model.feature_importances_})
-            .sort_values("Importance", ascending=False)
-            .head(12)
-            .reset_index(drop=True)
-        )
-        importance_df["Importance"] = importance_df["Importance"].round(4)
-        importance_df = make_arrow_compatible(importance_df)
-
-    return results_df, str(best_model_name), importance_df
+def run_ml_analysis_dashboard_from_df(_df: pd.DataFrame) -> dict[str, object]:
+    """Run classification analysis against the currently filtered dashboard dataframe."""
+    return train_models(_df)
 
 
 def build_filtered_summary_report(_df: pd.DataFrame) -> pd.DataFrame:
@@ -1693,10 +1735,6 @@ if "dashboard_filters_initialized" not in st.session_state:
     st.session_state.min_comfort = 0
     st.session_state.top_n = default_top_n
     st.session_state.sort_option = "Comfort Score (High to Low)"
-    st.session_state.ml_computed = False
-    st.session_state.ml_results = pd.DataFrame()
-    st.session_state.ml_best_model = "Not yet computed"
-    st.session_state.ml_importance = pd.DataFrame()
     st.session_state.ai_submitted_request = "I want a cool, dry city with good comfort for walking outside."
 
 st.sidebar.header("Dashboard Filters")
@@ -2475,11 +2513,11 @@ with ai_tab:
     panel_end()
 
 with analytics_tab:
-    panel_start("Insights Center", "Use these views to understand the data, check forecast-prediction quality, and review how weather descriptions are written.")
-    eda_subtab, ml_subtab, nlp_subtab = st.tabs(["Data Overview", "Prediction Quality", "Weather Language"])
+    panel_start("Insights Center", "Use these views to understand the data, compare recommendation classes, and review how weather descriptions are written.")
+    eda_subtab, ml_subtab, nlp_subtab = st.tabs(["EDA", "ML", "NLP"])
 
     with eda_subtab:
-        st.subheader("Data Overview")
+        st.subheader("EDA")
         if not eda_snapshot_df.empty:
             st.dataframe(eda_snapshot_df, width="stretch", hide_index=True)
 
@@ -2534,45 +2572,346 @@ with analytics_tab:
                 st.plotly_chart(fig_source_volume, width="stretch")
 
     with ml_subtab:
-        st.subheader("Prediction Quality")
-        with st.spinner("🔄 Training prediction models... (this may take 30-60 seconds on first load)"):
-            ml_results_df, ml_best_model, ml_importance_df = run_ml_analysis_dashboard_from_df(filtered_df)
-        
-        if ml_results_df is None or ml_results_df.empty:
-            st.info("Prediction results are unavailable or there is not enough data to train the models.")
-        else:
-            st.markdown(f"**Best prediction model:** {ml_best_model}")
-            st.dataframe(ml_results_df, width="stretch", hide_index=True)
+        st.subheader("ML")
+        ml_results = run_ml_analysis_dashboard_from_df(filtered_df)
 
-            fig_ml = px.bar(
-                ml_results_df,
-                x="Model",
-                y="RMSE",
-                color="Model",
-                title="Model RMSE Comparison",
-                color_discrete_sequence=[PALETTE["blue"], PALETTE["teal"], PALETTE["accent"]],
-                text_auto=".3f",
-            )
-            style_figure(fig_ml, height=360)
-            st.plotly_chart(fig_ml, width="stretch")
+        ml_results_df = ml_results["comparison_df"]
+        ml_baseline_df = ml_results["baseline_comparison_df"]
+        ml_experiment_df = ml_results["experiment_flow_df"]
+        ml_preprocessing_df = ml_results["preprocessing_summary_df"]
+        ml_tuning_df = ml_results["tuning_summary_df"]
+        ml_best_model = ml_results["best_model_name"]
+        ml_importance_df = ml_results["feature_importance_df"]
+        ml_importance_text = ml_results["feature_importance_text"]
+        ml_class_distribution_df = ml_results["class_distribution_df"]
+        ml_report_df = ml_results["classification_report_df"]
+        ml_class_metric_chart_df = ml_results["class_metric_chart_df"]
+        ml_confusion_df = ml_results["confusion_matrix_df"]
+        ml_confusion_pairs_df = ml_results["confusion_pairs_df"]
+        ml_confusion_summary = ml_results["confusion_summary"]
+        ml_bias_summary = ml_results["bias_summary"]
+        ml_final_model_reasoning = ml_results["final_model_reasoning"]
+        ml_best_pipeline = ml_results["best_pipeline"]
+        ml_feature_frame = ml_results["feature_frame"]
+
+        if ml_results_df is None or ml_results_df.empty:
+            st.info("Classification results are unavailable or there is not enough data to train the models.")
+        else:
+            percent_cols = ["Accuracy", "Precision", "Recall", "F1-Score", "Weighted F1", "Macro F1", "Percentage"]
+            def format_percent_df(df: pd.DataFrame) -> pd.DataFrame:
+                display_df = df.copy()
+                for col in percent_cols:
+                    if col in display_df.columns:
+                        display_df[col] = (pd.to_numeric(display_df[col], errors="coerce") * 100).round(1)
+                return display_df
+
+            def add_model_labels(df: pd.DataFrame) -> pd.DataFrame:
+                labeled_df = df.copy()
+                if "Model" in labeled_df.columns:
+                    labeled_df["Model Label"] = (
+                        labeled_df["Model"]
+                        .replace(
+                            {
+                                "Logistic Regression": "Logistic",
+                                "Decision Tree Classifier": "Decision Tree",
+                                "Random Forest Classifier": "Random Forest",
+                                "Tuned Random Forest": "Tuned RF",
+                                "Tuned Decision Tree": "Tuned Tree",
+                            }
+                        )
+                    )
+                return labeled_df
+
+            best_row = ml_results_df.iloc[0]
+            baseline_display_df = format_percent_df(add_model_labels(ml_baseline_df))
+            experiment_display_df = format_percent_df(add_model_labels(ml_experiment_df))
+            tuning_display_df = format_percent_df(add_model_labels(ml_tuning_df))
+            class_distribution_display_df = ml_class_distribution_df.copy()
+            if "Percentage" in class_distribution_display_df.columns:
+                class_distribution_display_df["Percentage"] = pd.to_numeric(class_distribution_display_df["Percentage"], errors="coerce").round(1)
+            report_display_df = format_percent_df(ml_report_df)
+            class_metric_chart_plot_df = ml_class_metric_chart_df.copy()
+            if "Score" in class_metric_chart_plot_df.columns:
+                class_metric_chart_plot_df["Score Percent"] = pd.to_numeric(class_metric_chart_plot_df["Score"], errors="coerce") * 100
+
+            st.subheader("Data Preparation Summary")
+            prep_left, prep_right = st.columns([1.05, 0.95])
+            with prep_left:
+                st.dataframe(ml_preprocessing_df, width="stretch", hide_index=True)
+            with prep_right:
+                st.markdown("**Target classes**: Ideal, Good, Moderate, Avoid")
+                st.markdown("**Target creation**: The label is derived from the travel comfort score already used elsewhere in the dashboard.")
+                st.markdown("**Split strategy**: Stratified train/test split keeps the recommendation classes proportionally represented.")
+
+            st.subheader("Baseline Model Performance")
+            baseline_left, baseline_right = st.columns([0.95, 1.25])
+            with baseline_left:
+                st.dataframe(baseline_display_df, width="stretch", hide_index=True)
+            with baseline_right:
+                baseline_plot_df = add_model_labels(ml_baseline_df)
+                base_acc = px.bar(
+                    baseline_plot_df,
+                    x="Model Label",
+                    y="Accuracy",
+                    color="Model Label",
+                    title="Baseline Accuracy",
+                    text_auto=".1%",
+                    color_discrete_sequence=[PALETTE["blue"], PALETTE["teal"], PALETTE["accent"]],
+                )
+                base_acc.update_yaxes(tickformat=".0%")
+                style_figure(base_acc, height=360)
+                st.plotly_chart(base_acc, width="stretch")
+
+            st.subheader("Tuned Model Comparison")
+            tune_left, tune_right = st.columns([0.95, 1.25])
+            with tune_left:
+                st.dataframe(tuning_display_df, width="stretch", hide_index=True)
+            with tune_right:
+                experiment_plot_df = add_model_labels(ml_experiment_df)
+                tuned_wf1 = px.bar(
+                    experiment_plot_df,
+                    x="Model Label",
+                    y="Weighted F1",
+                    color="Stage",
+                    barmode="group",
+                    title="Baseline vs Tuned Weighted F1",
+                    text_auto=".1%",
+                    color_discrete_sequence=[PALETTE["stone"], PALETTE["accent"]],
+                )
+                tuned_wf1.update_yaxes(tickformat=".0%")
+                style_figure(tuned_wf1, height=360)
+                st.plotly_chart(tuned_wf1, width="stretch")
+
+            st.subheader("Final Model Selection")
+            st.markdown(f"**Selected final model:** {ml_best_model}")
+            st.caption("The final model is chosen primarily by weighted F1-score, with accuracy and macro F1 used as supporting evidence.")
+            st.markdown(ml_final_model_reasoning)
+
+            metric_a, metric_b, metric_c = st.columns(3)
+            metric_a.metric("Weighted F1", f"{best_row['Weighted F1'] * 100:.1f}%")
+            metric_b.metric("Accuracy", f"{best_row['Accuracy'] * 100:.1f}%")
+            metric_c.metric("Macro F1", f"{best_row['F1-Score'] * 100:.1f}%")
+
+            st.subheader("Class-Level Performance Analysis")
+            class_perf_left, class_perf_right = st.columns([0.95, 1.25])
+            with class_perf_left:
+                st.dataframe(report_display_df, width="stretch", hide_index=True)
+                st.markdown(f"**Bias / balance interpretation:** {ml_bias_summary}")
+            with class_perf_right:
+                class_metric_chart = px.bar(
+                    class_metric_chart_plot_df,
+                    x="Class",
+                    y="Score Percent",
+                    color="Metric",
+                    barmode="group",
+                    title="Precision, Recall, and F1 by Class",
+                    text_auto=".1f",
+                    color_discrete_sequence=[PALETTE["blue"], PALETTE["teal"], PALETTE["accent"]],
+                    category_orders={"Class": ["Ideal", "Good", "Moderate", "Avoid"]},
+                )
+                class_metric_chart.update_yaxes(title="Score (%)", range=[0, 100])
+                style_figure(class_metric_chart, height=400)
+                st.plotly_chart(class_metric_chart, width="stretch")
+
+            st.subheader("Error Analysis from the Confusion Matrix")
+            confusion_left, confusion_right = st.columns([1.05, 1.15])
+            with confusion_left:
+                fig_confusion = px.imshow(
+                    ml_confusion_df,
+                    text_auto=True,
+                    aspect="auto",
+                    color_continuous_scale=["#fffaf0", PALETTE["blue"], PALETTE["accent"]],
+                    title="Final Model Confusion Matrix",
+                )
+                fig_confusion.update_xaxes(side="bottom")
+                style_figure(fig_confusion, height=430)
+                st.plotly_chart(fig_confusion, width="stretch")
+            with confusion_right:
+                confusion_display_df = ml_confusion_df.reset_index().rename(columns={"index": "Actual"})
+                st.dataframe(confusion_display_df, width="stretch", hide_index=True)
+                if not ml_confusion_pairs_df.empty:
+                    st.markdown("**Most confused class pairs**")
+                    st.dataframe(ml_confusion_pairs_df, width="stretch", hide_index=True)
+                st.markdown(ml_confusion_summary)
+
+            st.subheader("Class Distribution")
+            dist_col, experiment_col = st.columns([0.9, 1.3])
+            with dist_col:
+                st.dataframe(class_distribution_display_df, width="stretch", hide_index=True)
+                fig_class_dist = px.bar(
+                    class_distribution_display_df,
+                    x="Class",
+                    y="Percentage",
+                    color="Class",
+                    title="Travel Recommendation Distribution",
+                    text_auto=".1f",
+                    color_discrete_map=COLORS,
+                    category_orders={"Class": ["Ideal", "Good", "Moderate", "Avoid"]},
+                )
+                fig_class_dist.update_yaxes(title="Rows (%)")
+                style_figure(fig_class_dist, height=340)
+                st.plotly_chart(fig_class_dist, width="stretch")
+            with experiment_col:
+                st.dataframe(experiment_display_df, width="stretch", hide_index=True)
+                exp_acc = px.bar(
+                    add_model_labels(ml_experiment_df),
+                    x="Model Label",
+                    y="Accuracy",
+                    color="Stage",
+                    barmode="group",
+                    title="Experiment Flow Accuracy",
+                    text_auto=".1%",
+                    color_discrete_sequence=[PALETTE["stone"], PALETTE["blue"]],
+                )
+                exp_acc.update_yaxes(tickformat=".0%")
+                style_figure(exp_acc, height=340)
+                st.plotly_chart(exp_acc, width="stretch")
 
             if not ml_importance_df.empty:
-                st.subheader("What Influences the Prediction Most")
+                st.subheader("What Influences the Travel Recommendation Most")
                 st.dataframe(ml_importance_df, width="stretch", hide_index=True)
                 fig_imp = px.bar(
                     ml_importance_df.head(10).sort_values("Importance", ascending=True),
                     x="Importance",
-                    y="Feature",
+                    y="Clean Feature",
                     orientation="h",
-                    title="Most Important Inputs in the Best Prediction Model",
+                    title="Top 10 Feature Importance",
                     color="Importance",
                     color_continuous_scale=[PALETTE["accent_soft"], PALETTE["accent"]],
                 )
-                style_figure(fig_imp, height=420)
+                style_figure(fig_imp, height=430)
                 st.plotly_chart(fig_imp, width="stretch")
+                st.markdown(ml_importance_text)
+
+            if ml_best_pipeline is not None and ml_feature_frame is not None and not ml_feature_frame.empty:
+                st.subheader("Interactive Prediction")
+
+                prediction_source_options = sorted(ml_feature_frame["SourceWebsite"].dropna().astype(str).unique().tolist()) if "SourceWebsite" in ml_feature_frame.columns else []
+                prediction_city_options = sorted(ml_feature_frame["City"].dropna().astype(str).unique().tolist()) if "City" in ml_feature_frame.columns else []
+                prediction_country_options = sorted(ml_feature_frame["Country"].dropna().astype(str).unique().tolist()) if "Country" in ml_feature_frame.columns else []
+
+                defaults = {}
+                for numeric_col in ["FeelsLike_C", "Humidity_%", "WindSpeed_kmh", "Hour", "Day", "Month"]:
+                    if numeric_col in ml_feature_frame.columns:
+                        defaults[numeric_col] = float(pd.to_numeric(ml_feature_frame[numeric_col], errors="coerce").median())
+
+                pred_row1, pred_row2, pred_row3 = st.columns(3)
+                with pred_row1:
+                    pred_source = st.selectbox(
+                        "Source website",
+                        options=prediction_source_options,
+                        index=0 if prediction_source_options else None,
+                        key="ml_predict_source",
+                    )
+                    pred_feels_like = st.number_input(
+                        "Feels like (C)",
+                        value=round(defaults.get("FeelsLike_C", 20.0), 1),
+                        key="ml_predict_feels_like",
+                    )
+                    pred_hour = st.slider(
+                        "Hour",
+                        min_value=0,
+                        max_value=23,
+                        value=int(round(defaults.get("Hour", 12.0))),
+                        key="ml_predict_hour",
+                    )
+                with pred_row2:
+                    pred_city = st.selectbox(
+                        "City",
+                        options=prediction_city_options,
+                        index=0 if prediction_city_options else None,
+                        key="ml_predict_city",
+                    )
+                    pred_humidity = st.slider(
+                        "Humidity (%)",
+                        min_value=0,
+                        max_value=100,
+                        value=int(round(defaults.get("Humidity_%", 60.0))),
+                        key="ml_predict_humidity",
+                    )
+                    pred_day = st.slider(
+                        "Day of month",
+                        min_value=1,
+                        max_value=31,
+                        value=max(1, min(31, int(round(defaults.get("Day", 15.0))))),
+                        key="ml_predict_day",
+                    )
+                with pred_row3:
+                    pred_country = st.selectbox(
+                        "Country",
+                        options=prediction_country_options,
+                        index=0 if prediction_country_options else None,
+                        key="ml_predict_country",
+                    )
+                    pred_wind = st.number_input(
+                        "Wind speed (km/h)",
+                        min_value=0.0,
+                        value=round(defaults.get("WindSpeed_kmh", 10.0), 1),
+                        key="ml_predict_wind",
+                    )
+                    pred_month = st.slider(
+                        "Month",
+                        min_value=1,
+                        max_value=12,
+                        value=max(1, min(12, int(round(defaults.get("Month", 6.0))))),
+                        key="ml_predict_month",
+                    )
+
+                if st.button("Predict class", key="ml_predict_submit"):
+                    prediction_input = pd.DataFrame(
+                        [
+                            {
+                                "SourceWebsite": pred_source,
+                                "City": pred_city,
+                                "Country": pred_country,
+                                "FeelsLike_C": pred_feels_like,
+                                "Humidity_%": pred_humidity,
+                                "WindSpeed_kmh": pred_wind,
+                                "Hour": pred_hour,
+                                "Day": pred_day,
+                                "Month": pred_month,
+                            }
+                        ]
+                    )
+                    ml_module = load_analysis_module("analysis_ml_dashboard_prediction", os.path.join("analysis", "ml_analysis.py"))
+                    if ml_module is not None:
+                        predicted_label, confidence, probability_df = ml_module.predict_with_pipeline(
+                            ml_best_pipeline,
+                            prediction_input,
+                        )
+                        prob_label = f"{confidence:.1%}" if confidence is not None else "N/A"
+                        result_left, result_right = st.columns([0.7, 1.3])
+                        with result_left:
+                            st.metric("Predicted class", predicted_label)
+                            st.metric("Confidence", prob_label)
+                        with result_right:
+                            if not probability_df.empty:
+                                probability_df = make_arrow_compatible(probability_df.copy().round(4))
+                                st.dataframe(probability_df, width="stretch", hide_index=True)
+                                fig_prob = px.bar(
+                                    probability_df.sort_values("Probability", ascending=True),
+                                    x="Probability",
+                                    y="Class",
+                                    orientation="h",
+                                    color="Class",
+                                    title="Predicted Class Probabilities",
+                                    color_discrete_map=COLORS,
+                                    text_auto=".1%",
+                                    category_orders={"Class": ["Ideal", "Good", "Moderate", "Avoid"]},
+                                )
+                                fig_prob.update_xaxes(tickformat=".0%")
+                                style_figure(fig_prob, height=320)
+                                st.plotly_chart(fig_prob, width="stretch")
+                        if not ml_importance_df.empty:
+                            prediction_explanation = ml_module.explain_prediction(
+                                prediction_input,
+                                ml_importance_df,
+                                predicted_label,
+                            )
+                            st.markdown(f"**Decision hint:** {prediction_explanation}")
 
     with nlp_subtab:
-        st.subheader("Weather Language")
+        st.subheader("NLP")
         if condition_analysis_df.empty:
             st.info("Weather-language analysis output is not available.")
         else:

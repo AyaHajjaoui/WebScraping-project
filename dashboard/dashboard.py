@@ -2916,7 +2916,6 @@ with analytics_tab:
             st.info("Weather-language analysis output is not available.")
         else:
             nlp_df = condition_analysis_df.copy()
-
             normalized_counts = (
                 nlp_df["NormalizedCondition"]
                 .fillna("unknown")
@@ -2929,34 +2928,6 @@ with analytics_tab:
                 .size()
                 .reset_index(name="Count")
             ) if all(c in nlp_df.columns for c in ["SourceWebsite", "NormalizedCondition"]) else pd.DataFrame()
-
-            nlp_left, nlp_right = st.columns(2)
-            with nlp_left:
-                if not normalized_counts.empty:
-                    fig_nlp = px.bar(
-                        normalized_counts,
-                        x="NormalizedCondition",
-                        y="Count",
-                        color="NormalizedCondition",
-                        title="Normalized Weather Conditions",
-                        color_discrete_sequence=[PALETTE["mint"], PALETTE["blue"], PALETTE["yellow"], PALETTE["accent"], PALETTE["teal"], PALETTE["stone"]],
-                    )
-                    style_figure(fig_nlp, height=360)
-                    st.plotly_chart(fig_nlp, width="stretch")
-            with nlp_right:
-                if not source_condition_counts.empty:
-                    fig_source_nlp = px.bar(
-                        source_condition_counts,
-                        x="SourceWebsite",
-                        y="Count",
-                        color="NormalizedCondition",
-                        title="How Each Source Describes Conditions",
-                        barmode="stack",
-                        color_discrete_sequence=[PALETTE["mint"], PALETTE["blue"], PALETTE["yellow"], PALETTE["accent"], PALETTE["teal"], PALETTE["stone"]],
-                    )
-                    style_figure(fig_source_nlp, height=360)
-                    st.plotly_chart(fig_source_nlp, width="stretch")
-
             top_raw_conditions = (
                 nlp_df["CleanCondition"]
                 .fillna("unknown")
@@ -2965,9 +2936,82 @@ with analytics_tab:
                 .rename_axis("CleanCondition")
                 .reset_index(name="Count")
             ) if "CleanCondition" in nlp_df.columns else pd.DataFrame()
-            if not top_raw_conditions.empty:
-                st.subheader("Top Raw Condition Phrases")
-                st.dataframe(top_raw_conditions, width="stretch", hide_index=True)
+
+            nlp_before_subtab, nlp_after_subtab = st.tabs(
+                [
+                    "NLP Before Analysis",
+                    "NLP After Analysis",
+                ]
+            )
+
+            with nlp_before_subtab:
+                st.subheader("NLP Before Analysis: Text Preparation and Feature Engineering")
+                st.caption("This stage prepares raw weather-condition text before downstream analysis by cleaning the phrases and mapping them into broader categories.")
+
+                prep_summary_df = pd.DataFrame(
+                    [
+                        {"Step": "Raw text input", "Details": "Start from the original Condition column collected from each weather source."},
+                        {"Step": "Lowercasing and trimming", "Details": "Condition text is converted to lowercase and stripped of extra spaces."},
+                        {"Step": "Missing / empty filtering", "Details": "Rows with missing or empty condition text are removed before analysis."},
+                        {"Step": "Rule-based normalization", "Details": "CleanCondition values are mapped into broader labels such as clear, cloudy, rain, storm, fog, snow, or other."},
+                    ]
+                )
+                st.dataframe(prep_summary_df, width="stretch", hide_index=True)
+
+                prep_metric_1, prep_metric_2, prep_metric_3 = st.columns(3)
+                prep_metric_1.metric("Rows prepared", f"{len(nlp_df):,}")
+                prep_metric_2.metric(
+                    "Unique raw phrases",
+                    f"{nlp_df['CleanCondition'].nunique():,}" if "CleanCondition" in nlp_df.columns else "N/A",
+                )
+                prep_metric_3.metric(
+                    "Normalized categories",
+                    f"{nlp_df['NormalizedCondition'].nunique():,}" if "NormalizedCondition" in nlp_df.columns else "N/A",
+                )
+
+                preview_cols = [
+                    c for c in ["SourceWebsite", "Condition", "CleanCondition", "NormalizedCondition"]
+                    if c in nlp_df.columns
+                ]
+                if preview_cols:
+                    st.markdown("**Preprocessing preview**")
+                    preview_df = nlp_df[preview_cols].drop_duplicates().head(15).copy()
+                    st.dataframe(preview_df, width="stretch", hide_index=True)
+
+            with nlp_after_subtab:
+                st.subheader("NLP After Analysis: Results, Insights, and Model Findings")
+                st.caption("This stage shows the outputs and insights produced after the weather-condition text has been cleaned and normalized.")
+
+                nlp_left, nlp_right = st.columns(2)
+                with nlp_left:
+                    if not normalized_counts.empty:
+                        fig_nlp = px.bar(
+                            normalized_counts,
+                            x="NormalizedCondition",
+                            y="Count",
+                            color="NormalizedCondition",
+                            title="Normalized Weather Conditions",
+                            color_discrete_sequence=[PALETTE["mint"], PALETTE["blue"], PALETTE["yellow"], PALETTE["accent"], PALETTE["teal"], PALETTE["stone"]],
+                        )
+                        style_figure(fig_nlp, height=360)
+                        st.plotly_chart(fig_nlp, width="stretch")
+                with nlp_right:
+                    if not source_condition_counts.empty:
+                        fig_source_nlp = px.bar(
+                            source_condition_counts,
+                            x="SourceWebsite",
+                            y="Count",
+                            color="NormalizedCondition",
+                            title="How Each Source Describes Conditions",
+                            barmode="stack",
+                            color_discrete_sequence=[PALETTE["mint"], PALETTE["blue"], PALETTE["yellow"], PALETTE["accent"], PALETTE["teal"], PALETTE["stone"]],
+                        )
+                        style_figure(fig_source_nlp, height=360)
+                        st.plotly_chart(fig_source_nlp, width="stretch")
+
+                if not top_raw_conditions.empty:
+                    st.subheader("Top Raw Condition Phrases")
+                    st.dataframe(top_raw_conditions, width="stretch", hide_index=True)
     panel_end()
 
 with all_cities_tab:

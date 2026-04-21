@@ -2535,7 +2535,7 @@ with analytics_tab:
 
     with ml_subtab:
         st.subheader("Prediction Quality")
-        with st.spinner("🔄 Training prediction models... (this may take 30-60 seconds on first load)"):
+        with st.spinner(" Training prediction models... (this may take 30-60 seconds on first load)"):
             ml_results_df, ml_best_model, ml_importance_df = run_ml_analysis_dashboard_from_df(filtered_df)
         
         if ml_results_df is None or ml_results_df.empty:

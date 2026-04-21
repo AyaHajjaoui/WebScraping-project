@@ -1166,7 +1166,7 @@ def inject_styles() -> None:
 
             .block-container {{
                 max-width: 1420px;
-                padding-top: 1.35rem;
+                padding-top: 5.75rem;
                 padding-bottom: 2.5rem;
             }}
 
@@ -1379,7 +1379,7 @@ def inject_styles() -> None:
                 display: flex;
                 flex-wrap: wrap;
                 gap: 0.75rem;
-                margin: 0 0 1.5rem 0;
+                margin: 0.75rem 0 1.5rem 0;
                 justify-content: center;
             }}
 
@@ -1476,6 +1476,21 @@ def panel_end() -> None:
     st.markdown("</div>", unsafe_allow_html=True)
 
 
+def render_title() -> None:
+    st.markdown(
+        """
+        <div class="hero-shell">
+            <div class="hero-kicker">Weather Intelligence</div>
+            <div class="hero-title">Smart Weather Travel & Comfort Dashboard</div>
+            <div class="hero-sub">
+                Compare travel comfort, review source quality, and explore the latest processed weather data in one place.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def style_figure(fig, *, height: int | None = None):
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
@@ -1517,6 +1532,8 @@ if weather_df.empty:
         "Please make sure the file exists and contains data."
     )
     st.stop()
+
+render_title()
 
 city_options, country_options, source_options = get_filter_options(weather_df)
 default_top_n = max(5, min(25, len(city_options))) if city_options else 5

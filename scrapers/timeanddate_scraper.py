@@ -3,7 +3,6 @@ import re
 from datetime import datetime, timedelta, timezone
 from io import StringIO
 from typing import Dict, List, Optional
-
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
@@ -96,29 +95,19 @@ def _ensure_session(session=None) -> requests.Session:
 
 
 def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[object]]:
-    """
-    Extract FeelsLike_C, WindSpeed_kmh, Condition, and Humidity_%
-    from the current-weather section of a timeanddate.com weather page.
-
-    Page structure (confirmed via live DOM inspection):
-      - #qlook > p:nth-of-type(1)  → weather condition text
-      - #qlook > p:nth-of-type(2)  → "Feels Like: X °C … Wind: Y km/h …"
-      - table rows where <th> text matches label  → humidity details
-    """
     feels_like = None
     wind_speed = None
     condition = None
     humidity = None
 
-    # ── Condition ────────────────────────────────────────────────────────────
-    # Primary: first <p> in #qlook
+
     qlook = soup.select_one("#qlook")
     if qlook:
         cond_candidates = qlook.find_all("p", recursive=False)
         if cond_candidates:
             condition = _safe_text(cond_candidates[0].get_text(" ", strip=True))
 
-    # Fallback: any <p> directly inside #qlook whose text looks like a condition
+
     if not condition and qlook:
         for p in qlook.find_all("p"):
             txt = _safe_text(p.get_text(" ", strip=True))
@@ -126,25 +115,25 @@ def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[object]]
                 condition = txt
                 break
 
-    # ── Feels Like & Wind (both live in the 2nd <p> of #qlook) ───────────────
+
     detail_p = None
     if qlook:
         all_p = qlook.find_all("p", recursive=False)
         if len(all_p) >= 2:
             detail_p = all_p[1]
         elif len(all_p) == 1:
-            # Sometimes merged into one block
+
             detail_p = all_p[0]
 
     if detail_p:
         detail_text = detail_p.get_text(" ", strip=True)
 
-        # Feels Like ─ handles "Feels Like: 16 °C" or "Feels Like: 16°C"
+
         fl_match = re.search(r"Feels\s+Like[:\s]+(-?\d+(?:\.\d+)?)\s*°?", detail_text, re.I)
         if fl_match:
             feels_like = _parse_numeric(fl_match.group(1))
 
-        # Wind ─ handles "Wind: 7 km/h", "Wind: 11 mph", "Wind: from NW at 7 km/h"
+
         wind_match = re.search(
             r"Wind[:\s]+(?:from\s+\w+\s+at\s+)?(-?\d+(?:\.\d+)?)\s*(km/h|kph|mph)",
             detail_text,
@@ -156,7 +145,7 @@ def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[object]]
             if speed is not None:
                 wind_speed = round(speed * 1.60934, 2) if unit == "mph" else speed
 
-    # ── Fallback: scan all page text when #qlook approach misses values ──────
+
     if feels_like is None or wind_speed is None:
         full_text = soup.get_text(" ", strip=True)
 
@@ -177,7 +166,7 @@ def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[object]]
                 if speed is not None:
                     wind_speed = round(speed * 1.60934, 2) if unit == "mph" else speed
 
-    # ── Humidity: scan <table> rows by <th> label ─────────────────────────────
+
     for row in soup.find_all("tr"):
         th = row.find("th")
         td = row.find("td")
@@ -189,7 +178,7 @@ def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[object]]
         if "humidity" in label and humidity is None:
             humidity = _parse_numeric(value_text)
 
-    # ── Fallback for humidity from full page text ──────────────────────────────
+
     if humidity is None:
         full_text = soup.get_text(" ", strip=True)
 
@@ -207,10 +196,6 @@ def _extract_current_details(soup: BeautifulSoup) -> Dict[str, Optional[object]]
 
 
 def _flatten_columns(frame: pd.DataFrame) -> pd.DataFrame:
-    """
-    Flatten MultiIndex columns (common with pd.read_html on tables with
-    merged headers) into a single level by joining non-empty parts.
-    """
     if isinstance(frame.columns, pd.MultiIndex):
         frame.columns = [
             " ".join(str(c).strip() for c in col if str(c).strip() and str(c) != "Unnamed: 0 level_0")
@@ -227,13 +212,12 @@ def _parse_table_rows(
     country: str,
     scrape_dt_prefix: str,
 ) -> List[Dict]:
-    # Flatten any MultiIndex headers first
+
     frame = _flatten_columns(frame)
 
     records = []
 
     def _find_col(keywords: List[str]) -> Optional[str]:
-        """Return the first column name that contains any of the keywords."""
         col_lower = {c: c.lower() for c in frame.columns}
         for kw in keywords:
             for col, cl in col_lower.items():
@@ -283,12 +267,12 @@ def scrape_timeanddate(
     base_url = city_info["TimeAndDate URL"].rstrip("/")
     all_records: List[Dict] = []
 
-    # ── Current weather ───────────────────────────────────────────────────────
+
     try:
         html = _fetch_url(local_session, base_url)
         soup = BeautifulSoup(html, "lxml")
 
-        # Temperature: .h2 inside #qlook (most reliable)
+
         temp_box = soup.select_one("#qlook .h2") or soup.select_one(".h2")
 
         details = _extract_current_details(soup)
@@ -318,7 +302,7 @@ def scrape_timeanddate(
     except Exception as exc:
         logger.warning("TimeAndDate current scrape failed for %s: %s", city, exc)
 
-    # ── Historic weather ──────────────────────────────────────────────────────
+
     historic_url = f"{base_url}/historic"
     start_days_ago = pass_index * history_days + 1
     for day_offset in range(start_days_ago, start_days_ago + history_days):
@@ -329,7 +313,7 @@ def scrape_timeanddate(
             html = _fetch_url(local_session, url)
             tables = pd.read_html(StringIO(html))
             for table in tables:
-                # Flatten MultiIndex first, then check for temperature column
+
                 flat = _flatten_columns(table.copy())
                 table_columns_str = " ".join([str(c).lower() for c in flat.columns])
                 if "temp" not in table_columns_str:

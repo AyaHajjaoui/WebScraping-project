@@ -4,7 +4,6 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional
-
 import pandas as pd
 import requests
 from requests.adapters import HTTPAdapter
@@ -16,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 
 def ensure_directories() -> None:
-    """Ensure all required directories exist"""
     dirs = [
         config.DATA_DIR,
         config.RAW_DIR,
@@ -30,7 +28,6 @@ def ensure_directories() -> None:
 
 
 def setup_logging() -> None:
-    """Setup logging configuration"""
     ensure_directories()
     logging.basicConfig(
         level=logging.INFO,
@@ -43,12 +40,10 @@ def setup_logging() -> None:
 
 
 def pick_user_agent() -> str:
-    """Pick a random user agent from the list"""
     return random.choice(config.USER_AGENTS)
 
 
 def create_session() -> requests.Session:
-    """Create a requests session with retry logic"""
     retry = Retry(
         total=config.MAX_RETRIES,
         connect=config.MAX_RETRIES,
@@ -71,7 +66,6 @@ def fetch_url(
     timeout: int = config.REQUEST_TIMEOUT,
     headers: Optional[Dict[str, str]] = None,
 ) -> str:
-    """Fetch a URL with retry logic"""
     request_headers = {"User-Agent": pick_user_agent()}
     if headers:
         request_headers.update(headers)
@@ -81,12 +75,10 @@ def fetch_url(
 
 
 def now_utc_iso() -> str:
-    """Return current UTC time in ISO format"""
     return datetime.now(timezone.utc).isoformat()
 
 
 def parse_numeric(value) -> Optional[float]:
-    """Parse numeric value from string"""
     if value is None:
         return None
     text = str(value).strip()
@@ -102,7 +94,6 @@ def parse_numeric(value) -> Optional[float]:
 
 
 def to_kmh_from_mph(value) -> Optional[float]:
-    """Convert mph to km/h"""
     num = parse_numeric(value)
     if num is None:
         return None
@@ -110,7 +101,6 @@ def to_kmh_from_mph(value) -> Optional[float]:
 
 
 def safe_text(value) -> Optional[str]:
-    """Safely convert value to text"""
     if value is None:
         return None
     text = str(value).strip()
@@ -118,7 +108,6 @@ def safe_text(value) -> Optional[str]:
 
 
 def normalize_row(row: Dict) -> Dict:
-    """Normalize a single row to standard format"""
     normalized = {col: None for col in config.STANDARD_COLUMNS}
     normalized.update(row)
     normalized["Temperature_C"] = parse_numeric(normalized.get("Temperature_C"))
@@ -131,7 +120,6 @@ def normalize_row(row: Dict) -> Dict:
 
 
 def normalize_rows(rows: Iterable[Dict]) -> List[Dict]:
-    """Normalize multiple rows"""
     normalized = [normalize_row(row) for row in rows]
     if not normalized:
         return []
@@ -144,13 +132,11 @@ def normalize_rows(rows: Iterable[Dict]) -> List[Dict]:
 
 
 def append_dataframe_csv(file_path: Path, frame: pd.DataFrame) -> None:
-    """Append DataFrame to CSV file"""
     file_exists = file_path.exists()
     frame.to_csv(file_path, mode="a", index=False, header=not file_exists)
 
 
 def rows_to_frame(rows: Iterable[Dict]) -> pd.DataFrame:
-    """Convert rows to DataFrame with standard columns"""
     normalized_rows = normalize_rows(rows)
     if not normalized_rows:
         return pd.DataFrame(columns=config.STANDARD_COLUMNS)
@@ -159,7 +145,6 @@ def rows_to_frame(rows: Iterable[Dict]) -> pd.DataFrame:
 
 
 def load_existing_rows(file_path: Path) -> List[Dict]:
-    """Load existing rows from a CSV file"""
     if not file_path.exists():
         return []
     try:
@@ -170,9 +155,7 @@ def load_existing_rows(file_path: Path) -> List[Dict]:
         return []
 
 
-
 def load_and_merge_raw_files() -> List[Dict]:
-    """Load and merge all raw CSV files from the raw directory."""
     all_rows = []
 
     raw_files = sorted(config.RAW_DIR.glob("*.csv"))
@@ -206,39 +189,37 @@ def load_and_merge_raw_files() -> List[Dict]:
 
 
 def replace_processed_outputs(rows: List[Dict]) -> int:
-    """Replace processed outputs with new data"""
     frame = rows_to_frame(rows)
     if frame.empty:
         logger.warning("No rows to replace processed outputs")
         return 0
-    
-    # Save to CSV
+
+
     frame.to_csv(config.WEATHER_CSV, index=False)
     logger.info(f"Saved {len(frame)} rows to {config.WEATHER_CSV}")
-    
-    # Save to Excel
+
+
     try:
         frame.to_excel(config.WEATHER_XLSX, index=False)
         logger.info(f"Saved {len(frame)} rows to {config.WEATHER_XLSX}")
     except Exception as e:
         logger.warning(f"Could not save Excel file: {e}")
-    
+
     return len(frame)
 
 
 def write_processed_outputs(rows: List[Dict]) -> int:
-    """Append rows to processed outputs"""
     if not rows:
         return 0
-    
+
     frame = rows_to_frame(rows)
     if frame.empty:
         return 0
-    
-    # Append to CSV
+
+
     append_dataframe_csv(config.WEATHER_CSV, frame)
-    
-    # Update Excel file
+
+
     try:
         if config.WEATHER_XLSX.exists():
             existing = pd.read_excel(config.WEATHER_XLSX)
@@ -251,42 +232,40 @@ def write_processed_outputs(rows: List[Dict]) -> int:
         combined.to_excel(config.WEATHER_XLSX, index=False)
     except Exception as e:
         logger.warning(f"Could not update Excel file: {e}")
-    
+
     logger.info(f"Appended {len(frame)} rows to processed outputs")
     return len(frame)
 
 
 def append_raw_rows(file_path: Path, rows: List[Dict]) -> None:
-    """Append rows to raw data file"""
     if not rows:
         logger.debug("No rows to append")
         return
-    
-    # Ensure directory exists
+
+
     file_path.parent.mkdir(parents=True, exist_ok=True)
-    
-    # Create DataFrame with standard columns
+
+
     frame = pd.DataFrame(rows)
-    
-    # Ensure all standard columns exist
+
+
     for col in config.STANDARD_COLUMNS:
         if col not in frame.columns:
             frame[col] = None
-    
-    # Reorder to match STANDARD_COLUMNS
+
+
     frame = frame[config.STANDARD_COLUMNS]
-    
-    # Append to CSV
+
+
     file_exists = file_path.exists()
     frame.to_csv(file_path, mode='a', index=False, header=not file_exists)
-    
+
     logger.info(f"Appended {len(rows)} rows to {file_path.name}")
     if not file_exists:
         logger.info(f"Created new file: {file_path}")
 
 
 def count_processed_rows() -> int:
-    """Count total rows in processed CSV"""
     if not config.WEATHER_CSV.exists():
         return 0
     try:
@@ -298,7 +277,6 @@ def count_processed_rows() -> int:
 
 
 def update_summary_report() -> None:
-    """Write a compact summary report from the processed CSV."""
     if not config.WEATHER_CSV.exists():
         logger.debug("Weather CSV not found, skipping summary report")
         return

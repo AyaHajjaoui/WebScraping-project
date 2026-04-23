@@ -1,15 +1,12 @@
-# main.py
 import logging
 import sys
 import time
 from datetime import datetime
 from typing import Dict, List, Optional
-
 import pandas as pd
 import requests
 from apscheduler.schedulers.blocking import BlockingScheduler
-
-import config 
+import config
 from scrapers.openmeteo_scraper import scrape_openmeteo
 from scrapers.timeanddate_scraper import scrape_timeanddate
 from scrapers.wunderground_scraper import scrape_wunderground
@@ -25,7 +22,7 @@ from utils import (
 
 logger = logging.getLogger(__name__)
 
-# Constants
+
 MAX_RETRIES = 3
 DELAY_BETWEEN_CITIES = 2
 DELAY_BETWEEN_SOURCES = 30
@@ -34,14 +31,12 @@ SCHEDULER_RESTART_DELAY_SECONDS = 10
 
 
 def _safe_text(value) -> str:
-    """Safely normalize text for key comparisons."""
     if value is None:
         return ""
     return str(value).strip()
 
 
 def _canonical_scrape_datetime(value) -> str:
-    """Convert datetime-like values to a stable UTC ISO string for dedupe keys."""
     text = _safe_text(value)
     if not text:
         return ""
@@ -55,7 +50,6 @@ def _canonical_scrape_datetime(value) -> str:
 
 
 def _row_key(row: Dict, fallback_source: str = "") -> tuple:
-    """Build a row identity key used to skip already-scraped rows."""
     source = _safe_text(row.get("SourceWebsite") or fallback_source)
     city = _safe_text(row.get("City")).lower()
     country = _safe_text(row.get("Country")).upper()
@@ -64,7 +58,6 @@ def _row_key(row: Dict, fallback_source: str = "") -> tuple:
 
 
 def _load_existing_row_keys(raw_file, source_name: str) -> set:
-    """Load existing keys from a raw CSV file for incremental appends."""
     if not raw_file.exists():
         return set()
 
@@ -91,7 +84,6 @@ def _load_existing_row_keys(raw_file, source_name: str) -> set:
 
 
 def _filter_new_rows(rows: List[Dict], existing_keys: set, source_name: str) -> List[Dict]:
-    """Keep only rows that do not already exist in the raw source file."""
     new_rows = []
     for row in rows:
         key = _row_key(row, fallback_source=source_name)
@@ -103,7 +95,6 @@ def _filter_new_rows(rows: List[Dict], existing_keys: set, source_name: str) -> 
 
 
 def _history_coverage_days(raw_file, source_name: str) -> float:
-    """Estimate current historical coverage window (max-min days) for one source file."""
     if not raw_file.exists():
         return 0.0
 
@@ -136,15 +127,10 @@ def _history_coverage_days(raw_file, source_name: str) -> float:
 
 
 def start_in_background_if_requested() -> bool:
-    """
-    Placeholder hook for background mode.
-    Returns False by default so normal execution continues.
-    """
     return False
 
 
 def run_scraping_batch(cities: List[Dict]) -> int:
-    """Run one batch of scraping - collects current weather from all sources."""
     total = 0
 
     total += collect_for_source(cities, scrape_openmeteo, 0, "Open-Meteo")
@@ -158,7 +144,6 @@ def run_scraping_batch(cities: List[Dict]) -> int:
 
 
 def run_historical_batch(cities: List[Dict], history_days: int = 35) -> int:
-    """Run one historical backfill batch for all sources."""
     total = 0
 
     total += collect_for_source(cities, scrape_openmeteo, history_days, "Open-Meteo")
@@ -172,10 +157,6 @@ def run_historical_batch(cities: List[Dict], history_days: int = 35) -> int:
 
 
 def run_initial_historical_backfill(cities: List[Dict], history_days: int = 35) -> None:
-    """
-    Perform initial historical scraping backfill and merge results.
-    Keeps existing raw files and appends new rows.
-    """
     logger.info(
         "\n%s\nSTARTING INITIAL HISTORICAL BACKFILL (%s days)\n%s",
         "=" * 80,
@@ -222,7 +203,6 @@ def run_initial_historical_backfill(cities: List[Dict], history_days: int = 35) 
 
 
 def load_cities() -> List[Dict]:
-    """Load cities from CSV or use hardcoded fallback list."""
     if config.CITIES_CSV.exists():
         try:
             df = pd.read_csv(config.CITIES_CSV)
@@ -276,7 +256,6 @@ def load_cities() -> List[Dict]:
 
 
 def count_rows_by_source() -> Dict[str, int]:
-    """Count rows for each source in processed data."""
     if not config.WEATHER_CSV.exists():
         return {"Open-Meteo": 0, "TimeAndDate": 0, "WeatherUnderground": 0}
 
@@ -293,7 +272,6 @@ def count_rows_by_source() -> Dict[str, int]:
 
 
 def _normalize_scrape_datetime(series: pd.Series) -> pd.Series:
-    """Parse mixed datetime formats into UTC timestamps."""
     try:
         parsed = pd.to_datetime(series, errors="coerce", utc=True, format="mixed")
     except TypeError:
@@ -319,7 +297,6 @@ def _normalize_scrape_datetime(series: pd.Series) -> pd.Series:
 
 
 def collect_for_source(cities: List[Dict], scraper_func, history_days: int, source_name: str) -> int:
-    """Collect data for all cities using a specific scraper with retry logic."""
     logger.info("\n%s\n%s: Collecting %s days of data\n%s", "=" * 60, source_name, history_days, "=" * 60)
 
     session = create_session()
@@ -397,7 +374,6 @@ def collect_for_source(cities: List[Dict], scraper_func, history_days: int, sour
 
 
 def run_scheduled_batch(cities: List[Dict]) -> int:
-    """Run batch for scheduled job - collects current weather from all sources."""
     total = 0
 
     total += collect_for_source(cities, scrape_openmeteo, 0, "Open-Meteo")
@@ -412,7 +388,6 @@ def run_scheduled_batch(cities: List[Dict]) -> int:
 
 
 def scheduled_job(cities: List[Dict], scheduler: Optional[BlockingScheduler] = None) -> None:
-    """Scheduled job: scrape current weather and auto-merge."""
     before = count_rows_by_source()
     logger.info("\n%s\nSCHEDULED SCRAPE STARTED - %s\nBefore: %s\n%s", "=" * 80, datetime.now(), before, "=" * 80)
 
@@ -432,7 +407,6 @@ def scheduled_job(cities: List[Dict], scheduler: Optional[BlockingScheduler] = N
 
 
 def run_cleaning_and_preprocessing() -> None:
-    """Run cleaning/preprocessing pipeline from processing/preprocess.py."""
     logger.info("Running cleaning and preprocessing pipeline...")
     try:
         preprocess_all()
@@ -442,16 +416,6 @@ def run_cleaning_and_preprocessing() -> None:
 
 
 def merge_raw_data() -> int:
-    """
-    Merge all raw CSV files into processed output.
-
-    Requirements handled:
-    - Merge all raw CSV files from data/raw
-    - Normalize values and create Date from ScrapeDateTime when missing
-    - Dedupe on ['SourceWebsite', 'City', 'Date', 'ScrapeDateTime']
-    - Sort by Date before save
-    - Update DB and summary report
-    """
     raw_rows = load_and_merge_raw_files()
     logger.info("Loaded %s raw rows", len(raw_rows))
 
@@ -527,16 +491,15 @@ def merge_raw_data() -> int:
         logger.info("Saved %s rows to %s", len(df), config.WEATHER_XLSX)
     except Exception as e:
         logger.warning("Could not save Excel output: %s", e)
- 
+
 
     update_summary_report()
     return len(df)
 
 
 def initialize_app() -> List[Dict]:
-    """Shared startup logic."""
     setup_logging()
-    ensure_directories() 
+    ensure_directories()
 
     cities = load_cities()
     logger.info("Loaded %s cities", len(cities))
@@ -555,7 +518,6 @@ def initialize_app() -> List[Dict]:
 
 
 def run_once() -> None:
-    """Run scraper one time only, then exit. Best for GitHub Actions."""
     cities = initialize_app()
 
     try:
@@ -565,7 +527,6 @@ def run_once() -> None:
 
 
 def run_scheduler_forever() -> None:
-    """Run scraper continuously with APScheduler. Best for local machine/server."""
     cities = initialize_app()
     run_initial_historical_backfill(cities, history_days=35)
 

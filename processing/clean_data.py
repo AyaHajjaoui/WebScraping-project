@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 import numpy as np
 import pandas as pd
 
@@ -25,7 +24,6 @@ CRITICAL_COLUMNS = [
 
 
 def ensure_standard_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """Ensure all expected columns exist and return dataframe in standard order."""
     out = df.copy()
     for col in STANDARD_SCHEMA:
         if col not in out.columns:
@@ -34,7 +32,6 @@ def ensure_standard_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def _normalize_source_name(value: object) -> object:
-    """Normalize source naming variants to one standard label."""
     if pd.isna(value):
         return pd.NA
 
@@ -56,7 +53,6 @@ def _normalize_source_name(value: object) -> object:
 
 
 def _normalize_country(value: object) -> object:
-    """Clean country with simple, consistent formatting."""
     if pd.isna(value):
         return pd.NA
 
@@ -70,7 +66,6 @@ def _normalize_country(value: object) -> object:
 
 
 def clean_text_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """Clean text fields and normalize case/style."""
     out = df.copy()
 
     out["SourceWebsite"] = out["SourceWebsite"].apply(_normalize_source_name)
@@ -97,7 +92,6 @@ def clean_text_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def convert_types(df: pd.DataFrame) -> pd.DataFrame:
-    """Convert datetime and numeric columns safely."""
     out = df.copy()
 
     try:
@@ -122,7 +116,6 @@ def convert_types(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def fix_temperature_units(df: pd.DataFrame) -> pd.DataFrame:
-    """Convert suspicious Fahrenheit-like values only for WeatherUnderground."""
     out = df.copy()
 
     source_mask = out["SourceWebsite"].eq("WeatherUnderground")
@@ -131,7 +124,7 @@ def fix_temperature_units(df: pd.DataFrame) -> pd.DataFrame:
         if col not in out.columns:
             continue
 
-        # Only convert values that are very likely Fahrenheit (safer threshold >55).
+
         fahrenheit_like = source_mask & out[col].notna() & (out[col] > 55)
         out.loc[fahrenheit_like, col] = (out.loc[fahrenheit_like, col] - 32) * 5.0 / 9.0
 
@@ -139,7 +132,6 @@ def fix_temperature_units(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def validate_ranges(df: pd.DataFrame) -> pd.DataFrame:
-    """Apply numeric sanity ranges and set invalid values to NaN."""
     out = df.copy()
 
     out.loc[(out["Humidity_%"] < 0) | (out["Humidity_%"] > 100), "Humidity_%"] = np.nan
@@ -152,17 +144,14 @@ def validate_ranges(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def drop_critical_missing(df: pd.DataFrame) -> pd.DataFrame:
-    """Drop rows missing required core fields."""
     return df.dropna(subset=CRITICAL_COLUMNS)
 
 
 def remove_duplicates(df: pd.DataFrame) -> pd.DataFrame:
-    """Remove ONLY exact duplicate rows."""
     return df.drop_duplicates(keep="last")
 
 
 def fill_remaining_missing(df: pd.DataFrame) -> pd.DataFrame:
-    """Fill non-critical numeric gaps using progressively broader median fallbacks."""
     out = df.copy()
     fill_cols = ["FeelsLike_C", "Humidity_%", "WindSpeed_kmh"]
 
@@ -181,7 +170,6 @@ def fill_remaining_missing(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def summarize_cleaning(before_df: pd.DataFrame, after_df: pd.DataFrame, source_name: str) -> None:
-    """Print source-level cleaning summary."""
     before_rows = len(before_df)
     after_rows = len(after_df)
     removed = before_rows - after_rows
@@ -198,7 +186,6 @@ def summarize_cleaning(before_df: pd.DataFrame, after_df: pd.DataFrame, source_n
 
 
 def clean_dataframe(df: pd.DataFrame) -> pd.DataFrame:
-    """Run full reusable cleaning pipeline on one source dataframe."""
     out = ensure_standard_columns(df)
     out = clean_text_columns(out)
     out = convert_types(out)

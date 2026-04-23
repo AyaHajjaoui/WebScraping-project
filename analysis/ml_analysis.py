@@ -1,195 +1,5 @@
-# from __future__ import annotations
-
-# import numpy as np
-# import pandas as pd
-# from sklearn.compose import ColumnTransformer
-# from sklearn.ensemble import RandomForestRegressor
-# from sklearn.impute import SimpleImputer
-# from sklearn.linear_model import LinearRegression
-# from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-# from sklearn.model_selection import train_test_split
-# from sklearn.pipeline import Pipeline
-# from sklearn.preprocessing import OneHotEncoder
-# from sklearn.tree import DecisionTreeRegressor
-
-# DATA_PATH = "data/processed/weather_data.csv"
-
-
-# def load_data(path: str = DATA_PATH) -> pd.DataFrame:
-#     """Load weather dataset from CSV."""
-#     return pd.read_csv(path)
-
-
-# def prepare_features(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
-#     """Clean and prepare feature matrix X and target y."""
-#     data = df.copy()
-
-#     # Convert datetime safely and create time-based features.
-#     try:
-#         data["ScrapeDateTime"] = pd.to_datetime(
-#             data["ScrapeDateTime"], errors="coerce", utc=True, format="mixed"
-#         )
-#     except TypeError:
-#         data["ScrapeDateTime"] = pd.to_datetime(
-#             data["ScrapeDateTime"], errors="coerce", utc=True
-#         )
-
-#     data["Hour"] = data["ScrapeDateTime"].dt.hour
-#     data["Day"] = data["ScrapeDateTime"].dt.day
-#     data["Month"] = data["ScrapeDateTime"].dt.month
-
-#     # Convert numeric columns safely.
-#     numeric_cols = ["Temperature_C", "FeelsLike_C", "Humidity_%", "WindSpeed_kmh"]
-#     for col in numeric_cols:
-#         data[col] = pd.to_numeric(data[col], errors="coerce")
-
-#     # Drop rows with missing target as requested.
-#     data = data.dropna(subset=["Temperature_C"])
-
-#     feature_cols = [
-#         "SourceWebsite",
-#         "City",
-#         "Country",
-#         "FeelsLike_C",
-#         "Humidity_%",
-#         "WindSpeed_kmh",
-#         "Hour",
-#         "Day",
-#         "Month",
-#     ]
-
-#     # Keep only rows where these columns exist, then split X/y.
-#     data = data[feature_cols + ["Temperature_C"]].copy()
-#     y = data["Temperature_C"]
-#     X = data[feature_cols]
-#     return X, y
-
-
-# def train_and_evaluate_models(
-#     X_train: pd.DataFrame,
-#     X_test: pd.DataFrame,
-#     y_train: pd.Series,
-#     y_test: pd.Series,
-# ) -> tuple[pd.DataFrame, str, Pipeline]:
-#     """Train multiple models and return comparison table + best model."""
-#     categorical_features = ["SourceWebsite", "City", "Country"]
-#     numeric_features = ["FeelsLike_C", "Humidity_%", "WindSpeed_kmh", "Hour", "Day", "Month"]
-
-#     preprocessor = ColumnTransformer(
-#         transformers=[
-#             (
-#                 "cat",
-#                 Pipeline(
-#                     steps=[
-#                         ("imputer", SimpleImputer(strategy="most_frequent")),
-#                         ("onehot", OneHotEncoder(handle_unknown="ignore")),
-#                     ]
-#                 ),
-#                 categorical_features,
-#             ),
-#             (
-#                 "num",
-#                 Pipeline(steps=[("imputer", SimpleImputer(strategy="median"))]),
-#                 numeric_features,
-#             ),
-#         ]
-#     )
-
-#     models = {
-#         "Linear Regression": LinearRegression(),
-#         "Decision Tree": DecisionTreeRegressor(random_state=42),
-#         "Random Forest": RandomForestRegressor(n_estimators=200, random_state=42),
-#     }
-
-#     results: list[dict[str, float | str]] = []
-#     fitted_pipelines: dict[str, Pipeline] = {}
-
-#     for model_name, model in models.items():
-#         pipeline = Pipeline(
-#             steps=[
-#                 ("preprocessor", preprocessor),
-#                 ("model", model),
-#             ]
-#         )
-#         pipeline.fit(X_train, y_train)
-#         preds = pipeline.predict(X_test)
-
-#         mae = mean_absolute_error(y_test, preds)
-#         rmse = np.sqrt(mean_squared_error(y_test, preds))
-#         r2 = r2_score(y_test, preds)
-
-#         results.append(
-#             {
-#                 "Model": model_name,
-#                 "MAE": mae,
-#                 "RMSE": rmse,
-#                 "R2": r2,
-#             }
-#         )
-#         fitted_pipelines[model_name] = pipeline
-
-#     results_df = pd.DataFrame(results).sort_values(by="RMSE").reset_index(drop=True)
-#     best_model_name = str(results_df.loc[0, "Model"])
-#     best_pipeline = fitted_pipelines[best_model_name]
-#     return results_df, best_model_name, best_pipeline
-
-
-# def print_feature_importance_if_available(best_model_name: str, best_pipeline: Pipeline) -> None:
-#     """Print top random forest feature importances when available."""
-#     if best_model_name != "Random Forest":
-#         return
-
-#     preprocessor = best_pipeline.named_steps["preprocessor"]
-#     model = best_pipeline.named_steps["model"]
-
-#     if not hasattr(model, "feature_importances_"):
-#         return
-
-#     feature_names = preprocessor.get_feature_names_out()
-#     importances = model.feature_importances_
-
-#     importance_df = (
-#         pd.DataFrame({"Feature": feature_names, "Importance": importances})
-#         .sort_values("Importance", ascending=False)
-#         .head(10)
-#         .reset_index(drop=True)
-#     )
-
-#     print("\nTop 10 Feature Importances (Random Forest):")
-#     print(importance_df.to_string(index=False))
-
-
-# def main() -> None:
-#     df = load_data()
-#     X, y = prepare_features(df)
-
-#     if len(X) < 10:
-#         print("Not enough rows after preprocessing. Add more data and try again.")
-#         return
-
-#     X_train, X_test, y_train, y_test = train_test_split(
-#         X, y, test_size=0.2, random_state=42
-#     )
-
-#     results_df, best_model_name, best_pipeline = train_and_evaluate_models(
-#         X_train, X_test, y_train, y_test
-#     )
-
-#     print("\nModel Comparison Results:")
-#     print(results_df.to_string(index=False, float_format=lambda v: f"{v:.4f}"))
-
-#     print(f"\nBest Model (lowest RMSE): {best_model_name}")
-
-#     print_feature_importance_if_available(best_model_name, best_pipeline)
-
-
-# if __name__ == "__main__":
-#     main()
-
 from __future__ import annotations
-
 import re
-
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
@@ -220,12 +30,6 @@ def load_data(path: str = DATA_PATH) -> pd.DataFrame:
 
 
 def comfort_score(temp: object, feels_like: object, humidity: object) -> float:
-    """
-    Compute a simple travel-comfort score from weather inputs.
-
-    This score already exists in the dashboard logic, so using it here keeps the
-    classification target easy to explain in a report and consistent across the app.
-    """
     score = 100.0
 
     if pd.notna(temp):
@@ -248,7 +52,6 @@ def comfort_score(temp: object, feels_like: object, humidity: object) -> float:
 
 
 def travel_recommendation(score: object) -> str:
-    """Convert comfort score into clear user-facing travel classes."""
     if pd.isna(score):
         return "Unknown"
     if float(score) >= 80:
@@ -261,13 +64,6 @@ def travel_recommendation(score: object) -> str:
 
 
 def add_classification_target(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Derive the classification target from weather conditions.
-
-    We predict travel recommendation classes instead of a raw temperature value.
-    This is easier to present because the output is actionable for dashboard users:
-    Ideal, Good, Moderate, or Avoid.
-    """
     data = df.copy()
 
     try:
@@ -302,7 +98,6 @@ def add_classification_target(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_preprocessing_summary() -> pd.DataFrame:
-    """Describe the preprocessing steps that actually exist in the pipeline."""
     return pd.DataFrame(
         [
             {"Step": "Target creation", "Details": "Travel Recommendation derived from Comfort Score into Ideal, Good, Moderate, Avoid."},
@@ -316,7 +111,6 @@ def get_preprocessing_summary() -> pd.DataFrame:
 
 
 def get_class_distribution(y: pd.Series) -> pd.DataFrame:
-    """Return class counts and percentages in a display-friendly table."""
     counts = y.value_counts(dropna=False).reindex(TARGET_ORDER, fill_value=0)
     distribution_df = pd.DataFrame(
         {
@@ -329,7 +123,6 @@ def get_class_distribution(y: pd.Series) -> pd.DataFrame:
 
 
 def print_class_distribution(y: pd.Series) -> pd.DataFrame:
-    """Print class counts so imbalance is visible in CLI runs and notebooks."""
     distribution_df = get_class_distribution(y)
     print("\nClass Distribution:")
     print(distribution_df.to_string(index=False))
@@ -337,7 +130,6 @@ def print_class_distribution(y: pd.Series) -> pd.DataFrame:
 
 
 def prepare_features(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series, pd.DataFrame, pd.DataFrame]:
-    """Create the feature matrix, target labels, prepared dataset, and class counts."""
     data = add_classification_target(df)
 
     data["Hour"] = data["ScrapeDateTime"].dt.hour
@@ -366,7 +158,6 @@ def prepare_features(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series, pd.Data
 
 
 def build_preprocessor() -> ColumnTransformer:
-    """Build a reusable preprocessing pipeline for classification models."""
     categorical_features = ["SourceWebsite", "City", "Country"]
     numeric_features = ["FeelsLike_C", "Humidity_%", "WindSpeed_kmh", "Hour", "Day", "Month"]
 
@@ -397,12 +188,6 @@ def build_preprocessor() -> ColumnTransformer:
 
 
 def build_models() -> dict[str, object]:
-    """
-    Return classification models to compare.
-
-    `class_weight="balanced"` is enough here because the existing class
-    distribution is already reasonably healthy.
-    """
     return {
         "Logistic Regression": LogisticRegression(
             max_iter=2000,
@@ -426,7 +211,6 @@ def build_models() -> dict[str, object]:
 
 
 def clean_feature_name(name: str) -> str:
-    """Make pipeline feature names easier to read in the dashboard."""
     cleaned = name
     cleaned = cleaned.replace("cat__", "").replace("num__", "")
     cleaned = cleaned.replace("onehot__", "").replace("imputer__", "")
@@ -444,7 +228,6 @@ def build_classification_report_df(
     y_true: pd.Series,
     y_pred: np.ndarray,
 ) -> pd.DataFrame:
-    """Convert sklearn classification report into a tidy dataframe."""
     report = classification_report(
         y_true,
         y_pred,
@@ -469,7 +252,6 @@ def build_classification_report_df(
 
 
 def build_confusion_matrix_df(y_true: pd.Series, y_pred: np.ndarray) -> pd.DataFrame:
-    """Build a labeled confusion matrix dataframe for the best model."""
     matrix = confusion_matrix(y_true, y_pred, labels=TARGET_ORDER)
     return pd.DataFrame(
         matrix,
@@ -479,7 +261,6 @@ def build_confusion_matrix_df(y_true: pd.Series, y_pred: np.ndarray) -> pd.DataF
 
 
 def build_class_metric_chart_df(report_df: pd.DataFrame) -> pd.DataFrame:
-    """Build a chart-ready per-class metrics table."""
     class_rows = report_df[report_df["Label"].isin(TARGET_ORDER)].copy()
     chart_df = class_rows.melt(
         id_vars="Label",
@@ -492,7 +273,6 @@ def build_class_metric_chart_df(report_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def analyze_confusion_pairs(confusion_df: pd.DataFrame) -> tuple[pd.DataFrame, str]:
-    """Identify the most common class confusions and summarize them."""
     pairs: list[dict[str, object]] = []
     labels = TARGET_ORDER
     matrix = confusion_df.to_numpy()
@@ -529,7 +309,6 @@ def summarize_bias(
     class_distribution_df: pd.DataFrame,
     confusion_pairs_df: pd.DataFrame,
 ) -> str:
-    """Produce a stronger interpretation of balance, weak classes, and metric gaps."""
     class_rows = report_df[report_df["Label"].isin(TARGET_ORDER)].copy()
     if class_rows.empty or comparison_df.empty:
         return "Bias summary unavailable."
@@ -576,7 +355,6 @@ def evaluate_pipeline(
     stage: str,
     notes: str,
 ) -> dict[str, object]:
-    """Evaluate one fitted pipeline and return metrics plus artifacts."""
     preds = pipeline.predict(X_test)
     accuracy = accuracy_score(y_test, preds)
     precision = precision_score(y_test, preds, average="weighted", zero_division=0)
@@ -616,7 +394,6 @@ def fit_baseline_models(
     y_train: pd.Series,
     y_test: pd.Series,
 ) -> tuple[pd.DataFrame, dict[str, Pipeline], dict[str, dict[str, object]]]:
-    """Fit and evaluate baseline models."""
     preprocessor = build_preprocessor()
     models = build_models()
 
@@ -663,7 +440,6 @@ def tune_tree_model(
     X_train: pd.DataFrame,
     y_train: pd.Series,
 ) -> tuple[Pipeline, dict[str, object], str]:
-    """Tune the strongest tree-based candidate with a light grid search."""
     preprocessor = build_preprocessor()
     cv = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
 
@@ -710,7 +486,6 @@ def build_tuning_summary_df(
     tuned_row: dict[str, object],
     best_params: dict[str, object],
 ) -> pd.DataFrame:
-    """Summarize baseline vs tuned performance for the tuned model family."""
     baseline_row = baseline_df[baseline_df["Model"] == strongest_tree_name].iloc[0]
     tuned_weighted_f1 = float(tuned_row["Weighted F1"])
     baseline_weighted_f1 = float(baseline_row["Weighted F1"])
@@ -748,7 +523,6 @@ def explain_final_model_choice(
     experiment_df: pd.DataFrame,
     strongest_tree_name: str,
 ) -> str:
-    """Generate an explainable reason for the final selected model."""
     final_row = experiment_df.iloc[0]
     baseline_tree_row = experiment_df[
         (experiment_df["Stage"] == "Baseline") & (experiment_df["Model"] == strongest_tree_name)
@@ -781,7 +555,6 @@ def train_and_evaluate_models(
     y_test: pd.Series,
     class_distribution_df: pd.DataFrame | None = None,
 ) -> tuple[pd.DataFrame, str, Pipeline, dict[str, object]]:
-    """Train baseline models, tune the strongest tree-based model, and return full experiment artifacts."""
     baseline_df, fitted_pipelines, baseline_artifacts = fit_baseline_models(
         X_train,
         X_test,
@@ -854,7 +627,6 @@ def train_and_evaluate_models(
 
 
 def get_feature_importance(best_pipeline: Pipeline) -> pd.DataFrame:
-    """Return feature importance for tree models or coefficient magnitude for logistic regression."""
     preprocessor = best_pipeline.named_steps["preprocessor"]
     model = best_pipeline.named_steps["model"]
     feature_names = preprocessor.get_feature_names_out()
@@ -878,7 +650,6 @@ def get_feature_importance(best_pipeline: Pipeline) -> pd.DataFrame:
 
 
 def summarize_feature_importance(importance_df: pd.DataFrame) -> str:
-    """Summarize feature importance in plain language."""
     if importance_df.empty:
         return "Feature importance is unavailable for the selected model."
 
@@ -898,7 +669,6 @@ def summarize_feature_importance(importance_df: pd.DataFrame) -> str:
 
 
 def predict_with_pipeline(best_pipeline: Pipeline, input_df: pd.DataFrame) -> tuple[str, float | None, pd.DataFrame]:
-    """Predict a class label and optional class probabilities for new rows."""
     prediction = best_pipeline.predict(input_df)[0]
 
     probability_df = pd.DataFrame(columns=["Class", "Probability"])
@@ -922,7 +692,6 @@ def explain_prediction(
     importance_df: pd.DataFrame,
     predicted_label: str,
 ) -> str:
-    """Create a light heuristic explanation for the prediction result."""
     if input_df.empty or importance_df.empty:
         return f"The model predicts {predicted_label} based on the overall feature pattern."
 
@@ -964,7 +733,7 @@ def main() -> None:
         print("A class has fewer than 2 rows, so stratified classification training is not safe yet.")
         return
 
-    # ⚡ speed control
+
     if len(X) > 2000:
         X = X.sample(2000, random_state=42)
         y = y.loc[X.index]

@@ -9,11 +9,11 @@ import random
 
 
 COLORS = {
-    "Ideal": "#86efac",      # pastel green
-    "Good": "#93c5fd",       # pastel blue
-    "Moderate": "#fef3c7",   # pastel yellow
-    "Avoid": "#fca5a5",      # pastel red
-    "Unknown": "#d1d5db"     # pastel gray
+    "Ideal": "#86efac",
+    "Good": "#93c5fd",
+    "Moderate": "#fef3c7",
+    "Avoid": "#fca5a5",
+    "Unknown": "#d1d5db"
 }
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,7 +24,6 @@ CONDITION_ANALYSIS_PATH = os.path.join(BASE_DIR, "data", "processed", "condition
 
 @st.cache_data(show_spinner=False)
 def load_data(path: str) -> pd.DataFrame:
-    """Load data from CSV path with safe fallback."""
     if not os.path.exists(path):
         return pd.DataFrame()
     try:
@@ -35,7 +34,6 @@ def load_data(path: str) -> pd.DataFrame:
 
 @st.cache_data(show_spinner=False)
 def load_and_prepare_data(path: str = DATA_PATH) -> pd.DataFrame:
-    """Read and preprocess the dashboard dataset once per file change."""
     return clean_data(load_data(path))
 
 
@@ -43,7 +41,6 @@ PLACEHOLDER_NA_VALUES = {"", "-", "N/A", "NA", "None", "nan", "null"}
 
 
 def make_arrow_compatible(df: pd.DataFrame) -> pd.DataFrame:
-    """Normalize mixed-type dataframe columns so Streamlit can serialize them safely."""
     if df is None or df.empty:
         return pd.DataFrame() if df is None else df
 
@@ -68,7 +65,6 @@ def make_arrow_compatible(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def prepare_display_df(df: pd.DataFrame, na_columns: list[str] | None = None) -> pd.DataFrame:
-    """Return an Arrow-compatible dataframe, optionally labeling missing values for display."""
     safe_df = make_arrow_compatible(df)
     if safe_df.empty or not na_columns:
         return safe_df
@@ -81,7 +77,6 @@ def prepare_display_df(df: pd.DataFrame, na_columns: list[str] | None = None) ->
 
 
 def dataframe_fingerprint(df: pd.DataFrame) -> str:
-    """Build a stable fingerprint so expensive ML work only reruns when data changes."""
     if df is None or df.empty:
         return "empty"
 
@@ -96,18 +91,6 @@ def dataframe_fingerprint(df: pd.DataFrame) -> str:
     hash_funcs={pd.DataFrame: dataframe_fingerprint},
 )
 def train_models(df: pd.DataFrame) -> dict[str, object]:
-    """
-    Train the classification workflow once for a given dataframe and reuse it across reruns.
-
-    This cached resource handles:
-    - preprocessing
-    - stratified train/test split
-    - baseline training
-    - tuned/final model training
-    - metric computation
-    - confusion matrix and class report generation
-    - feature importance extraction
-    """
     df_local = df.copy()
     ml_module = load_analysis_module("analysis_ml_dashboard", os.path.join("analysis", "ml_analysis.py"))
     empty_result = {
@@ -191,12 +174,6 @@ def train_models(df: pd.DataFrame) -> dict[str, object]:
 
 
 def load_analysis_module(module_name: str, relative_path: str):
-    """Load a local analysis module by file path.
-
-    This is intentionally not cached because the analysis modules change during
-    development, and Streamlit resource caching can keep an older module object
-    alive after the file has been refactored.
-    """
     module_path = os.path.join(BASE_DIR, relative_path)
     if not os.path.exists(module_path):
         return None
@@ -211,12 +188,9 @@ def load_analysis_module(module_name: str, relative_path: str):
 
 
 def parse_datetime(series: pd.Series) -> pd.Series:
-    """Parse datetimes and normalize to timezone-naive UTC for safe comparisons."""
     parsed = pd.to_datetime(series, errors="coerce", utc=True)
 
-    # Some sources emit mixed timestamp formats in the same CSV column.
-    # Retry failed non-null values individually so one source format does not
-    # cause another source's timestamps to become NaT in the dashboard.
+
     failed_mask = series.notna() & parsed.isna()
     if failed_mask.any():
         reparsed = series.loc[failed_mask].apply(
@@ -228,7 +202,6 @@ def parse_datetime(series: pd.Series) -> pd.Series:
 
 
 def comfort_score(temp, feels_like, humidity) -> float:
-    """Simple comfort formula: 100 minus temperature/humidity/feels-like penalties."""
     score = 100.0
 
     if pd.notna(temp):
@@ -251,7 +224,6 @@ def comfort_score(temp, feels_like, humidity) -> float:
 
 
 def travel_recommendation(score: float) -> str:
-    """Turn numeric comfort score into a travel label."""
     if pd.isna(score):
         return "Unknown"
     if score >= 80:
@@ -264,7 +236,6 @@ def travel_recommendation(score: float) -> str:
 
 
 def clean_data(_df: pd.DataFrame) -> pd.DataFrame:
-    """Normalize columns and compute comfort metrics."""
     df = _df.copy()
     if df.empty:
         return df
@@ -326,7 +297,6 @@ def clean_data(_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def filter_latest_per_city_source(_df: pd.DataFrame) -> pd.DataFrame:
-    """Keep most recent row for each city/source pair."""
     df = _df.copy()
     if df.empty or "City" not in df.columns or "SourceWebsite" not in df.columns:
         return df
@@ -341,7 +311,6 @@ def filter_latest_per_city_source(_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_filter_options(_weather_df: pd.DataFrame) -> tuple[list[str], list[str], list[str]]:
-    """Build reusable filter option lists from the prepared dataset."""
     weather_df = _weather_df.copy()
     city_options = sorted(weather_df["City"].dropna().unique().tolist()) if "City" in weather_df.columns else []
     country_options = sorted(weather_df["Country"].dropna().unique().tolist()) if "Country" in weather_df.columns else []
@@ -358,7 +327,6 @@ def get_city_options(
     selected_countries: tuple[str, ...],
     selected_sources: tuple[str, ...],
 ) -> list[str]:
-    """Return city options for the sidebar based on country/source filters."""
     df = _df.copy()
     if df.empty or "City" not in df.columns:
         return []
@@ -381,7 +349,6 @@ def apply_dashboard_filters(
     use_latest_only: bool,
     min_comfort: int,
 ) -> pd.DataFrame:
-    """Apply dashboard filters once and reuse the result across the app."""
     df = _df.copy()
     if df.empty:
         return df
@@ -407,7 +374,6 @@ def apply_dashboard_filters(
 
 
 def build_city_ranking(_df: pd.DataFrame) -> pd.DataFrame:
-    """Build city-level aggregation used by KPI cards and tables."""
     df = _df.copy()
     if df.empty or "City" not in df.columns:
         return pd.DataFrame()
@@ -473,7 +439,6 @@ def build_city_ranking(_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_source_summary(_df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Return temperature by source, wind by source, and city disagreement table."""
     df = _df.copy()
     temp_by_source = pd.DataFrame()
     wind_by_source = pd.DataFrame()
@@ -517,7 +482,6 @@ def build_source_summary(_df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame,
 
 
 def best_hour_analysis(_df: pd.DataFrame) -> pd.DataFrame:
-    """Find best hour by city when timestamp detail is sufficient."""
     df = _df.copy()
     if df.empty or "ScrapeDateTime" not in df.columns or "Comfort Score" not in df.columns:
         return pd.DataFrame()
@@ -543,7 +507,6 @@ def best_hour_analysis(_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def apply_sort(ranking: pd.DataFrame, option: str) -> pd.DataFrame:
-    """Sort ranking table based on selected option."""
     if ranking.empty:
         return ranking
 
@@ -561,7 +524,6 @@ def apply_sort(ranking: pd.DataFrame, option: str) -> pd.DataFrame:
 
 
 def get_high_level_insights(_ranking: pd.DataFrame) -> dict:
-    """Create practical quick insights from ranking table."""
     ranking = _ranking.copy()
     insights = {
         "best_city": "N/A",
@@ -605,7 +567,6 @@ def get_high_level_insights(_ranking: pd.DataFrame) -> dict:
 
 
 def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
-    """Generate practical travel tips based on city averages."""
     tips = []
 
     temp = city_row.get("Avg Temperature_C")
@@ -615,7 +576,6 @@ def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
     aqi = city_row.get("Avg AQI") if "Avg AQI" in city_row else None
 
 
-# Temperature-based advice
     if pd.notna(temp):
         if temp >= 38:
             tips.append("Extreme heat expected — avoid outdoor activity during peak hours (12–4 PM).")
@@ -632,7 +592,7 @@ def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
         else:
             tips.append("Freezing temperatures — heavy winter clothing, gloves, and thermal layers required.")
 
-#  Humidity-based advice
+
     if pd.notna(humid):
         if humid >= 85:
             tips.append("Very high humidity — expect sticky conditions and reduced comfort.")
@@ -643,7 +603,7 @@ def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
             tips.append("Dry air — stay hydrated and consider moisturizer for skin protection.")
             tips.append("Dry throat possible — carry water or lozenges.")
 
-#  Wind-based advice
+
     if pd.notna(wind):
         if wind >= 40:
             tips.append("Strong winds expected — avoid loose items and wear wind-resistant jacket.")
@@ -652,7 +612,7 @@ def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
         elif wind >= 15:
             tips.append("Light breeze — comfortable outdoor conditions.")
 
-#  Rain / weather risk layer (if you have precipitation data)
+
         if "rain" in globals() and pd.notna(rain):
             if rain >= 80:
                 tips.append("Heavy rain expected — waterproof jacket and umbrella required.")
@@ -661,7 +621,7 @@ def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
             elif rain > 0:
                 tips.append("Light rain possible — be prepared for brief showers.")
 
-# Air quality (if available)
+
         if "aqi" in globals() and pd.notna(aqi):
             if aqi >= 150:
                 tips.append("Unhealthy air quality — limit outdoor activity and consider a mask.")
@@ -670,7 +630,7 @@ def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
             elif aqi >= 50:
                 tips.append("Acceptable air quality — generally safe for outdoor activities.")
 
-# fallback
+
         if not tips:
             tips.append("Weather is stable — no special packing precautions needed.")
 
@@ -678,7 +638,6 @@ def add_quick_trip_tips(city_row: pd.Series) -> list[str]:
 
 
 def parse_trip_request(request: str) -> dict:
-    """Extract simple travel preferences from a free-text request."""
     text = (request or "").strip().lower()
     prefs = {
         "target_temp": 22.0,
@@ -724,7 +683,6 @@ def parse_trip_request(request: str) -> dict:
 
 
 def build_ai_recommendations(ranking_df: pd.DataFrame, best_hour_df: pd.DataFrame, request: str, top_k: int = 3) -> pd.DataFrame:
-    """Generate an AI-style ranked shortlist from a natural-language travel request."""
     if ranking_df.empty:
         return pd.DataFrame()
 
@@ -781,7 +739,6 @@ def build_ai_recommendations(ranking_df: pd.DataFrame, best_hour_df: pd.DataFram
 
 
 def build_ai_summary(request: str, rec_df: pd.DataFrame) -> str:
-    """Create a concise recommendation narrative."""
     prefs = parse_trip_request(request)
     pref_bits = prefs["keywords"] if prefs["keywords"] else ["balanced weather"]
 
@@ -794,13 +751,11 @@ def build_ai_summary(request: str, rec_df: pd.DataFrame) -> str:
 
 @st.cache_data(show_spinner=False)
 def load_summary_report(path: str = SUMMARY_REPORT_PATH) -> pd.DataFrame:
-    """Load saved summary report from processed outputs."""
     return make_arrow_compatible(load_data(path))
 
 
 @st.cache_data(show_spinner=False)
 def load_condition_analysis(path: str = CONDITION_ANALYSIS_PATH) -> pd.DataFrame:
-    """Load saved normalized-condition analysis output."""
     df = load_data(path)
     if "ScrapeDateTime" in df.columns:
         df["ScrapeDateTime"] = parse_datetime(df["ScrapeDateTime"])
@@ -809,18 +764,15 @@ def load_condition_analysis(path: str = CONDITION_ANALYSIS_PATH) -> pd.DataFrame
 
 @st.cache_data(show_spinner=False)
 def run_ml_analysis_dashboard(data_path: str = DATA_PATH) -> dict[str, object]:
-    """Run classification analysis from disk and return dashboard-safe summary artifacts."""
     df = load_data(data_path)
     return train_models(df)
 
 
 def run_ml_analysis_dashboard_from_df(_df: pd.DataFrame) -> dict[str, object]:
-    """Run classification analysis against the currently filtered dashboard dataframe."""
     return train_models(_df)
 
 
 def build_filtered_summary_report(_df: pd.DataFrame) -> pd.DataFrame:
-    """Build a compact summary table from the current filtered dashboard scope."""
     df = _df.copy()
     if df.empty:
         return pd.DataFrame(columns=["Metric", "Value"])
@@ -852,7 +804,6 @@ def filter_condition_analysis_by_scope(
     _condition_df: pd.DataFrame,
     _filtered_weather_df: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Restrict condition-analysis rows to the same current dashboard scope."""
     condition_df = _condition_df.copy()
     filtered_weather_df = _filtered_weather_df.copy()
 
@@ -871,7 +822,6 @@ def filter_condition_analysis_by_scope(
 
 
 def build_eda_snapshot(_weather_df: pd.DataFrame, _ranking_df: pd.DataFrame) -> pd.DataFrame:
-    """Create compact EDA metrics for dashboard display."""
     weather_df = _weather_df.copy()
     ranking_df = _ranking_df.copy()
     if weather_df.empty:
@@ -897,7 +847,6 @@ def build_eda_snapshot(_weather_df: pd.DataFrame, _ranking_df: pd.DataFrame) -> 
 
 
 def build_score_band_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
-    """Bucket comfort scores into simple bands for overview distribution."""
     ranking_df = _ranking_df.copy()
     if ranking_df.empty or "Comfort Score" not in ranking_df.columns:
         return pd.DataFrame()
@@ -916,7 +865,6 @@ def build_score_band_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_source_health_summary(_df: pd.DataFrame) -> pd.DataFrame:
-    """Summarize source coverage and average conditions."""
     df = _df.copy()
     if df.empty or "SourceWebsite" not in df.columns:
         return pd.DataFrame()
@@ -970,7 +918,6 @@ def build_source_health_summary(_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_country_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
-    """Aggregate average comfort and city counts by country."""
     ranking_df = _ranking_df.copy()
     if ranking_df.empty or "Country" not in ranking_df.columns:
         return pd.DataFrame()
@@ -997,7 +944,6 @@ def build_country_summary(_ranking_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_all_cities_table(_filtered_df: pd.DataFrame, _ranking_df: pd.DataFrame) -> pd.DataFrame:
-    """Create an operational all-cities table with source coverage."""
     filtered_df = _filtered_df.copy()
     ranking_df = _ranking_df.copy()
     if ranking_df.empty:
@@ -1027,7 +973,6 @@ def build_all_cities_table(_filtered_df: pd.DataFrame, _ranking_df: pd.DataFrame
 
 
 def build_source_coverage_matrix(_df: pd.DataFrame) -> pd.DataFrame:
-    """Pivot city/source coverage counts for a compact reliability matrix."""
     df = _df.copy()
     if df.empty or not all(c in df.columns for c in ["City", "SourceWebsite"]):
         return pd.DataFrame()
@@ -1051,7 +996,6 @@ def filter_all_cities_table(
     recommendation_filter: tuple[str, ...],
     country_filter_quick: tuple[str, ...],
 ) -> pd.DataFrame:
-    """Apply the All Cities tab filters to the prepared city table."""
     all_cities_df = _all_cities_df.copy()
 
     if city_query and "City" in all_cities_df.columns:
@@ -1067,24 +1011,23 @@ def filter_all_cities_table(
 
 
 def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> list[str]:
-    """Generate randomized but meaningful dashboard alerts."""
 
     if ranking_df.empty:
         return ["No data available for alerts."]
 
     pool = []
 
-    # Temperature alerts
+
     if "Avg Temperature_C" in ranking_df.columns:
         hot_cities = ranking_df[ranking_df["Avg Temperature_C"] >= 32]["City"].dropna().head(5).tolist()
         if hot_cities:
             city_list = ", ".join(hot_cities)
             pool.append(f"High heat detected in: {city_list}.")
             pool.append(f"Rising temperatures affecting: {city_list}.")
-            pool.append(f"Hot weather conditions reported in: {city_list}.")            
+            pool.append(f"Hot weather conditions reported in: {city_list}.")
             pool.append(f"Extreme warmth expected in: {city_list}.")
 
-    # Humidity alerts
+
     if "Avg Humidity_%" in ranking_df.columns:
         humid_cities = ranking_df[ranking_df["Avg Humidity_%"] >= 80]["City"].dropna().head(5).tolist()
         if humid_cities:
@@ -1093,7 +1036,7 @@ def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> lis
             pool.append(f"Sticky air conditions affecting: {city_list}.")
             pool.append(f"High moisture levels detected in: {city_list}.")
 
-    # Travel risk alerts
+
     if "Travel Recommendation" in ranking_df.columns:
         avoid_count = int((ranking_df["Travel Recommendation"] == "Avoid").sum())
         avoid_cities = []
@@ -1120,11 +1063,11 @@ def build_alerts(ranking_df: pd.DataFrame, disagreement_df: pd.DataFrame) -> lis
             pool.append(f"Source disagreement detected across: {city_list}.")
             pool.append(f"Inconsistent readings found in multiple sources.")
 
-    # fallback safety net
+
     if not pool:
         return ["No major weather or data issues detected in the current view."]
 
-    # random selection (max 3 alerts)
+
     return random.sample(pool, k=min(3, len(pool)))
 
 
@@ -1241,21 +1184,21 @@ def inject_styles() -> None:
 
             .metric-tile {{
                 background: rgba(255, 251, 248, 0.9);
-                border: 1px solid var(--border); /* adjust if needed */
+                border: 1px solid var(--border);
                 border-radius: 22px;
                 padding: 1.2rem 1.25rem 1.1rem;
-                
+
                 min-height: 132px;
-                height: 132px;          /* 🔥 forces uniform height */
-                
+                height: 132px;
+
                 box-shadow: 0 14px 24px rgba(188, 180, 172, 0.10);
 
-                display: flex;          /* 🔥 enables centering */
+                display: flex;
                 flex-direction: column;
-                justify-content: center; /* vertical centering */
-                align-items: center;     /* horizontal centering */
+                justify-content: center;
+                align-items: center;
 
-                text-align: center;      /* fixes multi-line text alignment */
+                text-align: center;
                         }}
 
             .metric-label {{
@@ -1439,13 +1382,12 @@ def inject_styles() -> None:
 
             .select-wrapper {{
                 position: relative;
-                top: -20px;  
+                top: -20px;
             }}
         </style>
         """,
         unsafe_allow_html=True,
     )
-    
 
 
 def metric_tile(title: str, value: str, note: str = "") -> None:
@@ -1553,7 +1495,7 @@ if "dashboard_filters_initialized" not in st.session_state:
 
 st.sidebar.header("Dashboard Filters")
 
-# Reset button BEFORE widgets are created
+
 if st.sidebar.button("Reset filters", width="stretch"):
     st.session_state.country_filter = []
     st.session_state.source_filter = []
@@ -1871,10 +1813,10 @@ with overview_tab:
     with bottom_right:
         if not country_summary_df.empty:
             st.subheader("Country Comfort & City Coverage")
-            
+
             df_plot = country_summary_df.head(10).sort_values("Avg Comfort Score", ascending=False).copy()
             df_plot["Cities"] = df_plot["Cities"].astype(int)
-            df_plot["# Cities"] = df_plot["Cities"].astype(str)  # ← string = categorical color
+            df_plot["# Cities"] = df_plot["Cities"].astype(str)
 
             blue_shades = {
                 "1": "#AED6F1",
@@ -1888,11 +1830,11 @@ with overview_tab:
                 df_plot,
                 x="Country",
                 y="Avg Comfort Score",
-                color="# Cities",                          # ← categorical now
+                color="# Cities",
                 title="Comfort Score by Country & Cities Covered",
                 text_auto=True,
-                color_discrete_map=blue_shades,            # ← maps "1" → light blue, etc.
-                category_orders={"# Cities": ["1","2","3","4","5"]},  # legend order
+                color_discrete_map=blue_shades,
+                category_orders={"# Cities": ["1","2","3","4","5"]},
             )
 
             fig_country.update_yaxes(title="Avg Comfort Score")
@@ -1943,7 +1885,7 @@ with explorer_tab:
         for tip in add_quick_trip_tips(city_rank.iloc[0]):
             st.markdown(f"- {tip}")
         st.markdown("</div>", unsafe_allow_html=True)
-        
+
 
     explorer_metric = st.selectbox(
         "Explorer trend metric",
@@ -2053,14 +1995,14 @@ with explorer_tab:
 
         display_df = city_latest_df[latest_cols].copy()
 
-        # format datetime nicely
+
         if "ScrapeDateTime" in display_df.columns:
             display_df["ScrapeDateTime"] = (
                 pd.to_datetime(display_df["ScrapeDateTime"])
                 .dt.strftime("%Y-%m-%d %H:%M")
             )
 
-        # rename ONLY for display
+
         display_df = display_df.rename(columns={
             "ScrapeDateTime": "Date"
         })
@@ -2154,7 +2096,7 @@ with source_tab:
 
         fig_disagree.update_yaxes(title="Temp Difference (°C)")
 
-        st.plotly_chart(fig_disagree, use_container_width=True) 
+        st.plotly_chart(fig_disagree, use_container_width=True)
 
     coverage_matrix = build_source_coverage_matrix(filtered_df)
     if not coverage_matrix.empty:
@@ -2178,8 +2120,8 @@ with planner_tab:
     cutoff = label_order[target_label]
 
     planner_df = ranking_df.copy()
-    
-    # Filter by Travel Recommendation if column exists
+
+
     if "Travel Recommendation" in planner_df.columns:
         planner_df["_rank"] = planner_df["Travel Recommendation"].map(label_order).fillna(999)
         planner_df = planner_df[planner_df["_rank"] <= cutoff].drop(columns=["_rank"])

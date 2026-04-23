@@ -1,7 +1,5 @@
 from __future__ import annotations
-
 from pathlib import Path
-
 import pandas as pd
 
 try:
@@ -13,7 +11,7 @@ try:
         summarize_cleaning,
     )
 except ModuleNotFoundError:
-    from clean_data import (  # type: ignore
+    from clean_data import (
         STANDARD_SCHEMA,
         clean_dataframe,
         fill_remaining_missing,
@@ -34,7 +32,6 @@ RAW_FILES = {
 
 
 def load_raw_file(filepath: Path, source_name: str) -> pd.DataFrame | None:
-    """Load one raw file safely. Missing files are skipped with a message."""
     if not filepath.exists():
         print(f"[SKIP] Missing file: {filepath}")
         return None
@@ -45,14 +42,13 @@ def load_raw_file(filepath: Path, source_name: str) -> pd.DataFrame | None:
         print(f"[SKIP] Could not read {filepath}: {exc}")
         return None
 
-    # Ensure source label is consistent for this file.
+
     df["SourceWebsite"] = source_name
     print(f"[LOAD] {source_name}: {len(df)} rows from {filepath.name}")
     return df
 
 
 def preprocess_all() -> None:
-    """Load raw files, clean each source, combine, dedupe, sort, and save."""
     cleaned_frames: list[pd.DataFrame] = []
 
     print("=" * 70)
